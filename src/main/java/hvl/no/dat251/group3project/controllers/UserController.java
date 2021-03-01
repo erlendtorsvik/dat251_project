@@ -37,7 +37,6 @@ public class UserController {
 	public String userAdd(Model model, OAuth2AuthenticationToken authentication) {
 		client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
 				authentication.getName());
-		System.out.println(authentication.getAuthorizedClientRegistrationId());
 		User newUser = main.saveUser(client);
 		if (!userService.findByIdIsPresent(newUser.getUID()))
 			userService.save(newUser);
