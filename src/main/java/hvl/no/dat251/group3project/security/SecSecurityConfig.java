@@ -18,15 +18,14 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/index").permitAll() // permit all to access some sites
-//				.anyRequest().authenticated() //Needs authentication to access other sites
-				.and().oauth2Login().loginPage("/oauth_login").defaultSuccessUrl("/userAdd", true) // Login method,
-																									// login screen,
-																									// successful login
-																									// screen
+		http.csrf().disable().authorizeRequests().antMatchers("/oauth_login", "/h2-console/*").permitAll() // permit all to access some sites
+				.anyRequest().authenticated() // Needs authentication to access other sites
+				.and()
+				.oauth2Login().loginPage("/oauth_login").defaultSuccessUrl("/userAdd", true) // Login method, login screen,  successful login screen
 //				.and()
 //				.logout().deleteCookies("JSESSIONID").logoutSuccessUrl("/oauth_login") //Logout method, successful logout screen
-				.and().headers().frameOptions().disable(); // Necessary for h2-console for debugging
+				.and()
+				.headers().frameOptions().disable(); // Necessary for h2-console for debugging
 	}
 
 	@Bean

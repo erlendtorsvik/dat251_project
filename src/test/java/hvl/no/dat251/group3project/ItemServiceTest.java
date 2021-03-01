@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.repositories.IItemRepository;
@@ -17,11 +18,11 @@ class ItemServiceTest {
 	private IItemRepository itemRepository;
 
 	@Test
+	@WithMockUser("test")
 	void getAllItems() {
 		Item itemSample = new Item("Sokker", "gode gamle sokker", 1337.0, true);
 		itemRepository.save(itemSample);
 		ItemService itemService = new ItemService(itemRepository);
-
 		Item firstResult = itemService.findAll().get(0);
 
 		assertEquals(itemSample.getIID(), firstResult.getIID());
@@ -29,7 +30,6 @@ class ItemServiceTest {
 		assertEquals(itemSample.getDescription(), firstResult.getDescription());
 		assertEquals(itemSample.getPrice(), firstResult.getPrice());
 		assertEquals(itemSample.isAvailable(), firstResult.isAvailable());
-
 	}
 
 }

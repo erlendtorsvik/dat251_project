@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,7 +37,8 @@ class UserControllerTest {
 	private ItemService itemService;
 
 	@Test
-	void getAllUsers() throws Exception {
+	@WithMockUser("test")
+	void SearchingForAllUsersShouldReturnAListOfUsers() throws Exception {
 		List<User> userList = new ArrayList<User>();
 		userList.add(new User("1", "Lompo", " ", ""));
 		userList.add(new User("2", "Moneey", " ", ""));
@@ -44,5 +46,17 @@ class UserControllerTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
+	}
+	
+	@Test
+	@WithMockUser("test")
+	void getAllUsers() throws Exception {
+		List<User> userList = new ArrayList<User>();
+		userList.add(new User("1", "Lompo", " ", ""));
+		userList.add(new User("2", "Moneey", " ", ""));
+		when(userService.findAll()).thenReturn(userList);
+		
+		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.repositories.IUserRepository;
@@ -19,6 +20,7 @@ public class UserServiceTest {
 	private IUserRepository userRepository;
 
 	@Test
+	@WithMockUser("test")
 	void getAllUsers() {
 		User userSample = new User("3", "User", " Sample", " 1");
 		userRepository.save(userSample);
