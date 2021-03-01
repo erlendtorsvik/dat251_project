@@ -7,5 +7,4 @@ import hvl.no.dat251.group3project.entity.User;
 
 @Repository("userRepository")
 public interface IUserRepository extends JpaRepository<User, String> {
-
 }

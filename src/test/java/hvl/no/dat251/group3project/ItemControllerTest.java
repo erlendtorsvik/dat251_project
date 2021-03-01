@@ -18,31 +18,31 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.services.ItemService;
 import hvl.no.dat251.group3project.services.UserService;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
-class UserControllerTest {
+class ItemControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
 
 	@MockBean
-	private UserService userService;
-
-	@MockBean
 	private ItemService itemService;
 
-	@Test
-	void getAllUsers() throws Exception {
-		List<User> userList = new ArrayList<User>();
-		userList.add(new User("1", "Lompo", true));
-		userList.add(new User("2", "Moneey", false));
-		when(userService.findAll()).thenReturn(userList);
+	@MockBean
+	private UserService userService;
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
+	@Test
+	void getAllItems() throws Exception {
+		List<Item> itemsList = new ArrayList<>();
+		itemsList.add(new Item(1L, "Langrenn ski", "Veldig mye brukt ski", 99.99, true));
+		itemsList.add(new Item(2L, "Stor telt", "God og comfy telt", 69.420, false));
+		when(itemService.findAll()).thenReturn(itemsList);
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/items").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
 }

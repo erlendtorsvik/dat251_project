@@ -1,7 +1,6 @@
 package hvl.no.dat251.group3project.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import lombok.Data;
@@ -11,7 +10,6 @@ import lombok.Data;
 public class User {
 
 	@Id
-	@GeneratedValue
 	private String id;
 	private String name;
 	private boolean dead;
@@ -25,6 +23,9 @@ public class User {
 	public User(String name, boolean dead) {
 		this.name = name;
 		this.dead = dead;
+	}
+
+	public User() {
 	}
 
 }
