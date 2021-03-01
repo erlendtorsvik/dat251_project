@@ -10,19 +10,16 @@ import lombok.Data;
 public class User {
 
 	@Id
-	private String id;
-	private String name;
-	private boolean dead;
+	private String uID;
+	private String fname;
+	private String lname;
+	private String email;
 
-	public User(String id, String name, boolean dead) {
-		this.id = id;
-		this.name = name;
-		this.dead = dead;
-	}
-
-	public User(String name, boolean dead) {
-		this.name = name;
-		this.dead = dead;
+	public User(String id, String fname, String lname, String email) {
+		this.uID = id;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
 	}
 
 	public User() {

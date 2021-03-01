@@ -20,15 +20,15 @@ public class UserServiceTest {
 
 	@Test
 	void getAllUsers() {
-		User userSample = new User("3", "User Sample 1", true);
+		User userSample = new User("3", "User", " Sample", " 1");
 		userRepository.save(userSample);
 		UserService userService = new UserService(userRepository);
 
 		List<User> userList = userService.findAll();
 		User lastUser = userList.get(0);
 
-		assertEquals(userSample.getName(), lastUser.getName());
-		assertEquals(userSample.isDead(), lastUser.isDead());
-		assertEquals(userSample.getId(), lastUser.getId());
+		assertEquals(userSample.getFname(), lastUser.getFname());
+		assertEquals(userSample.getLname(), lastUser.getLname());
+		assertEquals(userSample.getUID(), lastUser.getUID());
 	}
 }

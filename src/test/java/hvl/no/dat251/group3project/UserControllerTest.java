@@ -38,8 +38,8 @@ class UserControllerTest {
 	@Test
 	void getAllUsers() throws Exception {
 		List<User> userList = new ArrayList<User>();
-		userList.add(new User("1", "Lompo", true));
-		userList.add(new User("2", "Moneey", false));
+		userList.add(new User("1", "Lompo", " ", ""));
+		userList.add(new User("2", "Moneey", " ", ""));
 		when(userService.findAll()).thenReturn(userList);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
