@@ -26,11 +26,12 @@ public class ItemController {
     }
 
 
-    @GetMapping("/item")
+    @GetMapping("/items")
     public String searchItem(@RequestParam String name, Model model, OAuth2AuthenticationToken authentication) {
         List<Item> items = itemService.findByWord(name);
 
         model.addAttribute("items", items);
+        model.addAttribute("message", "Succesfully searched polls");
         return "items";
 
     }
