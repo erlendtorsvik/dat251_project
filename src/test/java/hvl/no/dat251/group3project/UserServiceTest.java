@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
@@ -38,7 +37,6 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@WithMockUser("test")
 	void getAllUsersShouldRetrunAllUsers() {
 		List<User> userList = userService.findAll();
 		User lastUser = userList.get(0);
@@ -46,6 +44,13 @@ public class UserServiceTest {
 		assertEquals(userSample.getFname(), lastUser.getFname());
 		assertEquals(userSample.getLname(), lastUser.getLname());
 		assertEquals(userSample.getUID(), lastUser.getUID());
+	}
+	
+	@Test
+	void getUserByIdShouldReturnUser() {
+		User lastUser = userService.findById(userSample.getUID());
+		
+		assertEquals(userSample.getEmail(), lastUser.getEmail());
 	}
 
 	@Test

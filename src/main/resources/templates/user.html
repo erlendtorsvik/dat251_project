@@ -19,36 +19,35 @@
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Email</th>
                 <th>Age</th>
                 <th>Address</th>
+                <th>Gender</th>
             </tr>
             <tr>
                 <td th:text="${user.fname}"></td>
                 <td th:text="${user.lname}"></td>
-                <td th:text="${user.email}"></td>
                 <td th:text="${user.age}"></td>
                 <td th:text="${user.address}"></td>
+                <td th:text="${user.gender}"></td>
             </tr>
         </table><br>
-        <form th:action="@{/polls/{pollID}(pollID=${poll.pollID})}" method="post">
-            <h3>Update Poll:</h3>
-            Name:<br><input type="text" th:value="${poll.name}" name="name" maxlength="32"><br><br>
-            Description:<br><textarea name="description" rows="4" th:text="${poll.description}"></textarea><br><br>
-            Status: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Public:
-            <br><select name="status">
-                <option value="past" th:selected="${poll.status eq 'past'}">Past</option>
-                <option value="present" th:selected="${poll.status eq 'present'}">Present</option>
-                <option value="future" th:selected="${poll.status eq 'future'}">Future</option>
-            </select>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <select name="isPublic">
-                <option value="true" th:selected="${poll.public}">True</option>
-                <option value="false" th:selected="${!poll.public}">False</option>
+        <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post">
+            <h3>Update User:</h3>
+            First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
+            Last Name:<br><input type="text" th:value="${user.lname}" name="lname" maxlength="32"><br><br>
+            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
+            Gender:
+            <br><select name="gender">
+                <option value="female" th:selected="${user.gender eq 'female'}">Female</option>
+                <option value="male" th:selected="${user.gender eq 'male'}">Male</option>
+                <option value="unspecified" th:selected="${user.gender eq 'unspecified'}">Don't want to say</option>
             </select><br><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>
+	<div class=message>
+		<p><span class=message th:text="${message}"></span></p>
+	</div>
 </body>
 
 </html>

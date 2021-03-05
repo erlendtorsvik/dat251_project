@@ -22,7 +22,7 @@ public class mainRestController {
 	 * @param client with logged in user
 	 * @return uID of the logged in user
 	 */
-	public String getUser(OAuth2AuthorizedClient client) {
+	public String getUserID(OAuth2AuthorizedClient client) {
 		String uID = "";
 		String userInfoEndpointUri = client.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
 		if (!StringUtils.isEmpty(userInfoEndpointUri)) {

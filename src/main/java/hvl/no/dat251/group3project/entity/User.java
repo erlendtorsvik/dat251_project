@@ -22,7 +22,7 @@ public class User {
 	private Address address;
 
 	public enum Gender {
-		FEMALE("female"), MALE("male"), NaN("NaN");
+		FEMALE("female"), MALE("male"), UNSPECIFIED("unspecified");
 
 		private String gender;
 
