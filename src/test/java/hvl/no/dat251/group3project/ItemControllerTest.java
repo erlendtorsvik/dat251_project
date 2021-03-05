@@ -44,7 +44,7 @@ class ItemControllerTest {
 		itemsList.add(new Item(2L, "Stor telt", "God og comfy telt", 69.420, false));
 		when(itemService.findAll()).thenReturn(itemsList);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/items").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(MockMvcRequestBuilders.get("/allItems").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
 }
