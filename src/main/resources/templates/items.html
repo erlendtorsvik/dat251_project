@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<html>
+<title>Items</title>
+<meta charset="UTF-8">
+<body>
+
+<div id="myPolls" class="block">
+		<div id="search" class="block">
+			<form th:action="@{/items}">
+				<h3>Search Items:</h3>
+				Search:<input type="text" name="name"><br><br>
+				<input type="submit" name="submit" value="Search">
+			</form><br>
+			
+			<h3>All items:</h3>
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Price</th>
+					<th>Available</th>
+				</tr>
+				<tr th:each="item : ${items}">
+					<td th:text="${item.iID}"></td>
+					<td th:text="${item.name}"></td>
+					<td th:text="${item.description}"></td>
+					<td th:text="${item.price}"></td>
+					<td th:text="${item.available}"></td>
+				</tr>
+			</table><br>
+		</div>
+	<div class=message>
+		<p><span class=message th:text="${message}"></span></p>
+	</div>
+</div>
+</body>
+</html>
