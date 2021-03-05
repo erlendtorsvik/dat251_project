@@ -12,7 +12,7 @@ import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.services.ItemService;
 
 @RestController
-public class ItemContoller {
+public class ItemController {
 
 	@Autowired
 	private ItemService itemService;

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 
+import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.entity.User.Gender;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repositories.IUserRepository;
 
@@ -39,6 +41,35 @@ public class UserService {
 
 		userRepository.save(user);
 		return user;
+	}
+
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
+	public void setFname(User user, String fname) {
+		user.setFname(fname);
+		userRepository.save(user);
+	}
+
+	public void setLname(User user, String lname) {
+		user.setLname(lname);
+		userRepository.save(user);
+	}
+
+	public void setAge(User user, int age) {
+		user.setAge(age);
+		userRepository.save(user);
+	}
+
+	public void setGender(User user, Gender gender) {
+		user.setGender(gender);
+		userRepository.save(user);
+	}
+
+	public void setAddress(User user, Address address) {
+		user.setAddress(address);
+		userRepository.save(user);
 	}
 
 }
