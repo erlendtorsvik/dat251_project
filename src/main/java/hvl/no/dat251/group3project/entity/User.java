@@ -70,11 +70,13 @@ public class User {
 	}
 
 	public void setPreferences(List<String> preferences) {
+		List<Preferences> prefList = new ArrayList<>();
 		for (String pref : preferences) {
 			Preferences p = Preferences.valueOf(pref);
 			if (!this.preferences.contains(p) && p != Preferences.NAN) {
-				this.preferences.add(p);
+				prefList.add(p);
 			}
 		}
+		this.preferences.addAll(prefList);
 	}
 }
