@@ -73,7 +73,7 @@ public class User {
 		List<Preferences> prefList = new ArrayList<>();
 		for (String pref : preferences) {
 			Preferences p = Preferences.valueOf(pref);
-			if (!this.preferences.contains(p) && p != Preferences.NAN) {
+			if (p != Preferences.NAN) {
 				prefList.add(p);
 			}
 		}
