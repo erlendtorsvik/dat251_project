@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project.controllers;
+package hvl.no.dat251.group3project.controller;
 
 import java.util.Map;
 

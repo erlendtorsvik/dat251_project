@@ -1,7 +1,8 @@
-package hvl.no.dat251.group3project.services;
+package hvl.no.dat251.group3project.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -11,18 +12,20 @@ import org.springframework.stereotype.Service;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 
-import hvl.no.dat251.group3project.controllers.mainRestController;
+import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.entity.User.Gender;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
-import hvl.no.dat251.group3project.repositories.IUserRepository;
+import hvl.no.dat251.group3project.repository.IUserRepository;
 
 @Service
 public class UserService {
 
 	private IUserRepository userRepository;
+
 	@Autowired
 	private FBInitialize fb;
 
@@ -40,59 +43,85 @@ public class UserService {
 	}
 
 	public boolean findByIdIsPresent(String uid) {
-		return userRepository.findById(uid).isPresent();
+		DocumentReference dr = fb.getFirebase().collection("Users").document(String.valueOf(uid));
+		try {
+			DocumentSnapshot ds = dr.get().get();
+			return ds.exists();
+				
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public User save(User user) {
-		CollectionReference pollCR = fb.getFirebase().collection("Users");
-		pollCR.document(String.valueOf((user.getUID()))).set(user);
-		DocumentReference dr = fb.getFirebase().collection("Polls").document(String.valueOf(user.getUID()));
-		dr.update("UserID", user.getUID());
+		CollectionReference userCR = fb.getFirebase().collection("Users");
+		userCR.document(String.valueOf((user.getUID()))).set(user);
 
 		userRepository.save(user);
 		return user;
 	}
 
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
-
 	public void setFname(User user, String fname) {
 		user.setFname(fname);
-		userRepository.save(user);
 	}
 
 	public void setLname(User user, String lname) {
 		user.setLname(lname);
-		userRepository.save(user);
 	}
 
 	public void setAge(User user, int age) {
 		user.setAge(age);
-		userRepository.save(user);
 	}
 
 	public void setGender(User user, Gender gender) {
 		user.setGender(gender);
-		userRepository.save(user);
 	}
 
 	public void setAddress(User user, Address address) {
 		user.setAddress(address);
-		userRepository.save(user);
+	}
+
+	public void setPreferences(User user, List<String> preferences) {
+		user.setPreferences(preferences);
 	}
 
 	public User findById(String uid) {
-		Optional<User> userOpt = userRepository.findById(uid);
-		if (userOpt.isPresent()) {
-			return userOpt.get();
+		DocumentReference dr = fb.getFirebase().collection("Users").document(String.valueOf(uid));
+		User user = new User();
+		try {
+			DocumentSnapshot ds = dr.get().get();
+			Long age = (Long) ds.get("age");
+			String fname = (String) ds.get("fname");
+			String lname = (String) ds.get("lname");
+			String gender = (String) ds.get("gender");
+			String email = (String) ds.get("email");
+			List<String> preferences = (List<String>) ds.get("preferences");
+			user.setUID(uid);
+			user.setFname(fname);
+			user.setLname(lname);
+			user.setEmail(email);
+			user.setAge(age.intValue());
+			user.setPreferences(preferences);
+			if (gender != null)
+				user.setGender(User.Gender.valueOf(gender.toUpperCase()));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return null;
+		return user;
 	}
 
 	public String getUserName(OAuth2AuthenticationToken authentication) {
-		OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
-				authentication.getName());
+		OAuth2AuthorizedClient client = authorizedClientService
+				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
 		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
 		if (!userOpt.isPresent()) {
 			return "null";

@@ -30,6 +30,14 @@
                 <td th:text="${user.address}"></td>
                 <td th:text="${user.gender}"></td>
             </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Preferences</th>
+            </tr>
+            <tr th:each="pref: ${user.preferences}" >
+                <td th:text="${pref.preference}"></td>
+            </tr>
         </table><br>
         <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post">
             <h3>Update User:</h3>
@@ -38,10 +46,16 @@
             Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
             Gender:
             <br><select name="gender">
-                <option value="female" th:selected="${user.gender eq 'female'}">Female</option>
-                <option value="male" th:selected="${user.gender eq 'male'}">Male</option>
-                <option value="unspecified" th:selected="${user.gender eq 'unspecified'}">Don't want to say</option>
+                <option value="female" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female</option>
+                <option value="male" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).MALE}">Male</option>
+                <option value="unspecified" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}">Don't want to say</option>
             </select><br><br>
+            <label for="preferences">
+            Preferences:<br>
+            <input type="checkbox" name="preferences" th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}" 
+        	th:value="${prefOpt}" th:text="${prefOpt.getPreference()}" th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
+        	th:style="${iStat.last}? 'visibility:hidden;'">
+			</label><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>

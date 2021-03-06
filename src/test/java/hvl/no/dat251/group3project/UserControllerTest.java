@@ -19,12 +19,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import hvl.no.dat251.group3project.controller.UserController;
+import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.User;
-import hvl.no.dat251.group3project.services.ItemService;
-import hvl.no.dat251.group3project.services.UserService;
+import hvl.no.dat251.group3project.service.ItemService;
+import hvl.no.dat251.group3project.service.UserService;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest
+@WebMvcTest(UserController.class)
 class UserControllerTest {
 
 	@Autowired
@@ -35,6 +37,9 @@ class UserControllerTest {
 
 	@MockBean
 	private ItemService itemService;
+	
+	@MockBean
+	private mainRestController main;
 
 	@Test
 	@WithMockUser("test")

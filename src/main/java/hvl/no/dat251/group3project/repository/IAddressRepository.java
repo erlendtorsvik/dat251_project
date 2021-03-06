@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project.repositories;
+package hvl.no.dat251.group3project.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

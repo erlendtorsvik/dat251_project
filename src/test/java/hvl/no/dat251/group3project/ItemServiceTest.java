@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import hvl.no.dat251.group3project.entity.Item;
-import hvl.no.dat251.group3project.repositories.IItemRepository;
-import hvl.no.dat251.group3project.services.ItemService;
+import hvl.no.dat251.group3project.repository.IItemRepository;
+import hvl.no.dat251.group3project.service.ItemService;
 
 import java.util.List;
 

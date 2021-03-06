@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project.controllers;
+package hvl.no.dat251.group3project.controller;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import hvl.no.dat251.group3project.entity.User;
-import hvl.no.dat251.group3project.services.UserService;
+import hvl.no.dat251.group3project.service.UserService;
 
 @Controller
 public class UserController {
@@ -38,15 +38,16 @@ public class UserController {
 
 	@GetMapping("/userAdd")
 	public String userAdd(Model model, OAuth2AuthenticationToken authentication) {
-		client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
-				authentication.getName());
+		if (authentication != null)
+			client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
+					authentication.getName());
 		User newUser = main.saveUser(client);
 		if (!userService.findByIdIsPresent(newUser.getUID()))
 			userService.save(newUser);
 		model.addAttribute("name", newUser.getFname() + " " + newUser.getLname());
 		return "welcome";
 	}
-	
+
 	@GetMapping("/user")
 	public String getUser(Model model, OAuth2AuthenticationToken authentication) {
 		client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
@@ -57,9 +58,10 @@ public class UserController {
 		model.addAttribute("user", newUser);
 		return "user";
 	}
-	
+
 	@PostMapping("/user/{uID}")
-	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname, @RequestParam int age, @RequestParam String gender,Model model, OAuth2AuthenticationToken authentication) {
+	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
+			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences, Model model, OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUserName(authentication));
 		User user = userService.findById(uID);
 		
@@ -72,10 +74,12 @@ public class UserController {
 		if (!gender.isBlank()) {
 			userService.setGender(user, User.Gender.valueOf(gender.toUpperCase()));
 		}
+		if(!preferences.isEmpty())
+			userService.setPreferences(user, preferences);
 		userService.save(user);
 		model.addAttribute("user", user);
-		model.addAttribute("message", "Successfully updated user");
-		
+		model.addAttribute("message", "Succesfully updated user");
+
 		return "user";
 	}
 }

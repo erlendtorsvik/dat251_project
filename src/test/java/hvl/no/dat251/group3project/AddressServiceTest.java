@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import hvl.no.dat251.group3project.entity.Item;
-import hvl.no.dat251.group3project.repositories.IAddressRepository;
+import hvl.no.dat251.group3project.repository.IAddressRepository;
 
 @SpringBootTest
 class AddressServiceTest {

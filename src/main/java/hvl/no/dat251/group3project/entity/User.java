@@ -1,6 +1,11 @@
 package hvl.no.dat251.group3project.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -17,6 +22,9 @@ public class User {
 	private String email;
 	private int age;
 	private Gender gender;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<Preferences> preferences = new ArrayList<>();
 
 	@ManyToOne
 	private Address address;
@@ -35,13 +43,38 @@ public class User {
 		}
 	}
 
+	public enum Preferences {
+		SKIING("Skiing"), TENT("Tent"), CANOEING("Canoeing"), HIKING("Hiking"), CYCLING("Cycling"),
+		CLIMBING("Climbing"), EXTREME("Extreme"), NAN("");
+
+		private String preference;
+
+		Preferences(String preference) {
+			this.preference = preference;
+		}
+
+		public String getPreference() {
+			return this.preference;
+		}
+	}
+
 	public User(String id, String fname, String lname, String email) {
 		this.uID = id;
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+		this.gender= Gender.UNSPECIFIED;
 	}
 
 	public User() {
+	}
+
+	public void setPreferences(List<String> preferences) {
+		for (String pref : preferences) {
+			Preferences p = Preferences.valueOf(pref);
+			if (!this.preferences.contains(p) && p != Preferences.NAN) {
+				this.preferences.add(p);
+			}
+		}
 	}
 }
