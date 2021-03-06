@@ -77,6 +77,7 @@ public class User {
 				prefList.add(p);
 			}
 		}
+		this.preferences.clear();
 		this.preferences.addAll(prefList);
 	}
 }
