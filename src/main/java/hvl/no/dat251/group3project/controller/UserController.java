@@ -38,6 +38,7 @@ public class UserController {
 
 	@GetMapping("/userAdd")
 	public String userAdd(Model model, OAuth2AuthenticationToken authentication) {
+		userService.gettAllFromFb();
 		if (authentication != null)
 			client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
 					authentication.getName());

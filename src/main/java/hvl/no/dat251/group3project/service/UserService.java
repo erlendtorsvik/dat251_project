@@ -2,12 +2,17 @@ package hvl.no.dat251.group3project.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 
 import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.Address;
@@ -37,13 +42,46 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
+	public void gettAllFromFb() {
+		CollectionReference userCR = fb.getFirebase().collection("Users");
+		User tempUser = new User();
+		for (DocumentReference doc : userCR.listDocuments()) {
+			String uID = doc.getId();
+			try {
+				DocumentSnapshot ds = userCR.document(String.valueOf(uID)).get().get();
+				tempUser.setUID(uID);
+				setAddress(tempUser, (Address) ds.get("address"));
+				setAge(tempUser, (ds.getLong("age")).intValue());
+				setFname(tempUser, ds.getString("fname"));
+				setLname(tempUser, ds.getString("lname"));
+				setEmail(tempUser, ds.getString("email"));
+				if (ds.getString("gender") != null)
+					setGender(tempUser, User.Gender.valueOf((ds.getString("gender")).toUpperCase()));
+				List<String> pref = (List<String>) ds.get("preferences");
+				setPreferences(tempUser, pref);
+				save(tempUser);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 	public boolean findByIdIsPresent(String uid) {
 		return userRepository.existsById(uid);
 	}
 
 	public User save(User user) {
 		userRepository.save(user);
+		if (fb != null) {
+			CollectionReference userCR = fb.getFirebase().collection("Users");
+			userCR.document(String.valueOf((user.getUID()))).set(user);
+		}
 		return user;
+	}
+
+	public void setEmail(User user, String string) {
+		user.setEmail(string);
 	}
 
 	public void setFname(User user, String fname) {

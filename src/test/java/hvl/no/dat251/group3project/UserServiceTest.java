@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserServiceTest {
 	private UserService userService;
 
 	private User userSample;
-	
+
 	@MockBean
 	private FBInitialize fb;
 
@@ -43,24 +44,29 @@ public class UserServiceTest {
 		userService = new UserService(userRepository);
 	}
 
+	@AfterEach
+	void delUser() {
+		userRepository.delete(userSample);
+	}
+
 	@Test
 	void getAllUsersShouldRetrunAllUsers() {
 		List<User> userList = userService.findAll();
-		User lastUser = userList.get(0);
+		User lastUser = userList.get(userList.size() - 1);
 
 		assertEquals(userSample.getFname(), lastUser.getFname());
 		assertEquals(userSample.getLname(), lastUser.getLname());
 		assertEquals(userSample.getUID(), lastUser.getUID());
 	}
-	
+
 	@Test
 	void getUserByIdShouldReturnUser() {
 		User lastUser = userService.findById(userSample.getUID());
 		User noUser = userService.findById("");
-		
+
 		assertEquals(userSample, lastUser);
 		assertEquals(null, noUser);
-		
+
 	}
 
 	@Test
@@ -73,6 +79,7 @@ public class UserServiceTest {
 		userService.setAge(userSample, 19);
 		userService.setGender(userSample, User.Gender.FEMALE);
 		userService.setAddress(userSample, addr);
+		userService.setEmail(userSample, "dat@251.no");
 		userService.save(userSample);
 
 		User lastUser = userService.findById(userSample.getUID());
@@ -82,19 +89,20 @@ public class UserServiceTest {
 		assertEquals(userSample.getAge(), lastUser.getAge());
 		assertEquals(userSample.getGender(), lastUser.getGender());
 		assertEquals(userSample.getAddress().getAID(), lastUser.getAddress().getAID());
+		assertEquals(userSample.getEmail(), lastUser.getEmail());
 	}
-	
+
 	@Test
 	void updatingPreferencesShouldReturnUpdatedPreferences() {
 		List<String> pref = new ArrayList<>();
 		pref.add("SKIING");
 		pref.add("TENT");
-		
+
 		userService.setPreferences(userSample, pref);
 		userService.save(userSample);
-		
+
 		List<Preferences> userPref = userService.findById("3").getPreferences();
-		
+
 		assertEquals(pref.get(1), userPref.get(1).toString());
 	}
 
