@@ -2,6 +2,7 @@ package hvl.no.dat251.group3project;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.entity.User.Preferences;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repository.IAddressRepository;
 import hvl.no.dat251.group3project.repository.IUserRepository;
@@ -51,22 +53,15 @@ public class UserServiceTest {
 		assertEquals(userSample.getUID(), lastUser.getUID());
 	}
 	
-//	@Test
-//	void getUserByIdShouldReturnUser() {
-//		User lastUser = userService.findById(userSample.getUID());
-//		
-//		assertEquals(userSample.getEmail(), lastUser.getEmail());
-//	}
-
-//	@Test
-//	void getUserByEmailShouldRetrunUser() {
-//		User lastUser = userService.findByEmail(userSample.getEmail());
-//
-//		assertEquals(userSample.getFname(), lastUser.getFname());
-//		assertEquals(userSample.getLname(), lastUser.getLname());
-//		assertEquals(userSample.getEmail(), lastUser.getEmail());
-//		assertEquals(userSample.getUID(), lastUser.getUID());
-//	}
+	@Test
+	void getUserByIdShouldReturnUser() {
+		User lastUser = userService.findById(userSample.getUID());
+		User noUser = userService.findById("");
+		
+		assertEquals(userSample, lastUser);
+		assertEquals(null, noUser);
+		
+	}
 
 	@Test
 	void changingUserAttributesShouldChangeAttributes() {
@@ -78,14 +73,29 @@ public class UserServiceTest {
 		userService.setAge(userSample, 19);
 		userService.setGender(userSample, User.Gender.FEMALE);
 		userService.setAddress(userSample, addr);
+		userService.save(userSample);
 
-//		User lastUser = userService.findById(userSample.getUID());
-//
-//		assertEquals(userSample.getFname(), lastUser.getFname());
-//		assertEquals(userSample.getLname(), lastUser.getLname());
-//		assertEquals(userSample.getAge(), lastUser.getAge());
-//		assertEquals(userSample.getGender(), lastUser.getGender());
-//		assertEquals(userSample.getAddress().getAID(), lastUser.getAddress().getAID());
+		User lastUser = userService.findById(userSample.getUID());
+
+		assertEquals(userSample.getFname(), lastUser.getFname());
+		assertEquals(userSample.getLname(), lastUser.getLname());
+		assertEquals(userSample.getAge(), lastUser.getAge());
+		assertEquals(userSample.getGender(), lastUser.getGender());
+		assertEquals(userSample.getAddress().getAID(), lastUser.getAddress().getAID());
+	}
+	
+	@Test
+	void updatingPreferencesShouldReturnUpdatedPreferences() {
+		List<String> pref = new ArrayList<>();
+		pref.add("SKIING");
+		pref.add("TENT");
+		
+		userService.setPreferences(userSample, pref);
+		userService.save(userSample);
+		
+		List<Preferences> userPref = userService.findById("3").getPreferences();
+		
+		assertEquals(pref.get(1), userPref.get(1).toString());
 	}
 
 }

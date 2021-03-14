@@ -2,17 +2,12 @@ package hvl.no.dat251.group3project.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
 
 import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.Address;
@@ -43,25 +38,10 @@ public class UserService {
 	}
 
 	public boolean findByIdIsPresent(String uid) {
-		DocumentReference dr = fb.getFirebase().collection("Users").document(String.valueOf(uid));
-		try {
-			DocumentSnapshot ds = dr.get().get();
-			return ds.exists();
-				
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+		return userRepository.existsById(uid);
 	}
 
 	public User save(User user) {
-		CollectionReference userCR = fb.getFirebase().collection("Users");
-		userCR.document(String.valueOf((user.getUID()))).set(user);
-
 		userRepository.save(user);
 		return user;
 	}
@@ -91,32 +71,10 @@ public class UserService {
 	}
 
 	public User findById(String uid) {
-		DocumentReference dr = fb.getFirebase().collection("Users").document(String.valueOf(uid));
-		User user = new User();
-		try {
-			DocumentSnapshot ds = dr.get().get();
-			Long age = (Long) ds.get("age");
-			String fname = (String) ds.get("fname");
-			String lname = (String) ds.get("lname");
-			String gender = (String) ds.get("gender");
-			String email = (String) ds.get("email");
-			List<String> preferences = (List<String>) ds.get("preferences");
-			user.setUID(uid);
-			user.setFname(fname);
-			user.setLname(lname);
-			user.setEmail(email);
-			user.setAge(age.intValue());
-			user.setPreferences(preferences);
-			if (gender != null)
-				user.setGender(User.Gender.valueOf(gender.toUpperCase()));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (findByIdIsPresent(uid)) {
+			return userRepository.findById(uid).get();
 		}
-		return user;
+		return null;
 	}
 
 	public String getUserName(OAuth2AuthenticationToken authentication) {
