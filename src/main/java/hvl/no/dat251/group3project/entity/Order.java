@@ -4,6 +4,7 @@ import lombok.Data;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -16,29 +17,28 @@ public class Order {
     private long oID;
     @ManyToMany
     private List<Item> items = new ArrayList<>();
-    private Date date;
-    private double price;
+    private LocalDateTime date;
     private double insurance;
-    private Date dateFrom;
-    private Date dateTo;
+    private LocalDateTime dateFrom;
+    private LocalDateTime dateTo;
 
     public Order() {
     }
 
-    public Order(long oID, List<Item> items, Date date, double price, double insurance, Date dateFrom, Date dateTo) {
+    public Order(long oID, List<Item> items, LocalDateTime date, double insurance,
+                 LocalDateTime dateFrom, LocalDateTime dateTo) {
         this.oID = oID;
         this.items = items;
         this.date = date;
-        this.price = price;
         this.insurance = insurance;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
 
-    public Order(List<Item> items, Date date, double price, double insurance, Date dateFrom, Date dateTo) {
+    public Order(List<Item> items, LocalDateTime date, double insurance,
+                 LocalDateTime dateFrom, LocalDateTime dateTo) {
         this.items = items;
         this.date = date;
-        this.price = price;
         this.insurance = insurance;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;

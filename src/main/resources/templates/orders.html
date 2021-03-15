@@ -8,31 +8,22 @@
 <body>
 
 <div id="myOrders" class="block">
-    <div id="search" class="block">
-        <form th:action="@{/orders}">
-            <h3>Search Orders:</h3>
-            Search:<input type="text" name="name"><br><br>
-            <input type="submit" name="submit" value="Search">
-        </form><br>
-
+       <br>
         <h3>All orders:</h3>
         <table>
             <tr>
                 <th>Id</th>
                 <th>Item</th>
-                <th>Price</th>
                 <th>From date</th>
                 <th>To date</th>
             </tr>
             <tr th:each="order : ${orders}">
                 <td th:text="${order.oID}"></td>
                 <td th:text="${order.items}"></td>
-                <td th:text="${order.price}"></td>
                 <td th:text="${order.dateFrom}"></td>
                 <td th:text="${order.dateTo}"></td>
             </tr>
         </table><br>
-    </div>
     <div class=message>
         <p><span class=message th:text="${message}"></span></p>
     </div>
