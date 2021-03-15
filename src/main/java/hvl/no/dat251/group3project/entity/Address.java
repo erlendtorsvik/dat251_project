@@ -18,7 +18,7 @@ public class Address {
 
 	@Id
 	@GeneratedValue
-	private Long aID;
+	private Long aid;
 	private String streetName;
 	private String country;
 	private int postalCode;
@@ -31,7 +31,7 @@ public class Address {
 
 	public Address(Long aID, String streetName, String country, int postalCode, String houseNumber, String county,
 			String municipality) {
-		this.aID = aID;
+		this.aid = aID;
 		this.streetName = streetName;
 		this.country = country;
 		this.postalCode = postalCode;
@@ -51,5 +51,11 @@ public class Address {
 	}
 
 	public Address() {
+		streetName = "";
+		country = "";
+		postalCode = 0;
+		houseNumber = "";
+		county = "";
+		municipality = "";
 	}
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.service.AddressService;
 import hvl.no.dat251.group3project.service.UserService;
 
 @Controller
@@ -23,6 +25,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AddressService addresService;
 
 	@Autowired
 	private OAuth2AuthorizedClientService authorizedClientService;
@@ -62,7 +67,9 @@ public class UserController {
 
 	@PostMapping("/user/{uID}")
 	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
-			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences, Model model, OAuth2AuthenticationToken authentication) {
+			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences, @RequestParam String streetName,
+			@RequestParam String municipality, @RequestParam String county, @RequestParam String houseNumber, @RequestParam int postalCode,
+			@RequestParam String country, Model model, OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUserName(authentication));
 		User user = userService.findById(uID);
 		
@@ -77,6 +84,21 @@ public class UserController {
 		}
 		if(!preferences.isEmpty())
 			userService.setPreferences(user, preferences);
+		Address addr = new Address();
+		if (!streetName.isBlank())
+			addresService.setStreetName(addr,streetName);
+		if (!municipality.isBlank())
+			addresService.setMunicipality(addr,municipality);
+		if (!county.isBlank())
+			addresService.setCounty(addr,county);
+		if (!houseNumber.isBlank())
+			addresService.setHouseNumber(addr,houseNumber);
+		if (!country.isBlank())
+			addresService.setCountry(addr,country);
+		
+		addresService.setPostalCode(addr,postalCode);
+		userService.setAddress(user, addr);
+		
 		userService.save(user);
 		model.addAttribute("user", user);
 		model.addAttribute("message", "Succesfully updated user");

@@ -44,7 +44,7 @@ class AddressServiceTest {
 		List<Address> addressList = addressService.findAll();
 		Address firstAddress = addressList.get(0);
 
-		assertEquals(addressSample.getAID(), firstAddress.getAID());
+		assertEquals(addressSample.getAid(), firstAddress.getAid());
 		assertEquals(addressSample.getStreetName(), firstAddress.getStreetName());
 		assertEquals(addressSample.getCountry(), firstAddress.getCountry());
 		assertEquals(addressSample.getPostalCode(), firstAddress.getPostalCode());
@@ -55,10 +55,10 @@ class AddressServiceTest {
 
 	@Test
 	void getAddressByIdShouldReturnAddressIfExists() {
-		Address lastAddr = addressService.findById(addressSample.getAID());
+		Address lastAddr = addressService.findById(addressSample.getAid());
 		Address noAddr = addressService.findById(-1L);
 
-		assertEquals(addressSample.getAID(), lastAddr.getAID());
+		assertEquals(addressSample.getAid(), lastAddr.getAid());
 		assertEquals(null, noAddr);
 	}
 
@@ -72,9 +72,9 @@ class AddressServiceTest {
 		addressService.setStreetName(addressSample, "alegaten");
 		addressService.save(addressSample);
 
-		Address lastAddress = addressService.findById(addressSample.getAID());
+		Address lastAddress = addressService.findById(addressSample.getAid());
 
-		assertEquals(addressSample.getAID(), lastAddress.getAID());
+		assertEquals(addressSample.getAid(), lastAddress.getAid());
 		assertEquals(addressSample.getStreetName(), lastAddress.getStreetName());
 		assertEquals(addressSample.getCountry(), lastAddress.getCountry());
 		assertEquals(addressSample.getPostalCode(), lastAddress.getPostalCode());
@@ -96,7 +96,7 @@ class AddressServiceTest {
 		addressService.addUser(addressSample, user);
 		addressService.save(addressSample);
 
-		Address lastAddress = addressService.findById(addressSample.getAID());
+		Address lastAddress = addressService.findById(addressSample.getAid());
 
 		assertEquals(1, lastAddress.getUsers().size());
 	}

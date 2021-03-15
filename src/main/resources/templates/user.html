@@ -22,23 +22,18 @@
                 <th>Age</th>
                 <th>Address</th>
                 <th>Gender</th>
+                <th>Preferences</th>
             </tr>
             <tr>
                 <td th:text="${user.fname}"></td>
                 <td th:text="${user.lname}"></td>
                 <td th:text="${user.age}"></td>
-                <td th:text="${user.address}"></td>
+                <td th:text="${user.address.streetName}+', '+${user.address.houseNumber}+', '+${user.address.county}+', '+${user.address.postalCode}+', '+${user.address.municipality}+', '+${user.address.country}"></td>
                 <td th:text="${user.gender}"></td>
+                <td th:text="${user.preferences}"></td>
             </tr>
         </table>
-        <table>
-            <tr>
-                <th>Preferences</th>
-            </tr>
-            <tr th:each="pref: ${user.preferences}" >
-                <td th:text="${pref.preference}"></td>
-            </tr>
-        </table><br>
+        
         <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post">
             <h3>Update User:</h3>
             First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
@@ -56,6 +51,12 @@
         	th:value="${prefOpt}" th:text="${prefOpt.getPreference()}" th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
         	th:style="${iStat.last}? 'visibility:hidden;'">
 			</label><br>
+			Street name:<input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
+			Municipality:<input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
+			County:<input type="text" th:value="${user.address.county}" name="county"><br><br>
+			House number:<input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
+			Postal code:<input type="number" th:value="${user.address.postalCode}" name="postalCode" min="0"><br><br>
+			Country:<input type="text" th:value="${user.address.country}" name="country"><br><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>

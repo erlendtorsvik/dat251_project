@@ -1,5 +1,6 @@
 package hvl.no.dat251.group3project.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -28,6 +29,9 @@ public class UserService {
 
 	@Autowired
 	private FBInitialize fb;
+	
+	@Autowired
+	private AddressService addressService;
 
 	@Autowired
 	private OAuth2AuthorizedClientService authorizedClientService;
@@ -61,7 +65,12 @@ public class UserService {
 			try {
 				DocumentSnapshot ds = userCR.document(String.valueOf(uID)).get().get();
 				tempUser.setUID(uID);
-				setAddress(tempUser, (Address) ds.get("address"));
+				HashMap addr = (HashMap) ds.get("address");
+				Address savedAddress =new Address((String)addr.get("streetName"),(String)addr.get("country"),
+						((Long)addr.get("postalCode")).intValue(),(String)addr.get("houseNumber"),
+						(String)addr.get("county"),(String)addr.get("municipality"));
+				setAddress(tempUser,savedAddress);
+				addressService.save(savedAddress);
 				setAge(tempUser, (ds.getLong("age")).intValue());
 				setFname(tempUser, ds.getString("fname"));
 				setLname(tempUser, ds.getString("lname"));
@@ -74,7 +83,6 @@ public class UserService {
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 

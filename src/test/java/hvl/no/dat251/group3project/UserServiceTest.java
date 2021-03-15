@@ -88,7 +88,7 @@ public class UserServiceTest {
 		assertEquals(userSample.getLname(), lastUser.getLname());
 		assertEquals(userSample.getAge(), lastUser.getAge());
 		assertEquals(userSample.getGender(), lastUser.getGender());
-		assertEquals(userSample.getAddress().getAID(), lastUser.getAddress().getAID());
+		assertEquals(userSample.getAddress().getAid(), lastUser.getAddress().getAid());
 		assertEquals(userSample.getEmail(), lastUser.getEmail());
 	}
 
