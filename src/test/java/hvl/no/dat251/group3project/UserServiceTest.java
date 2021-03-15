@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +41,6 @@ public class UserServiceTest {
 		userSample = new User("3", "User", " Sample", "dat251@hvl.no");
 		userRepository.save(userSample);
 		userService = new UserService(userRepository);
-	}
-
-	@AfterEach
-	void delUser() {
-		userService.delete(userSample);
 	}
 
 	@Test

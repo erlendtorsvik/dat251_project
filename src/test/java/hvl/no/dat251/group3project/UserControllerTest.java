@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import hvl.no.dat251.group3project.controller.UserController;
 import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.service.AddressService;
 import hvl.no.dat251.group3project.service.ItemService;
 import hvl.no.dat251.group3project.service.UserService;
 
@@ -34,6 +35,9 @@ class UserControllerTest {
 
 	@MockBean
 	private UserService userService;
+	
+	@MockBean
+	private AddressService addressService;
 
 	@MockBean
 	private ItemService itemService;
