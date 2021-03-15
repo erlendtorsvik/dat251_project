@@ -3,6 +3,7 @@ package hvl.no.dat251.group3project.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +27,7 @@ public class User {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<Preferences> preferences = new ArrayList<>();
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Address address;
 
 	public enum Gender {
@@ -63,7 +64,7 @@ public class User {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
-		this.gender= Gender.UNSPECIFIED;
+		this.gender = Gender.UNSPECIFIED;
 	}
 
 	public User() {

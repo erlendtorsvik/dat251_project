@@ -3,7 +3,9 @@ package hvl.no.dat251.group3project.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -24,7 +26,7 @@ public class Address {
 	private String county;
 	private String municipality;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	List<User> users = new ArrayList<User>();
 
 	public Address(Long aID, String streetName, String country, int postalCode, String houseNumber, String county,
@@ -49,10 +51,5 @@ public class Address {
 	}
 
 	public Address() {
-	}
-
-	public void setUser(User user) {
-		users.add(user);
-
 	}
 }

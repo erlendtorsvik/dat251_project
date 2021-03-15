@@ -46,7 +46,7 @@ public class UserServiceTest {
 
 	@AfterEach
 	void delUser() {
-		userRepository.delete(userSample);
+		userService.delete(userSample);
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	void getUserByIdShouldReturnUser() {
+	void getUserByIdShouldReturnUserIfExists() {
 		User lastUser = userService.findById(userSample.getUID());
 		User noUser = userService.findById("");
 

@@ -80,8 +80,8 @@ public class UserService {
 		return user;
 	}
 
-	public void setEmail(User user, String string) {
-		user.setEmail(string);
+	public void setEmail(User user, String email) {
+		user.setEmail(email);
 	}
 
 	public void setFname(User user, String fname) {
@@ -124,6 +124,10 @@ public class UserService {
 		}
 		User user = userOpt.get();
 		return user.getFname() + " " + user.getLname();
+	}
+
+	public void delete(User userSample) {
+		userRepository.delete(userSample);
 	}
 
 }
