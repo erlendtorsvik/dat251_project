@@ -48,8 +48,12 @@ public class UserController {
 			client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
 					authentication.getName());
 		User newUser = main.saveUser(client);
-		if (!userService.findByIdIsPresent(newUser.getUID()))
+		if (!userService.findByIdIsPresent(newUser.getUID())) {
+			Address addr = new Address();
+			userService.setAddress(newUser, addr);
+			addresService.save(addr);
 			userService.save(newUser);
+		}
 		model.addAttribute("name", newUser.getFname() + " " + newUser.getLname());
 		return "welcome";
 	}
