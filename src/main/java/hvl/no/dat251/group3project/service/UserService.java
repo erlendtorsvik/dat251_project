@@ -42,6 +42,17 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
+	public boolean findByIdIsPresent(String uid) {
+		return userRepository.existsById(uid);
+	}
+
+	public User findById(String uid) {
+		if (findByIdIsPresent(uid)) {
+			return userRepository.findById(uid).get();
+		}
+		return null;
+	}
+
 	public void gettAllFromFb() {
 		CollectionReference userCR = fb.getFirebase().collection("Users");
 		User tempUser = new User();
@@ -67,10 +78,6 @@ public class UserService {
 		}
 	}
 
-	public boolean findByIdIsPresent(String uid) {
-		return userRepository.existsById(uid);
-	}
-
 	public User save(User user) {
 		userRepository.save(user);
 		if (fb != null) {
@@ -78,6 +85,10 @@ public class UserService {
 			userCR.document(String.valueOf((user.getUID()))).set(user);
 		}
 		return user;
+	}
+
+	public void delete(User userSample) {
+		userRepository.delete(userSample);
 	}
 
 	public void setEmail(User user, String email) {
@@ -108,13 +119,6 @@ public class UserService {
 		user.setPreferences(preferences);
 	}
 
-	public User findById(String uid) {
-		if (findByIdIsPresent(uid)) {
-			return userRepository.findById(uid).get();
-		}
-		return null;
-	}
-
 	public String getUserName(OAuth2AuthenticationToken authentication) {
 		OAuth2AuthorizedClient client = authorizedClientService
 				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
@@ -124,10 +128,6 @@ public class UserService {
 		}
 		User user = userOpt.get();
 		return user.getFname() + " " + user.getLname();
-	}
-
-	public void delete(User userSample) {
-		userRepository.delete(userSample);
 	}
 
 }

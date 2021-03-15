@@ -34,6 +34,10 @@ public class AddressService {
 		return null;
 	}
 
+	public void save(Address addressSample) {
+		addressRepository.save(addressSample);
+	}
+
 	public void setStreetName(Address addressSample, String streetName) {
 		addressSample.setStreetName(streetName);
 	}
@@ -56,10 +60,6 @@ public class AddressService {
 
 	public void setMunicipality(Address addressSample, String municipality) {
 		addressSample.setMunicipality(municipality);
-	}
-
-	public void save(Address addressSample) {
-		addressRepository.save(addressSample);
 	}
 
 	public void addUser(Address addressSample, User user) {
