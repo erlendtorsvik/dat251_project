@@ -3,6 +3,7 @@ package hvl.no.dat251.group3project.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import lombok.Data;
 
@@ -21,7 +22,7 @@ public class Item {
 	public Item() {
 	}
 
-	public Item(Long iID, String name, String description, Double price, boolean available) {
+	public Item(Long iID, String name, String description, double price, boolean available) {
 		this.iID = iID;
 		this.name = name;
 		this.description = description;

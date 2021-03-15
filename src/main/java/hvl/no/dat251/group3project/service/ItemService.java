@@ -12,7 +12,7 @@ import hvl.no.dat251.group3project.repository.IItemRepository;
 @Service
 public class ItemService {
 
-    IItemRepository itemRepository;
+    private IItemRepository itemRepository;
 
 	@Autowired
 	private FBInitialize fb;
