@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.Order;
+import hvl.no.dat251.group3project.service.AddressService;
 import hvl.no.dat251.group3project.service.ItemService;
 import hvl.no.dat251.group3project.service.OrderService;
 import hvl.no.dat251.group3project.service.UserService;
@@ -42,6 +43,9 @@ public class OrderControllerTest {
 
     @MockBean
     private ItemService itemService;
+
+    @MockBean
+    private AddressService addressService;
 
     @Test
     @WithMockUser("test")
