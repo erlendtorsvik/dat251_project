@@ -7,11 +7,21 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 
-<body>
-    <div class="block">
-        <h3>Login with:</h3>
-        <span th:each="url : ${urls}">
+<body class="login-body">
+    <h3 class="login-h3">Login with:</h3>
+    <hr><br>
+    <!-- <span th:each="url : ${urls}">
             <button th:text="${url.key}" th:onClick="'window.location.href= \''+ @{{url}(url=${url.value})}+'\''"></button>
+        </span> -->
+    <div class="btn-container">
+        <span th:each="url : ${urls}">
+            <div class="btn-gplus">
+                <a th:if="${url.key == 'Google'}" th:text="${url.key}" th:href="@{{url}(url=${url.value})}"></a>
+            </div>
+            <div class="btn-fb">
+                <a th:if="${url.key == 'Facebook'}" th:text="${url.key}" th:href="@{{url}(url=${url.value})}"></a>
+                <br>
+            </div>
         </span>
     </div>
 </body>

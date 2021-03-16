@@ -25,7 +25,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AddressService addresService;
 
@@ -55,7 +55,7 @@ public class UserController {
 			userService.save(newUser);
 		}
 		model.addAttribute("name", newUser.getFname() + " " + newUser.getLname());
-		return "welcome";
+		return "index";
 	}
 
 	@GetMapping("/user")
@@ -71,12 +71,13 @@ public class UserController {
 
 	@PostMapping("/user/{uID}")
 	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
-			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences, @RequestParam String streetName,
-			@RequestParam String municipality, @RequestParam String county, @RequestParam String houseNumber, @RequestParam int postalCode,
-			@RequestParam String country, Model model, OAuth2AuthenticationToken authentication) {
+			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences,
+			@RequestParam String streetName, @RequestParam String municipality, @RequestParam String county,
+			@RequestParam String houseNumber, @RequestParam int postalCode, @RequestParam String country, Model model,
+			OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUserName(authentication));
 		User user = userService.findById(uID);
-		
+
 		if (!fname.isBlank())
 			userService.setFname(user, fname);
 		if (!lname.isBlank())
@@ -86,23 +87,23 @@ public class UserController {
 		if (!gender.isBlank()) {
 			userService.setGender(user, User.Gender.valueOf(gender.toUpperCase()));
 		}
-		if(!preferences.isEmpty())
+		if (!preferences.isEmpty())
 			userService.setPreferences(user, preferences);
 		Address addr = new Address();
 		if (!streetName.isBlank())
-			addresService.setStreetName(addr,streetName);
+			addresService.setStreetName(addr, streetName);
 		if (!municipality.isBlank())
-			addresService.setMunicipality(addr,municipality);
+			addresService.setMunicipality(addr, municipality);
 		if (!county.isBlank())
-			addresService.setCounty(addr,county);
+			addresService.setCounty(addr, county);
 		if (!houseNumber.isBlank())
-			addresService.setHouseNumber(addr,houseNumber);
+			addresService.setHouseNumber(addr, houseNumber);
 		if (!country.isBlank())
-			addresService.setCountry(addr,country);
-		
-		addresService.setPostalCode(addr,postalCode);
+			addresService.setCountry(addr, country);
+
+		addresService.setPostalCode(addr, postalCode);
 		userService.setAddress(user, addr);
-		
+
 		userService.save(user);
 		model.addAttribute("user", user);
 		model.addAttribute("message", "Succesfully updated user");
