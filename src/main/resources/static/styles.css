@@ -116,6 +116,15 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
 .login-body {
     margin: 0 auto;
     max-width: 30em;
+    background-color: #2C2F33;
+    color: #FFFFFF;
+}
+
+.index-body {
+    margin: 0 auto;
+    max-width: 100%;
+    background-color: #2C2F33;
+    color: #FFFFFF;
 }
 
 .btn-container {
@@ -138,7 +147,8 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     display: inline-block;
     position: relative;
 }  
-  .btn-fb a {
+
+.btn-fb a {
     width: 250px;
     height: 50px;
     line-height: 50px;
@@ -152,9 +162,9 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     position: relative;
     padding: 7px 23px 7px 23px;
     background: #3B5999 url('https://3.bp.blogspot.com/-yqD2363XuAo/UeDk98twSlI/AAAAAAAAArg/kXIzFBWmczM/s1600/fb14.png') no-repeat 10px center;
-  }
+}
   
-  .btn-gplus a {
+.btn-gplus a {
     width: 250px;
     height: 50px;
     line-height: 50px;
@@ -168,11 +178,84 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     position: relative;
     padding: 7px 23px 7px 23px;
     background: #D54135 url('https://3.bp.blogspot.com/-A8fFRexz_zk/UeDlgadvpiI/AAAAAAAAArw/TRd7NWNwo9s/s1600/gplus14.png') no-repeat 10px center;
-  }
+}
   
-  .btn-fb a:hover {
+.btn-fb a:hover {
     background-color: rgb(50, 75, 129);
-  }
-  .btn-gplus a:hover {
+}
+
+.btn-gplus a:hover {
     background-color: rgb(191, 52, 40);
-  }
+}
+
+.index-header {
+    position: relative;
+}
+
+.index-header span {
+    float: left;
+    margin-top: 2em;
+    margin-left: 1.5em;
+    font-size: 2em;
+}
+
+.index-header-buttons{
+    float: right;
+    margin-top: 2em;
+    margin-right: 1.5em;
+    font-size: 2em;
+}
+
+.index-header-buttons input[type=button] {
+    border: none;
+    color: white;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #000000;
+    padding: 0.3em 1em 0.3em 1em;
+    margin-left: 0.4em;
+    font-size: 100%;
+}
+
+.index-header-buttons input[type=button]:hover {
+    background-color: #23272A;
+}
+
+.banner-image {
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    position: absolute;
+}
+
+.banner-image img {
+    display: block;
+    width: 100%;
+    margin: 0% 0% -20% 0%;
+}
+
+.index-box {
+    max-width: 90em;
+    display: block;
+    margin: auto;
+    position: relative;
+}
+
+.index-box span {
+    display: block;
+    margin: 25em auto auto auto;
+    background-color: #99AAB5;
+    position: absolute;
+    padding: 9% 0;
+    border-radius: 0.5em;
+    width: 90em;
+    text-align: center;
+}
+
+.index-box span hr{
+    max-width: 30em;
+}
+
+.index-box span h1, p{
+    font-size: 2em;
+}
