@@ -117,7 +117,7 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     color: #FFFFFF;
 }
 
-.login-body hr {
+.login-container hr {
     max-width: 15em;
 }
 
