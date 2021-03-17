@@ -8,17 +8,23 @@
 </head>
 
 <body class="login-body">
-    <h3 class="login-h3">Login with:</h3>
-    <hr><br>
-    <div class="btn-container">
-        <span th:each="url : ${urls}">
+    <div class="index-header-image">
+        <div class="index-header-text">
+            Group3 DAT251 | Utleie av Friluftsutstyr
+            <hr>
+        </div>
+    </div>
+    <div class="login-container">
+        <div class="login-text">Login with:</div>
+        <hr>
+        <br>
+        <div class="btn-container">
             <div class="btn-gplus">
-                <a th:if="${url.key == 'Google'}" th:text="${url.key}" th:href="@{{url}(url=${url.value})}"></a>
+                <a th:href="${urls.get('Google')}">Google</a>
             </div>
             <div class="btn-fb">
-                <a th:if="${url.key == 'Facebook'}" th:text="${url.key}" th:href="@{{url}(url=${url.value})}"></a>
-                <br>
+                <a th:href="${urls.get('Facebook')}">Facebook</a>
             </div>
-        </span>
+        </div>
     </div>
 </body>

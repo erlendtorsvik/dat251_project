@@ -106,62 +106,30 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     text-align: center;
 }
 
-.login-h3 {
+.login-text {
     margin-top: 2.5em;
-    font-size: 2em;
-    font-weight: normal;
-    text-align: center;
 }
 
 .login-body {
-    margin: 0 auto;
-    max-width: 30em;
-    background-color: #2C2F33;
-    color: #FFFFFF;
-}
-
-.index-body {
     margin: 0 auto;
     max-width: 100%;
     background-color: #2C2F33;
     color: #FFFFFF;
 }
 
+.login-body hr {
+    max-width: 15em;
+}
+
+.login-container {
+    font-size: 2em;
+    text-align: center;
+}
+
 .btn-container {
     position: absolute;
     left: 50%;
-    margin: 0 0 100px -150px;
-}
-
-.btn {
-    width: 300px;
-    height: 90px;
-    line-height: 90px;
-    background-color: #008CBA;
-    border-radius: 8px;
-    color: white;
-    font-size: 2em;
-    font-weight: normal;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    position: relative;
-}  
-
-.btn-fb a {
-    width: 250px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 8px;
-    color: white;
-    font-size: 2em;
-    font-weight: normal;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    position: relative;
-    padding: 7px 23px 7px 23px;
-    background: #3B5999 url('https://3.bp.blogspot.com/-yqD2363XuAo/UeDk98twSlI/AAAAAAAAArg/kXIzFBWmczM/s1600/fb14.png') no-repeat 10px center;
+    margin: 0 0 0 -148px;
 }
   
 .btn-gplus a {
@@ -170,14 +138,30 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     line-height: 50px;
     border-radius: 8px;
     color: white;
-    font-size: 2em;
     font-weight: normal;
     text-decoration: none;
     text-align: center;
     display: inline-block;
     position: relative;
     padding: 7px 23px 7px 23px;
+    margin-bottom: 0.5em;
     background: #D54135 url('https://3.bp.blogspot.com/-A8fFRexz_zk/UeDlgadvpiI/AAAAAAAAArw/TRd7NWNwo9s/s1600/gplus14.png') no-repeat 10px center;
+}
+
+.btn-fb a {
+    width: 250px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 8px;
+    color: white;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    padding: 7px 23px 7px 23px;
+    margin-bottom: 0.5em;
+    background: #3B5999 url('https://3.bp.blogspot.com/-yqD2363XuAo/UeDk98twSlI/AAAAAAAAArg/kXIzFBWmczM/s1600/fb14.png') no-repeat 10px center;
 }
   
 .btn-fb a:hover {
@@ -188,21 +172,29 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     background-color: rgb(191, 52, 40);
 }
 
-.index-header {
-    position: relative;
+.index-header-image {
+    background-image: url(images/nature-banner-2.jpg);
+    display: flex;
+    justify-content: space-between;
+    height: 120px;
 }
 
-.index-header span {
-    float: left;
-    margin-top: 2em;
-    margin-left: 1.5em;
+.index-body {
+    margin: 0 auto;
+    max-width: 100%;
+    background-color: #2C2F33;
+    color: #FFFFFF;
+}
+
+.index-header-text {
+    margin-top: 1em;
+    margin-left: 1em;
     font-size: 2em;
 }
 
 .index-header-buttons{
-    float: right;
-    margin-top: 2em;
-    margin-right: 1.5em;
+    margin-top: 1em;
+    margin-right: 1em;
     font-size: 2em;
 }
 
@@ -214,48 +206,32 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     background-color: #000000;
     padding: 0.3em 1em 0.3em 1em;
     margin-left: 0.4em;
-    font-size: 100%;
+    font-size: inherit;
 }
 
 .index-header-buttons input[type=button]:hover {
     background-color: #23272A;
 }
 
-.banner-image {
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-    position: absolute;
-}
-
-.banner-image img {
-    display: block;
-    width: 100%;
-    margin: 0% 0% -20% 0%;
-}
-
 .index-box {
-    max-width: 90em;
-    display: block;
-    margin: auto;
-    position: relative;
-}
-
-.index-box span {
-    display: block;
-    margin: 25em auto auto auto;
-    background-color: #99AAB5;
-    position: absolute;
-    padding: 9% 0;
-    border-radius: 0.5em;
-    width: 90em;
     text-align: center;
+    margin: 4em auto;
 }
 
-.index-box span hr{
+.index-box hr {
     max-width: 30em;
 }
 
-.index-box span h1, p{
+.map-body {
+    margin: 0 auto;
+    max-width: 100%;
+    background-color: #2C2F33;
+    color: #FFFFFF;
+}
+
+#map {
+    height: 80%;
+    width: 80%;
     font-size: 2em;
+    margin: 1em auto;
 }
