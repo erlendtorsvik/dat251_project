@@ -2,6 +2,7 @@ package hvl.no.dat251.group3project.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +33,25 @@ public class ItemService {
 		Item tempItem = new Item();
 		for (DocumentReference doc : itemCR.listDocuments()) {
 			Long iID = Long.parseLong(doc.getId());
-			try {
-				DocumentSnapshot ds = itemCR.document(String.valueOf(iID)).get().get();
-				tempItem.setIID(iID);
-				setName(tempItem, ds.getString("name"));
-				setDescription(tempItem, ds.getString("description"));
-				setPrice(tempItem, ds.getDouble("price"));
-				setAvailable(tempItem, ds.getBoolean("available"));
+			if (!findByIdIsPresent(iID)) {
+				try {
+					DocumentSnapshot ds = itemCR.document(String.valueOf(iID)).get().get();
+					setIID(tempItem, iID);
+					setName(tempItem, ds.getString("name"));
+					setDescription(tempItem, ds.getString("description"));
+					setPrice(tempItem, ds.getDouble("price"));
+					setAvailable(tempItem, ds.getBoolean("available"));
 
-				HashMap owner = (HashMap) ds.get("owner");
-				User savedOwner =new User((String)owner.get("uid"),(String)owner.get("fname"),
-						(String)owner.get("lname"),(String)owner.get("email"));
-				if(!userService.findByIdIsPresent(savedOwner.getUID()))
-					userService.save(savedOwner);
-				setOwner(tempItem, savedOwner);
-				save(tempItem);
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+					HashMap owner = (HashMap) ds.get("owner");
+					User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),
+							(String) owner.get("lname"), (String) owner.get("email"));
+					if (!userService.findByIdIsPresent(savedOwner.getUID()))
+						userService.save(savedOwner);
+					setOwner(tempItem, savedOwner);
+					save(tempItem);
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -83,7 +86,6 @@ public class ItemService {
 
 	public List<Item> getItemsByUser(User user) {
 		return itemRepository.findByOwner(user);
-
 	}
 
 	public void setOwner(Item newItem, User user) {
@@ -91,6 +93,17 @@ public class ItemService {
 	}
 
 	public Item save(Item newItem) {
+		if (newItem.getIID() == null) {
+			boolean generated = false;
+			while (!generated) {
+				Random rand = new Random();
+				Long tempID = rand.nextLong();
+				if (!findByIdIsPresent(tempID)) {
+					generated = true;
+					setIID(newItem, tempID);
+				}
+			}
+		}
 		itemRepository.save(newItem);
 		if (fb != null) {
 			CollectionReference userCR = fb.getFirebase().collection("Items");
@@ -100,7 +113,7 @@ public class ItemService {
 	}
 
 	public Item findById(Long id) {
-		if(findByIdIsPresent(id))
+		if (findByIdIsPresent(id))
 			return itemRepository.findById(id).get();
 		return null;
 	}
@@ -111,5 +124,13 @@ public class ItemService {
 
 	public void deleteById(Long id) {
 		itemRepository.deleteById(id);
+		if (fb != null) {
+			CollectionReference userCR = fb.getFirebase().collection("Items");
+			userCR.document(String.valueOf(id)).delete();
+		}
+	}
+
+	public void setIID(Item item, Long iID) {
+		item.setIID(iID);
 	}
 }

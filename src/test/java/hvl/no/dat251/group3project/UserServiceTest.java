@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,14 @@ public class UserServiceTest {
 
 	@BeforeEach
 	void setup() {
-
 		userSample = new User("3", "User", " Sample", "dat251@hvl.no");
 		userRepository.save(userSample);
 		userService = new UserService(userRepository);
+	}
+	
+	@AfterEach
+	void deleteAll(){
+		userRepository.deleteAll();
 	}
 
 	@Test
@@ -68,22 +73,26 @@ public class UserServiceTest {
 		Address addr = new Address("streetName", "country", 1337, "houseNumber", "county", "municipality");
 		addressRepository.save(addr);
 
+		userService.setUID(userSample,"Fin");
 		userService.setFname(userSample, "User after Edit");
 		userService.setLname(userSample, "Sample after Edit");
 		userService.setAge(userSample, 19);
 		userService.setGender(userSample, User.Gender.FEMALE);
 		userService.setAddress(userSample, addr);
 		userService.setEmail(userSample, "dat@251.no");
+		userService.setContactByEmail(userSample, false);
 		userService.save(userSample);
 
 		User lastUser = userService.findById(userSample.getUID());
 
+		assertEquals(userSample.getUID(), lastUser.getUID());
 		assertEquals(userSample.getFname(), lastUser.getFname());
 		assertEquals(userSample.getLname(), lastUser.getLname());
 		assertEquals(userSample.getAge(), lastUser.getAge());
 		assertEquals(userSample.getGender(), lastUser.getGender());
 		assertEquals(userSample.getAddress().getAid(), lastUser.getAddress().getAid());
 		assertEquals(userSample.getEmail(), lastUser.getEmail());
+		assertEquals(userSample.getContactByEmail(), lastUser.getContactByEmail());
 	}
 
 	@Test
@@ -98,6 +107,12 @@ public class UserServiceTest {
 		List<Preferences> userPref = userService.findById("3").getPreferences();
 
 		assertEquals(pref.get(1), userPref.get(1).toString());
+	}
+	
+	@Test
+	void quickEnumCheck() {
+		assertEquals("female", User.Gender.FEMALE.getGender());
+		assertEquals("Skiing", User.Preferences.SKIING.getPreference());
 	}
 
 }

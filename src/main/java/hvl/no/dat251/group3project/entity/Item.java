@@ -1,7 +1,6 @@
 package hvl.no.dat251.group3project.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -12,7 +11,6 @@ import lombok.Data;
 public class Item {
 
 	@Id
-	@GeneratedValue
 	private Long iID;
 	private String name;
 	private String description;

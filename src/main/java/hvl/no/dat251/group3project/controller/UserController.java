@@ -71,9 +71,10 @@ public class UserController {
 
 	@PostMapping("/user/{uID}")
 	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
-			@RequestParam int age, @RequestParam String gender, @RequestParam List<String> preferences,
-			@RequestParam String streetName, @RequestParam String municipality, @RequestParam String county,
-			@RequestParam String houseNumber, @RequestParam int postalCode, @RequestParam String country, Model model,
+			@RequestParam String email, @RequestParam int age, @RequestParam String gender,
+			@RequestParam List<String> preferences,@RequestParam String streetName, @RequestParam String municipality,
+			@RequestParam String county,@RequestParam String houseNumber, @RequestParam int postalCode,
+			@RequestParam String country, @RequestParam(defaultValue = "false") Boolean contactByEmail, Model model,
 			OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUser(authentication).getFname());
 		User user = userService.findById(uID);
@@ -82,6 +83,8 @@ public class UserController {
 			userService.setFname(user, fname);
 		if (!lname.isBlank())
 			userService.setLname(user, lname);
+		if (!email.isBlank())
+			userService.setEmail(user, email);
 		if (age != user.getAge())
 			userService.setAge(user, age);
 		if (!gender.isBlank()) {
@@ -100,10 +103,14 @@ public class UserController {
 			addresService.setHouseNumber(addr, houseNumber);
 		if (!country.isBlank())
 			addresService.setCountry(addr, country);
-
+		if(contactByEmail)
+			userService.setContactByEmail(user, true);
+		else
+			userService.setContactByEmail(user, false);
+			
 		addresService.setPostalCode(addr, postalCode);
 		userService.setAddress(user, addr);
-
+		
 		userService.save(user);
 		model.addAttribute("user", user);
 		model.addAttribute("message", "Succesfully updated user");

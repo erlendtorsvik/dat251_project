@@ -22,6 +22,7 @@ public class User {
 	private String lname;
 	private String email;
 	private int age;
+	private Boolean contactByEmail;
 	private Gender gender;
 
 	@ElementCollection(fetch = FetchType.EAGER)

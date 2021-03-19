@@ -7,17 +7,23 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 
-<body>
+<body class="map-body">
+<div class="index-header-image">
+    <div class="index-header-text">
+        Group3 DAT251 | Utleie av Friluftsutstyr
+        <hr>
+    </div>
+    <div class="index-header-buttons">
+        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+        <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
+        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+        <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
+        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+    </div>
+</div>
     <div class="block">
         <p>Hello <span th:text="${name}"></span>!!</p>
-        <form>
-            <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
-            <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
-            <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-            <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
-
-        </form><br>
-
         <table>
             <tr>
                 <th>First Name</th>
@@ -41,9 +47,10 @@
             <h3>Update User:</h3>
             First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
             Last Name:<br><input type="text" th:value="${user.lname}" name="lname" maxlength="32"><br><br>
-            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
-            Gender:
-            <br><select name="gender">
+			Email:<br><input type="text" th:value="${user.email}" name="email"><br><br>
+            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99">
+            Gender:<br>
+            <select name="gender">
                 <option value="female" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female</option>
                 <option value="male" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).MALE}">Male</option>
                 <option value="unspecified" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}">Don't want to say</option>
@@ -54,12 +61,13 @@
         	th:value="${prefOpt}" th:text="${prefOpt.getPreference()}" th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
         	th:style="${iStat.last}? 'visibility:hidden;'">
 			</label><br>
-			Street name:<input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
-			Municipality:<input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
-			County:<input type="text" th:value="${user.address.county}" name="county"><br><br>
-			House number:<input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
-			Postal code:<input type="number" th:value="${user.address.postalCode}" name="postalCode" min="0"><br><br>
-			Country:<input type="text" th:value="${user.address.country}" name="country"><br><br>
+			Street name:<br><input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
+			Municipality:<br><input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
+			County:<br><input type="text" th:value="${user.address.county}" name="county"><br><br>
+			House number:<br><input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
+			Postal code:<br><input type="number" th:value="${user.address.postalCode}" name="postalCode" min="0"><br><br>
+			Country:<br><input type="text" th:value="${user.address.country}" name="country"><br><br>
+			Contact by email:<input type="checkbox" th:checked="${user.contactByEmail}" name="contactByEmail"><br><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>

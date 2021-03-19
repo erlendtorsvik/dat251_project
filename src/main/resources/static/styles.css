@@ -176,7 +176,7 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
     background-image: url(images/nature-banner-2.jpg);
     display: flex;
     justify-content: space-between;
-    height: 120px;
+    height: 15vh;
 }
 
 .index-body {
@@ -187,15 +187,15 @@ input[type=button]:hover, [type=submit]:hover, .login-button:hover, [id$="link"]
 }
 
 .index-header-text {
-    margin-top: 1em;
+    margin-top: 4vh;
     margin-left: 1em;
-    font-size: 2em;
+    font-size: 1.5vw;
 }
 
 .index-header-buttons{
-    margin-top: 1em;
+    margin-top: 4vh;
     margin-right: 1em;
-    font-size: 2em;
+    font-size: 1.5vw;
 }
 
 .index-header-buttons input[type=button] {

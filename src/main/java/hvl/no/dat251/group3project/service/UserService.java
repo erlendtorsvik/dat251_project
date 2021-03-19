@@ -95,10 +95,6 @@ public class UserService {
 		return user;
 	}
 
-	public void delete(User userSample) {
-		userRepository.delete(userSample);
-	}
-
 	public void setEmail(User user, String email) {
 		user.setEmail(email);
 	}
@@ -135,6 +131,14 @@ public class UserService {
 			return null;
 		}
 		return userOpt.get();
+	}
+
+	public void setContactByEmail(User user, Boolean contactByEmail) {
+		user.setContactByEmail(contactByEmail);
+	}
+
+	public void setUID(User user, String uID) {
+		user.setUID(uID);		
 	}
 
 }

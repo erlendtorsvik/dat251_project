@@ -67,17 +67,17 @@ public class ItemController {
 
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
-		model.addAttribute("message", "Succesfully added Item");
+		model.addAttribute("message", "Succesfully added Item ");
 		return "myItems";
 	}
 
 	@GetMapping("/items/update/{id}")
-	public String getUpdatePoll(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+	public String getUpdateItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		//model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 		// checking if owner tried to edit poll
 		if (!userService.getUser(authentication).getUID().equals(item.getOwner().getUID())) {
-			model.addAttribute("message", "You can't edit someone elses poll");
+			model.addAttribute("message", "You can't edit someone elses item");
 			return "index";
 		}
 		model.addAttribute("item", item);
@@ -101,7 +101,7 @@ public class ItemController {
 			itemService.setAvailable(item, Boolean.parseBoolean(isAvailable));
 		itemService.save(item);
 		model.addAttribute("item", item);
-		model.addAttribute("message", "Successfully updated item" + id);
+		model.addAttribute("message", "Successfully updated item " + id);
 
 		return "itemUpdate";
 	}
@@ -112,7 +112,7 @@ public class ItemController {
 
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
-		model.addAttribute("message", "Successfully deleted item" + id);
+		model.addAttribute("message", "Successfully deleted item " + id);
 		return "myitems";
 	}
 
