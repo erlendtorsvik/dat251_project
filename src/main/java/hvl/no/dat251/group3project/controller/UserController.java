@@ -72,8 +72,8 @@ public class UserController {
 	@PostMapping("/user/{uID}")
 	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
 			@RequestParam String email, @RequestParam int age, @RequestParam String gender,
-			@RequestParam List<String> preferences,@RequestParam String streetName, @RequestParam String municipality,
-			@RequestParam String county,@RequestParam String houseNumber, @RequestParam int postalCode,
+			@RequestParam List<String> preferences, @RequestParam String streetName, @RequestParam String municipality,
+			@RequestParam String county, @RequestParam String houseNumber, @RequestParam int postalCode,
 			@RequestParam String country, @RequestParam(defaultValue = "false") Boolean contactByEmail, Model model,
 			OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUser(authentication).getFname());
@@ -103,14 +103,14 @@ public class UserController {
 			addresService.setHouseNumber(addr, houseNumber);
 		if (!country.isBlank())
 			addresService.setCountry(addr, country);
-		if(contactByEmail)
+		if (contactByEmail)
 			userService.setContactByEmail(user, true);
 		else
 			userService.setContactByEmail(user, false);
-			
+
 		addresService.setPostalCode(addr, postalCode);
 		userService.setAddress(user, addr);
-		
+
 		userService.save(user);
 		model.addAttribute("user", user);
 		model.addAttribute("message", "Succesfully updated user");

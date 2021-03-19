@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project;
+package hvl.no.dat251.group3project.controllerTest;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -35,13 +35,13 @@ class UserControllerTest {
 
 	@MockBean
 	private UserService userService;
-	
+
 	@MockBean
 	private AddressService addressService;
 
 	@MockBean
 	private ItemService itemService;
-	
+
 	@MockBean
 	private mainRestController main;
 
@@ -54,9 +54,9 @@ class UserControllerTest {
 		when(userService.findAll()).thenReturn(userList);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
+		.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
-	
+
 	@Test
 	@WithMockUser("test")
 	void getAllUsers() throws Exception {
@@ -64,7 +64,7 @@ class UserControllerTest {
 		userList.add(new User("1", "Lompo", " ", ""));
 		userList.add(new User("2", "Moneey", " ", ""));
 		when(userService.findAll()).thenReturn(userList);
-		
+
 		mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}

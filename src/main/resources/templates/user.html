@@ -48,7 +48,7 @@
             First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
             Last Name:<br><input type="text" th:value="${user.lname}" name="lname" maxlength="32"><br><br>
 			Email:<br><input type="text" th:value="${user.email}" name="email"><br><br>
-            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99">
+            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
             Gender:<br>
             <select name="gender">
                 <option value="female" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female</option>

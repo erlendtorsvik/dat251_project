@@ -1,10 +1,9 @@
-package hvl.no.dat251.group3project;
+package hvl.no.dat251.group3project.serviceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -75,8 +74,8 @@ class ItemServiceTest {
 	void getItemBySearchWord() {
 		List<Item> itemSampleList = itemService.findByWord("Ski");
 		List<Item> allItems = itemService.findAll();
-		
-		for(Item i : itemSampleList) {
+
+		for (Item i : itemSampleList) {
 			assertTrue(i.getName().contains("Ski"));
 		}
 	}
@@ -109,7 +108,6 @@ class ItemServiceTest {
 
 	@Test
 	void searchingItemsByUserShouldReturnUsersItems() {
-		List<Item> items = new ArrayList<>();
 		User tempUser = new User("user", "cmon", "dude", "yolo");
 		userService.save(tempUser);
 		itemSample1.setOwner(tempUser);

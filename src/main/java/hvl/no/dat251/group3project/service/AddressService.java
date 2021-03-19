@@ -60,10 +60,4 @@ public class AddressService {
 	public void setMunicipality(Address addressSample, String municipality) {
 		addressSample.setMunicipality(municipality);
 	}
-
-//	public void addUser(Address addressSample, User user) {
-//		List<User> users = addressSample.getUsers();
-//		users.add(user);
-//		addressSample.setUsers(users);
-//	}
 }

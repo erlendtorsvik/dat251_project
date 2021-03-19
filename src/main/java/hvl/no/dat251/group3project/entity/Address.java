@@ -20,9 +20,6 @@ public class Address {
 	private String county;
 	private String municipality;
 
-//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-//	List<User> users = new ArrayList<User>();
-
 	public Address(Long aID, String streetName, String country, int postalCode, String houseNumber, String county,
 			String municipality) {
 		this.aid = aID;

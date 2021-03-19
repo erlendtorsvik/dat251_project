@@ -16,7 +16,7 @@ public class Item {
 	private String description;
 	private Double price;
 	private boolean available;
-	
+
 	@ManyToOne
 	private User owner;
 

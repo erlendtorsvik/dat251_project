@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project;
+package hvl.no.dat251.group3project.controllerTest;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -48,9 +48,9 @@ class ItemControllerTest {
 		when(itemService.findAll()).thenReturn(itemsList);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/allItems").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
+		.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
-	
+
 	@Test
 	@WithMockUser("test")
 	void searchingItemsShouldRetrunAListofItems() throws Exception {
@@ -58,15 +58,15 @@ class ItemControllerTest {
 		itemsList.add(new Item(1L, "Langrenn ski", "Veldig mye brukt ski", 99.99, true));
 		itemsList.add(new Item(2L, "Stor telt", "God og comfy telt", 69.420, false));
 		when(itemService.findAll()).thenReturn(itemsList);
-		
+
 		mockMvc.perform(MockMvcRequestBuilders.get("/items").param("name", "ski")).andDo(print())
 		.andExpect(status().isOk()).andExpect(model().attribute("message", "Succesfully searched items"));
 	}
-	
+
 	@Test
 	@WithMockUser("test")
 	void searchingItemsShouldBeEnabledLOL() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/search")).andDo(print())
-		.andExpect(status().isOk()).andExpect(model().attribute("message", "Hello"));
+		mockMvc.perform(MockMvcRequestBuilders.get("/search")).andDo(print()).andExpect(status().isOk())
+		.andExpect(model().attribute("message", "Hello"));
 	}
 }

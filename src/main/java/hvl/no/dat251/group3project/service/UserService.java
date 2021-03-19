@@ -29,7 +29,7 @@ public class UserService {
 
 	@Autowired
 	private FBInitialize fb;
-	
+
 	@Autowired
 	private AddressService addressService;
 
@@ -66,10 +66,10 @@ public class UserService {
 				DocumentSnapshot ds = userCR.document(String.valueOf(uID)).get().get();
 				tempUser.setUID(uID);
 				HashMap addr = (HashMap) ds.get("address");
-				Address savedAddress =new Address((String)addr.get("streetName"),(String)addr.get("country"),
-						((Long)addr.get("postalCode")).intValue(),(String)addr.get("houseNumber"),
-						(String)addr.get("county"),(String)addr.get("municipality"));
-				setAddress(tempUser,savedAddress);
+				Address savedAddress = new Address((String) addr.get("streetName"), (String) addr.get("country"),
+						((Long) addr.get("postalCode")).intValue(), (String) addr.get("houseNumber"),
+						(String) addr.get("county"), (String) addr.get("municipality"));
+				setAddress(tempUser, savedAddress);
 				addressService.save(savedAddress);
 				setAge(tempUser, (ds.getLong("age")).intValue());
 				setFname(tempUser, ds.getString("fname"));
@@ -122,7 +122,7 @@ public class UserService {
 	public void setPreferences(User user, List<String> preferences) {
 		user.setPreferences(preferences);
 	}
-	
+
 	public User getUser(OAuth2AuthenticationToken authentication) {
 		OAuth2AuthorizedClient client = authorizedClientService
 				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
@@ -138,7 +138,6 @@ public class UserService {
 	}
 
 	public void setUID(User user, String uID) {
-		user.setUID(uID);		
+		user.setUID(uID);
 	}
-
 }

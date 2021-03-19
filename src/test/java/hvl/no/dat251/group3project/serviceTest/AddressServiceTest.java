@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project;
+package hvl.no.dat251.group3project.serviceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,9 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.repository.IAddressRepository;
-import hvl.no.dat251.group3project.repository.IUserRepository;
 import hvl.no.dat251.group3project.service.AddressService;
-import hvl.no.dat251.group3project.service.UserService;
 
 @SpringBootTest
 class AddressServiceTest {
@@ -21,21 +19,15 @@ class AddressServiceTest {
 	@Autowired
 	private IAddressRepository addressRepository;
 
-	@Autowired
-	private IUserRepository userRepository;
-
 	private Address addressSample;
 
 	private AddressService addressService;
-
-	private UserService userService;
 
 	@BeforeEach
 	void setup() {
 		addressSample = new Address(1L, "gate", "land", 1324, "hus", "kommune", "fylke");
 		addressRepository.save(addressSample);
 		addressService = new AddressService(addressRepository);
-		userService = new UserService(userRepository);
 	}
 
 	@Test
@@ -81,22 +73,4 @@ class AddressServiceTest {
 		assertEquals(addressSample.getCounty(), lastAddress.getCounty());
 		assertEquals(addressSample.getMunicipality(), lastAddress.getMunicipality());
 	}
-
-//	@Test
-//	void newAddressShouldHaveNoUsers() {
-//		assertEquals(0, addressSample.getUsers().size());
-//	}
-
-//	@Test
-//	void newUserWithAddedAddressShouldAddToUsersList() {
-//		User user = new User("3", "User", " Sample", "dat251@hvl.no");
-//		userService.setAddress(user, addressSample);
-//		userService.save(user);
-//		addressService.addUser(addressSample, user);
-//		addressService.save(addressSample);
-//
-//		Address lastAddress = addressService.findById(addressSample.getAid());
-//
-//		assertEquals(1, lastAddress.getUsers().size());
-//	}
 }

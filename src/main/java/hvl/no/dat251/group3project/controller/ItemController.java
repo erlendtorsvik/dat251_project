@@ -32,7 +32,6 @@ public class ItemController {
 		return new ResponseEntity<>(itemService.findAll(), HttpStatus.OK);
 	}
 
-
 	@GetMapping("/items")
 	public String searchItem(@RequestParam String name, Model model) {
 		List<Item> items = itemService.findByWord(name);
@@ -58,8 +57,8 @@ public class ItemController {
 	}
 
 	@PostMapping("/addItem")
-	public String addItem(Model model, OAuth2AuthenticationToken authentication,
-						  @RequestParam String name, @RequestParam String description, @RequestParam Double price) {
+	public String addItem(Model model, OAuth2AuthenticationToken authentication, @RequestParam String name,
+			@RequestParam String description, @RequestParam Double price) {
 		Item newItem = new Item(name, description, price, true);
 		User user = userService.getUser(authentication);
 		itemService.setOwner(newItem, user);
@@ -73,7 +72,7 @@ public class ItemController {
 
 	@GetMapping("/items/update/{id}")
 	public String getUpdateItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
-		//model.addAttribute("name", getUser(authentication));
+		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 		// checking if owner tried to edit poll
 		if (!userService.getUser(authentication).getUID().equals(item.getOwner().getUID())) {
@@ -85,10 +84,10 @@ public class ItemController {
 	}
 
 	@PostMapping("/items/update/{id}")
-	public String updateItem(@RequestParam String name, @RequestParam String description,
-							 @RequestParam Double price, @RequestParam String isAvailable, @PathVariable Long id,
-							 Model model, OAuth2AuthenticationToken authentication) {
-		//model.addAttribute("name", getUser(authentication));
+	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
+			@RequestParam String isAvailable, @PathVariable Long id, Model model,
+			OAuth2AuthenticationToken authentication) {
+		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 
 		if (!name.isBlank())
@@ -118,7 +117,7 @@ public class ItemController {
 
 	@GetMapping("/items/{id}")
 	public String getItem(@PathVariable Long id, Model model) {
-		model.addAttribute("item",itemService.findById(id));
+		model.addAttribute("item", itemService.findById(id));
 
 		return "item";
 	}

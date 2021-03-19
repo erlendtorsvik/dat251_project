@@ -7,5 +7,4 @@ import hvl.no.dat251.group3project.entity.Address;
 
 @Repository("addressRepository")
 public interface IAddressRepository extends JpaRepository<Address, Long> {
-
 }

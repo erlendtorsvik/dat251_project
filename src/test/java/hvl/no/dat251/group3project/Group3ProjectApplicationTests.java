@@ -17,11 +17,10 @@ class Group3ProjectApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
+
 	@Test
 	public void greetingShouldReturnDefaultMessage() throws Exception {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/oauth_login",
-				String.class)).contains("Login");
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/oauth_login", String.class))
+		.contains("Login");
 	}
-
 }

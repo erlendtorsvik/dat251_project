@@ -11,6 +11,7 @@ import hvl.no.dat251.group3project.entity.User;
 
 @Repository("itemRepository")
 public interface IItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findByNameContainingIgnoreCase(@Param("name") String name);
-    List<Item> findByOwner(@Param("owner") User user);
+	List<Item> findByNameContainingIgnoreCase(@Param("name") String name);
+
+	List<Item> findByOwner(@Param("owner") User user);
 }

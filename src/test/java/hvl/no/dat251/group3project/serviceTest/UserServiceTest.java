@@ -1,4 +1,4 @@
-package hvl.no.dat251.group3project;
+package hvl.no.dat251.group3project.serviceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,9 +42,9 @@ public class UserServiceTest {
 		userRepository.save(userSample);
 		userService = new UserService(userRepository);
 	}
-	
+
 	@AfterEach
-	void deleteAll(){
+	void deleteAll() {
 		userRepository.deleteAll();
 	}
 
@@ -73,7 +73,7 @@ public class UserServiceTest {
 		Address addr = new Address("streetName", "country", 1337, "houseNumber", "county", "municipality");
 		addressRepository.save(addr);
 
-		userService.setUID(userSample,"Fin");
+		userService.setUID(userSample, "Fin");
 		userService.setFname(userSample, "User after Edit");
 		userService.setLname(userSample, "Sample after Edit");
 		userService.setAge(userSample, 19);
@@ -108,11 +108,10 @@ public class UserServiceTest {
 
 		assertEquals(pref.get(1), userPref.get(1).toString());
 	}
-	
+
 	@Test
 	void quickEnumCheck() {
 		assertEquals("female", User.Gender.FEMALE.getGender());
 		assertEquals("Skiing", User.Preferences.SKIING.getPreference());
 	}
-
 }
