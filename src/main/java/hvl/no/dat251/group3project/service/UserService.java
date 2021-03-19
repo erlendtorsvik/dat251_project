@@ -126,28 +126,6 @@ public class UserService {
 	public void setPreferences(User user, List<String> preferences) {
 		user.setPreferences(preferences);
 	}
-
-//	public String getUserName(OAuth2AuthenticationToken authentication) {
-//		OAuth2AuthorizedClient client = authorizedClientService
-//				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
-//		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
-//		if (!userOpt.isPresent()) {
-//			return "null";
-//		}
-//		User user = userOpt.get();
-//		return user.getFname() + " " + user.getLname();
-//	}
-
-	public String getUserID(OAuth2AuthenticationToken authentication) {
-		OAuth2AuthorizedClient client = authorizedClientService
-				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
-		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
-		if (!userOpt.isPresent()) {
-			return "null";
-		}
-		User user = userOpt.get();
-		return user.getUID();
-	}
 	
 	public User getUser(OAuth2AuthenticationToken authentication) {
 		OAuth2AuthorizedClient client = authorizedClientService

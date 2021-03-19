@@ -31,25 +31,29 @@
 				<th class=th-hidden></th>
 				<th class=th-hidden></th>
             </tr>
-            <tr th:each="item : ${items}">
+            <tr>
                 <td th:text="${item.iID}"></td>
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.description}"></td>
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.available}"></td>
 				<td id="td-hidden-border"><button th:onClick="'window.location.href= \''+
-						@{/items/update/{itemID}(itemID=${item.iID})}+'\''">Edit</button>
+					@{/items/delete/{itemID}(itemID=${item.iID})}+'\''">Delete</button>
 				</td>
             </tr>
         </table><br>
         </div>
         <div class="block">
-	        <form th:action="@{/addItem}" method="post">
-				<h3>Create Item:</h3>
-				Name:<br><input type="text" name="name" maxlength="32"><br><br>
-				Description:<br><textarea name="description" rows="4"></textarea><br><br>
-				Price:<br><input type="number" step="0.01" name="price"><br><br>
-				<input type="submit" name="submit" value="Create Item">
+	        <form th:action="@{/items/{itemID}(itemID=${item.iID})}" method="post">
+				<h3>Update Item:</h3>
+				Name:<br><input type="text" name="name" maxlength="32" th:value="${item.name}"><br><br>
+				Description:<br><textarea name="description" rows="4" th:text="${item.description}"></textarea><br><br>
+				Price:<br><input type="number" step="0.01" name="price" th:value="${item.price}"><br><br>
+				<select name="isAvailable">
+					<option value="true" th:selected="${item.available}">True</option>
+					<option value="false" th:selected="${!item.available}">False</option>
+				</select><br><br>
+				<input type="submit" name="submit" value="Update Item">
 			</form><br>
         </div>
         
