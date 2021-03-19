@@ -44,7 +44,7 @@
         </table><br>
         </div>
         <div class="block">
-	        <form th:action="@{/items/{itemID}(itemID=${item.iID})}" method="post">
+	        <form th:action="@{/items/update/{itemID}(itemID=${item.iID})}" method="post">
 				<h3>Update Item:</h3>
 				Name:<br><input type="text" name="name" maxlength="32" th:value="${item.name}"><br><br>
 				Description:<br><textarea name="description" rows="4" th:text="${item.description}"></textarea><br><br>

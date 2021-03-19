@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<html>
+<title>My Items</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/styles.css}">
+<body class="map-body">
+<div class="index-header-image">
+    <div class="index-header-text">
+      Group3 DAT251 | Utleie av Friluftsutstyr
+      <hr>
+    </div>
+    <div class="index-header-buttons">
+      <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+      <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
+      <input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+    </div>
+</div>
+<div id="myItems" class="block">
+       <br>
+       <div class="block">
+        <h3>Item:</h3>
+			<b>Id:</b> <span th:text="${item.iID}"></span><br><br>
+			<b>Name:</b> <span th:text="${item.name}"></span><br><br>
+			<b>Description:</b> <span th:text="${item.description}"></span><br><br>
+			<b>Price:</b> <span th:text="${item.price}"></span><br><br>
+			<b>Is available:</b> <span th:text="${item.available}"></span><br><br>
+			<b>Seller Name:</b> <span th:text="${item.owner.getFname} +' '+ ${item.owner.getLname} "></span><br><br>
+			<b>Seller email:</b> <span th:text="${item.owner.getEmail}"></span><br><br><br>
+        </div>
+        
+    <div class=message>
+        <p><span class=message th:text="${message}"></span></p>
+    </div>
+</div>
+</body>
+</html>

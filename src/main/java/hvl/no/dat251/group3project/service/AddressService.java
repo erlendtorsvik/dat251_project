@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import hvl.no.dat251.group3project.entity.Address;
-import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.repository.IAddressRepository;
 
 @Service
@@ -62,9 +61,9 @@ public class AddressService {
 		addressSample.setMunicipality(municipality);
 	}
 
-	public void addUser(Address addressSample, User user) {
-		List<User> users = addressSample.getUsers();
-		users.add(user);
-		addressSample.setUsers(users);
-	}
+//	public void addUser(Address addressSample, User user) {
+//		List<User> users = addressSample.getUsers();
+//		users.add(user);
+//		addressSample.setUsers(users);
+//	}
 }

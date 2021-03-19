@@ -19,7 +19,7 @@ import hvl.no.dat251.group3project.repository.IItemRepository;
 @Service
 public class ItemService {
 
-    private IItemRepository itemRepository;
+	private IItemRepository itemRepository;
 
 	@Autowired
 	private FBInitialize fb;
@@ -39,8 +39,8 @@ public class ItemService {
 				setDescription(tempItem, ds.getString("description"));
 				setPrice(tempItem, ds.getDouble("price"));
 				setAvailable(tempItem, ds.getBoolean("available"));
-				HashMap owner = (HashMap) ds.get("owner");
 
+				HashMap owner = (HashMap) ds.get("owner");
 				User savedOwner =new User((String)owner.get("uid"),(String)owner.get("fname"),
 						(String)owner.get("lname"),(String)owner.get("email"));
 				if(!userService.findByIdIsPresent(savedOwner.getUID()))
@@ -53,33 +53,33 @@ public class ItemService {
 		}
 	}
 
-    public void setName(Item item, String name) {
+	public void setName(Item item, String name) {
 		item.setName(name);
 	}
 
-    public void setDescription(Item item, String description) {
+	public void setDescription(Item item, String description) {
 		item.setDescription(description);
 	}
 
-    public void setPrice(Item item, Double price) {
+	public void setPrice(Item item, Double price) {
 		item.setPrice(price);
 	}
 
-    public void setAvailable(Item item, Boolean available) {
+	public void setAvailable(Item item, Boolean available) {
 		item.setAvailable(available);
 	}
 
 	public ItemService(IItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
+		this.itemRepository = itemRepository;
+	}
 
-    public List<Item> findAll() {
-        return itemRepository.findAll();
-    }
+	public List<Item> findAll() {
+		return itemRepository.findAll();
+	}
 
-    public List<Item> findByWord(String itemWord) {
-        return itemRepository.findByNameContainingIgnoreCase(itemWord);
-    }
+	public List<Item> findByWord(String itemWord) {
+		return itemRepository.findByNameContainingIgnoreCase(itemWord);
+	}
 
 	public List<Item> getItemsByUser(User user) {
 		return itemRepository.findByOwner(user);
