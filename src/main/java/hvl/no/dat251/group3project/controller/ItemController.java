@@ -50,6 +50,7 @@ public class ItemController {
 	
 	@GetMapping("/myItems")
 	public String getMyItems(Model model, OAuth2AuthenticationToken authentication) {
+		itemService.gettAllFromFb();
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Hello");
@@ -83,7 +84,7 @@ public class ItemController {
 		return "itemUpdate";
 	}
 	
-	@PostMapping("/items/{id}")
+	@PostMapping("/items/update/{id}")
 	public String updateItem(@RequestParam String name, @RequestParam String description,
 			@RequestParam Double price, @RequestParam String isAvailable, @PathVariable Long id,
 			Model model, OAuth2AuthenticationToken authentication) {
@@ -113,6 +114,13 @@ public class ItemController {
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Successfully deleted item" + id);
 		return "myitems";
+	}
+	
+	@GetMapping("/items/{id}")
+	public String getItem(@PathVariable Long id, Model model) {
+		model.addAttribute("item",itemService.findById(id));
+		
+		return "item";
 	}
 	
 }

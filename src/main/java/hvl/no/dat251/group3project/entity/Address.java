@@ -1,14 +1,8 @@
 package hvl.no.dat251.group3project.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -26,8 +20,8 @@ public class Address {
 	private String county;
 	private String municipality;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	List<User> users = new ArrayList<User>();
+//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+//	List<User> users = new ArrayList<User>();
 
 	public Address(Long aID, String streetName, String country, int postalCode, String houseNumber, String county,
 			String municipality) {

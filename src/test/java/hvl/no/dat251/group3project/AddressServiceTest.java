@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import hvl.no.dat251.group3project.entity.Address;
-import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.repository.IAddressRepository;
 import hvl.no.dat251.group3project.repository.IUserRepository;
 import hvl.no.dat251.group3project.service.AddressService;
@@ -83,21 +82,21 @@ class AddressServiceTest {
 		assertEquals(addressSample.getMunicipality(), lastAddress.getMunicipality());
 	}
 
-	@Test
-	void newAddressShouldHaveNoUsers() {
-		assertEquals(0, addressSample.getUsers().size());
-	}
+//	@Test
+//	void newAddressShouldHaveNoUsers() {
+//		assertEquals(0, addressSample.getUsers().size());
+//	}
 
-	@Test
-	void newUserWithAddedAddressShouldAddToUsersList() {
-		User user = new User("3", "User", " Sample", "dat251@hvl.no");
-		userService.setAddress(user, addressSample);
-		userService.save(user);
-		addressService.addUser(addressSample, user);
-		addressService.save(addressSample);
-
-		Address lastAddress = addressService.findById(addressSample.getAid());
-
-		assertEquals(1, lastAddress.getUsers().size());
-	}
+//	@Test
+//	void newUserWithAddedAddressShouldAddToUsersList() {
+//		User user = new User("3", "User", " Sample", "dat251@hvl.no");
+//		userService.setAddress(user, addressSample);
+//		userService.save(user);
+//		addressService.addUser(addressSample, user);
+//		addressService.save(addressSample);
+//
+//		Address lastAddress = addressService.findById(addressSample.getAid());
+//
+//		assertEquals(1, lastAddress.getUsers().size());
+//	}
 }

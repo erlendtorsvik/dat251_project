@@ -39,8 +39,8 @@ public class ItemService {
 				setDescription(tempItem, ds.getString("description"));
 				setPrice(tempItem, ds.getDouble("price"));
 				setAvailable(tempItem, ds.getBoolean("available"));
-				HashMap owner = (HashMap) ds.get("owner");
 				
+				HashMap owner = (HashMap) ds.get("owner");
 				User savedOwner =new User((String)owner.get("uid"),(String)owner.get("fname"),
 						(String)owner.get("lname"),(String)owner.get("email"));
 				if(!userService.findByIdIsPresent(savedOwner.getUID()))
