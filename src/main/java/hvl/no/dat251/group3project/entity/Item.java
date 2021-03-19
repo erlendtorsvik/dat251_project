@@ -3,7 +3,7 @@ package hvl.no.dat251.group3project.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -18,6 +18,9 @@ public class Item {
 	private String description;
 	private Double price;
 	private boolean available;
+	
+	@ManyToOne
+	private User owner;
 
 	public Item() {
 	}

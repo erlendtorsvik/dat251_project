@@ -2,6 +2,9 @@ package hvl.no.dat251.group3project;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.repository.IItemRepository;
 import hvl.no.dat251.group3project.service.ItemService;
-
-import java.util.List;
 
 @SpringBootTest
 class ItemServiceTest {
@@ -39,6 +40,11 @@ class ItemServiceTest {
 		itemRepository.save(itemSample4);
 
 		itemService = new ItemService(itemRepository);
+	}
+	
+	@AfterEach
+	void deleteAll() {
+		itemRepository.deleteAll();
 	}
 
 	@Test

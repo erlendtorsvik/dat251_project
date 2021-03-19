@@ -127,7 +127,18 @@ public class UserService {
 		user.setPreferences(preferences);
 	}
 
-	public String getUserName(OAuth2AuthenticationToken authentication) {
+//	public String getUserName(OAuth2AuthenticationToken authentication) {
+//		OAuth2AuthorizedClient client = authorizedClientService
+//				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+//		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
+//		if (!userOpt.isPresent()) {
+//			return "null";
+//		}
+//		User user = userOpt.get();
+//		return user.getFname() + " " + user.getLname();
+//	}
+
+	public String getUserID(OAuth2AuthenticationToken authentication) {
 		OAuth2AuthorizedClient client = authorizedClientService
 				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
 		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
@@ -135,7 +146,17 @@ public class UserService {
 			return "null";
 		}
 		User user = userOpt.get();
-		return user.getFname() + " " + user.getLname();
+		return user.getUID();
+	}
+	
+	public User getUser(OAuth2AuthenticationToken authentication) {
+		OAuth2AuthorizedClient client = authorizedClientService
+				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+		Optional<User> userOpt = userRepository.findById(main.getUserID(client));
+		if (!userOpt.isPresent()) {
+			return null;
+		}
+		return userOpt.get();
 	}
 
 }

@@ -64,7 +64,7 @@ public class UserController {
 				authentication.getName());
 		String uID = main.getUserID(client);
 		User newUser = userService.findById(uID);
-		model.addAttribute("name", userService.getUserName(authentication));
+		model.addAttribute("name", userService.getUser(authentication).getFname());
 		model.addAttribute("user", newUser);
 		return "user";
 	}
@@ -75,7 +75,7 @@ public class UserController {
 			@RequestParam String streetName, @RequestParam String municipality, @RequestParam String county,
 			@RequestParam String houseNumber, @RequestParam int postalCode, @RequestParam String country, Model model,
 			OAuth2AuthenticationToken authentication) {
-		model.addAttribute("name", userService.getUserName(authentication));
+		model.addAttribute("name", userService.getUser(authentication).getFname());
 		User user = userService.findById(uID);
 
 		if (!fname.isBlank())

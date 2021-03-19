@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hvl.no.dat251.group3project.entity.Item;
+import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repository.IItemRepository;
 
@@ -28,4 +29,9 @@ public class ItemService {
     public List<Item> findByWord(String itemWord) {
         return itemRepository.findByNameContainingIgnoreCase(itemWord);
     }
+
+	public List<Item> getItemsByUser(User user) {
+		return itemRepository.findByOwner(user);
+		
+	}
 }

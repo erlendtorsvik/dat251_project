@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<html>
+<title>My Items</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/styles.css}">
+<body>
+
+<div id="myItems" class="block">
+       <br>
+        <h3>My Items:</h3>
+        <table>
+            <tr>
+            	<th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Is available</th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.iID}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.available}"></td>
+            </tr>
+        </table><br>
+        
+    <div class=message>
+        <p><span class=message th:text="${message}"></span></p>
+    </div>
+</div>
+</body>
+</html>
