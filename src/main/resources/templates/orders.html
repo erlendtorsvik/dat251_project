@@ -5,25 +5,64 @@
 <title>Orders</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/styles.css}">
-<body>
+<body class="map-body">
+<div class="index-header-image">
+    <div class="index-header-text">
+        Group3 DAT251 | Utleie av Friluftsutstyr
+        <hr>
+    </div>
+    <div class="index-header-buttons">
+        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+        <input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+    </div>
+</div>
 
 <div id="myOrders" class="block">
-       <br>
-        <h3>All orders:</h3>
+    <div id="loan">
+        <h3>Loaned orders:</h3>
         <table>
             <tr>
                 <th>Id</th>
-                <th>Item</th>
+                <th># of items</th>
                 <th>From date</th>
-                <th>To date</th>
+                <th>To dat</th>
+                <th class=th-hidden></th>
             </tr>
-            <tr th:each="order : ${orders}">
+            <tr th:each="order : ${ordersLoan}">
                 <td th:text="${order.oID}"></td>
-                <td th:text="${order.items}"></td>
+                <td th:text="${order.items.size()}"></td>
                 <td th:text="${order.dateFrom}"></td>
                 <td th:text="${order.dateTo}"></td>
+                <td id="td-hidden-border"><button
+                        th:onClick="'window.location.href= \''+@{/orders/{orderID}(orderID=${order.oID})}+'\''">Info
+                </button>
+                </td>
             </tr>
         </table><br>
+    </div>
+    <div id="sold">
+    <h3>Sold orders:</h3>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th># of items</th>
+            <th>From date</th>
+            <th>To dat</th>
+            <th class=th-hidden></th>
+        </tr>
+        <tr th:each="order : ${ordersSell}">
+            <td th:text="${order.oID}"></td>
+            <td th:text="${order.items.size()}"></td>
+            <td th:text="${order.dateFrom}"></td>
+            <td th:text="${order.dateTo}"></td>
+            <td id="td-hidden-border"><button
+                    th:onClick="'window.location.href= \''+@{/orders/{orderID}(orderID=${order.oID})}+'\''">Info
+            </button>
+            </td>
+        </tr>
+    </table><br>
+    </div>
     <div class=message>
         <p><span class=message th:text="${message}"></span></p>
     </div>

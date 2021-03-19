@@ -5,9 +5,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import hvl.no.dat251.group3project.service.ItemService;
+import hvl.no.dat251.group3project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.Order;
 import hvl.no.dat251.group3project.service.OrderService;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @Controller
 public class OrderController {
@@ -22,24 +27,43 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/allOrders")
     ResponseEntity<List<Order>> getAllOrders() { return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);}
 
     @GetMapping("/myOrders")
-    public String myOrders(Model model){
-        Order order = new Order();
+    public String myOrders(Model model, OAuth2AuthenticationToken authentication){
+        /*Order order = new Order();
         List <Item> items = new ArrayList<>();
-        items.add(new Item("Yo", "DEsc", 100.0, true));
+        Item item1 = new Item("Yo", "DEsc", 100.0, true);
+        items.add(item1);
+        Item item2 = new Item("Cris sug as!", "DEsc123", 100.0, true);
+        items.add(item2);
+        itemService.save(item1);
+        itemService.save(item2);
+        order.setLoaner(userService.getUser(authentication));
         order.setItems(items);
-        /*order.getItems().get(0).getName();
-        order.getItems().get(0).getPrice();*/
         order.setDateFrom(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         order.setDateTo(order.getDateFrom().plusDays(10).truncatedTo(ChronoUnit.MINUTES));
-        List<Order> orders = orderService.findAll();
+        orderService.save(order);*/
 
-        model.addAttribute("orders", order);
-        model.addAttribute("message", "OrdermessageLoL");
-
+        List<Order> myOrdersLoan = orderService.getOrdersByLoaner(userService.getUser(authentication));
+        List<Order> myOrdersSell = orderService.getOrdersBySeller(userService.getUser(authentication));
+        model.addAttribute("ordersLoan", myOrdersLoan);
+        model.addAttribute("ordersSell", myOrdersSell);
+        model.addAttribute("message", "Hello");
         return "orders";
+    }
+
+    @GetMapping("/orders/{id}")
+    public String getOrder(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+        Order order = orderService.findById(id);
+        model.addAttribute("order", order);
+        return "orderInfo";
     }
 }

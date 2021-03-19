@@ -1,6 +1,8 @@
 package hvl.no.dat251.group3project.service;
 
+import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.Order;
+import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repository.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,12 @@ public class OrderService {
     public boolean findByIdIsPresent(Long oID) {
         return orderRepository.existsById(oID);
     }
+    public List<Order> getOrdersBySeller(User user) {
+        return orderRepository.findBySeller(user);}
+    public List<Order> getOrdersByLoaner(User user) {
+        return orderRepository.findByLoaner(user);}
 
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }

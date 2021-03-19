@@ -23,7 +23,7 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -41,13 +41,13 @@ public class ItemController {
         model.addAttribute("message", "Succesfully searched items");
         return "items";
     }
-    
+
     @GetMapping("/search")
     public String search(Model model) {
     	model.addAttribute("message", "Hello");
     	return "items";
     }
-	
+
 	@GetMapping("/myItems")
 	public String getMyItems(Model model, OAuth2AuthenticationToken authentication) {
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
@@ -55,7 +55,7 @@ public class ItemController {
 		model.addAttribute("message", "Hello");
 		return "myItems";
 	}
-	
+
 	@PostMapping("/addItem")
 	public String addItem(Model model, OAuth2AuthenticationToken authentication,
 			@RequestParam String name, @RequestParam String description, @RequestParam Double price) {
@@ -63,13 +63,13 @@ public class ItemController {
 		User user = userService.getUser(authentication);
 		itemService.setOwner(newItem, user);
 		itemService.save(newItem);
-		
+
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Succesfully added Item");
 		return "myItems";
 	}
-	
+
 	@GetMapping("/items/update/{id}")
 	public String getUpdatePoll(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		//model.addAttribute("name", getUser(authentication));
@@ -82,7 +82,7 @@ public class ItemController {
 		model.addAttribute("item", item);
 		return "itemUpdate";
 	}
-	
+
 	@PostMapping("/items/{id}")
 	public String updateItem(@RequestParam String name, @RequestParam String description,
 			@RequestParam Double price, @RequestParam String isAvailable, @PathVariable Long id,
@@ -101,18 +101,18 @@ public class ItemController {
 		itemService.save(item);
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item" + id);
-		
+
 		return "itemUpdate";
 	}
-	
+
 	@GetMapping("/items/delete/{id}")
 	public String deleteItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		itemService.deleteById(id);
-		
+
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Successfully deleted item" + id);
 		return "myitems";
 	}
-	
+
 }

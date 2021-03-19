@@ -21,6 +21,10 @@ public class Order {
     private double insurance;
     private LocalDateTime dateFrom;
     private LocalDateTime dateTo;
+    @ManyToOne
+    private User seller;
+    @ManyToOne
+    private User loaner;
 
     public Order() {
     }

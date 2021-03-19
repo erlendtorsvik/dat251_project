@@ -23,10 +23,10 @@ public class ItemService {
 
 	@Autowired
 	private FBInitialize fb;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	public void gettAllFromFb() {
 		CollectionReference itemCR = fb.getFirebase().collection("Items");
 		Item tempItem = new Item();
@@ -40,7 +40,7 @@ public class ItemService {
 				setPrice(tempItem, ds.getDouble("price"));
 				setAvailable(tempItem, ds.getBoolean("available"));
 				HashMap owner = (HashMap) ds.get("owner");
-				
+
 				User savedOwner =new User((String)owner.get("uid"),(String)owner.get("fname"),
 						(String)owner.get("lname"),(String)owner.get("email"));
 				if(!userService.findByIdIsPresent(savedOwner.getUID()))
@@ -83,11 +83,11 @@ public class ItemService {
 
 	public List<Item> getItemsByUser(User user) {
 		return itemRepository.findByOwner(user);
-		
+
 	}
 
 	public void setOwner(Item newItem, User user) {
-		newItem.setOwner(user);		
+		newItem.setOwner(user);
 	}
 
 	public Item save(Item newItem) {
