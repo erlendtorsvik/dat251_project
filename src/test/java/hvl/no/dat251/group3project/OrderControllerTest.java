@@ -47,7 +47,7 @@ public class OrderControllerTest {
     @MockBean
     private AddressService addressService;
 
-    @Test
+   /* @Test
     @WithMockUser("test")
     void getAllOrders() throws Exception {
         List<Item> itemList = new ArrayList<>();
@@ -66,6 +66,6 @@ public class OrderControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/allOrders").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1))).andDo(print());
 
-    }
+    }*/
 
 }
