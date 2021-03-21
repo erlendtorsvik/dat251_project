@@ -35,16 +35,6 @@ public class OrderController {
 
 	@GetMapping("/myOrders")
 	public String myOrders(Model model, OAuth2AuthenticationToken authentication) {
-		/*
-		 * Order order = new Order(); List <Item> items = new ArrayList<>(); Item item1
-		 * = new Item("Yo", "DEsc", 100.0, true); items.add(item1); Item item2 = new
-		 * Item("Cris sug as!", "DEsc123", 100.0, true); items.add(item2);
-		 * itemService.save(item1); itemService.save(item2);
-		 * order.setLoaner(userService.getUser(authentication)); order.setItems(items);
-		 * order.setDateFrom(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
-		 * order.setDateTo(order.getDateFrom().plusDays(10).truncatedTo(ChronoUnit.
-		 * MINUTES)); orderService.save(order);
-		 */
 
 		List<Order> myOrdersLoan = orderService.getOrdersByLoaner(userService.getUser(authentication));
 		List<Order> myOrdersSell = orderService.getOrdersBySeller(userService.getUser(authentication));

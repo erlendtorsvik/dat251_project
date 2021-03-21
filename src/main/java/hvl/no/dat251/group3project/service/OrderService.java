@@ -2,6 +2,7 @@ package hvl.no.dat251.group3project.service;
 
 import java.util.List;
 
+import hvl.no.dat251.group3project.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,9 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 
-	public Order findById(Long oID) {
-		if (findByIdIsPresent(oID)) {
-
-			return orderRepository.findById(oID).get();
-		}
+	public Order findById(Long id) {
+		if (findByIdIsPresent(id))
+			return orderRepository.findById(id).get();
 		return null;
 	}
 
@@ -49,4 +48,5 @@ public class OrderService {
 	public void save(Order order) {
 		orderRepository.save(order);
 	}
+
 }

@@ -1,9 +1,14 @@
 package hvl.no.dat251.group3project.controllerTest;
 
+import hvl.no.dat251.group3project.entity.Item;
+import hvl.no.dat251.group3project.entity.Order;
+import hvl.no.dat251.group3project.entity.User;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -11,6 +16,12 @@ import hvl.no.dat251.group3project.service.AddressService;
 import hvl.no.dat251.group3project.service.ItemService;
 import hvl.no.dat251.group3project.service.OrderService;
 import hvl.no.dat251.group3project.service.UserService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
@@ -30,6 +41,7 @@ public class OrderControllerTest {
 
 	@MockBean
 	private AddressService addressService;
+
 
 	/*
 	 * @Test
@@ -54,4 +66,5 @@ public class OrderControllerTest {
 	 * 
 	 * }
 	 */
+
 }

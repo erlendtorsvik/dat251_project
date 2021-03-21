@@ -4,13 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -18,12 +12,13 @@ import lombok.Data;
 @Entity
 @Table(name = "order_table")
 public class Order {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long oID;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items = new ArrayList<>();
-	private LocalDateTime date;
+
+	//private LocalDateTime date;
 	private Double insurance;
 	private LocalDateTime dateFrom;
 	private LocalDateTime dateTo;
@@ -35,21 +30,32 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(Long oID, List<Item> items, LocalDateTime date, Double insurance, LocalDateTime dateFrom,
+	public Order(Long oID, List<Item> items, Double insurance, LocalDateTime dateFrom,
 			LocalDateTime dateTo) {
 		this.oID = oID;
 		this.items = items;
-		this.date = date;
+		//this.date = date;
 		this.insurance = insurance;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 	}
 
-	public Order(List<Item> items, LocalDateTime date, double insurance, LocalDateTime dateFrom, LocalDateTime dateTo) {
+	public Order(List<Item> items, double insurance, LocalDateTime dateFrom, LocalDateTime dateTo) {
 		this.items = items;
-		this.date = date;
+		//this.date = date;
 		this.insurance = insurance;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 	}
+
+	public Order(Long oID, List<Item> items, Double insurance, LocalDateTime dateFrom, LocalDateTime dateTo, User seller, User loaner) {
+		this.oID = oID;
+		this.items = items;
+		this.insurance = insurance;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.seller = seller;
+		this.loaner = loaner;
+	}
+
 }
