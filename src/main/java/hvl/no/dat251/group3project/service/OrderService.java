@@ -1,7 +1,9 @@
 package hvl.no.dat251.group3project.service;
 
 import java.util.List;
+import java.util.Random;
 
+import com.google.cloud.firestore.CollectionReference;
 import hvl.no.dat251.group3project.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,26 @@ public class OrderService {
 		return orderRepository.findByLoaner(user);
 	}
 
-	public void save(Order order) {
-		orderRepository.save(order);
-	}
+	//public void save(Order order) {
+		//orderRepository.save(order);
+	//}
 
+	public Order save(Order newOrder) {
+		if (newOrder.getOID() == null) {
+			boolean generated = false;
+			while (!generated) {
+				Random rand = new Random();
+				Long tempID = rand.nextLong();
+				if (!findByIdIsPresent(tempID)) {
+					generated = true;
+					setOID(newOrder, tempID);
+				}
+			}
+		}
+		orderRepository.save(newOrder);
+		return newOrder;
+	}
+	public void setOID(Order order, Long oID) {
+		order.setOID(oID);
+	}
 }

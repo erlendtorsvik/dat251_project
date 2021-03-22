@@ -1,7 +1,9 @@
 package hvl.no.dat251.group3project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import hvl.no.dat251.group3project.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +51,20 @@ public class OrderController {
 		Order order = orderService.findById(id);
 		model.addAttribute("order", order);
 		return "orderInfo";
+	}
+
+	@GetMapping("/orderItem/{id}")
+	public String orderItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+		List<Item> items = new ArrayList<>();
+		items.add(itemService.findById(id));
+		Order order = new Order(items, itemService.findById(id).getOwner(), userService.getUser(authentication));
+		Item item;
+		item = itemService.findById(id);
+		itemService.save(item);
+		orderService.save(order);
+
+		model.addAttribute(item);
+		model.addAttribute("message", "Successfully ordered item " +id);
+		return "item";
 	}
 }

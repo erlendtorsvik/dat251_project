@@ -17,8 +17,7 @@ public class Order {
 	private Long oID;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items = new ArrayList<>();
-
-	//private LocalDateTime date;
+		//private LocalDateTime date;
 	private Double insurance;
 	private LocalDateTime dateFrom;
 	private LocalDateTime dateTo;
@@ -54,6 +53,24 @@ public class Order {
 		this.insurance = insurance;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
+		this.seller = seller;
+		this.loaner = loaner;
+	}
+	public Order(List<Item> items, Double insurance, LocalDateTime dateFrom, LocalDateTime dateTo, User seller,
+				 User loaner) {
+
+		this.items = items;
+		this.insurance = insurance;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.seller = seller;
+		this.loaner = loaner;
+	}
+
+	public Order(List<Item> items, User seller,
+				 User loaner) {
+
+		this.items = items;
 		this.seller = seller;
 		this.loaner = loaner;
 	}

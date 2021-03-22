@@ -27,14 +27,14 @@
         <table>
             <tr>
                 <th>Id</th>
-                <th># of items</th>
+                <th>Seller</th>
                 <th>From date</th>
-                <th>To dat</th>
+                <th>To date</th>
                 <th class=th-hidden></th>
             </tr>
             <tr th:each="order : ${ordersLoan}">
                 <td th:text="${order.oID}"></td>
-                <td th:text="${order.items.size()}"></td>
+                <td th:text="${order.getSeller.getFname() +' '+ order.getSeller.getLname()}"></td>
                 <td th:text="${order.dateFrom}"></td>
                 <td th:text="${order.dateTo}"></td>
                 <td id="td-hidden-border"><button
@@ -49,14 +49,14 @@
     <table>
         <tr>
             <th>Id</th>
-            <th># of items</th>
+            <th>Loaner</th>
             <th>From date</th>
-            <th>To dat</th>
+            <th>To date</th>
             <th class=th-hidden></th>
         </tr>
         <tr th:each="order : ${ordersSell}">
             <td th:text="${order.oID}"></td>
-            <td th:text="${order.items.size()}"></td>
+            <td th:text="${order.getLoaner.getFname()+' '+ order.getLoaner.getLname()}"></td>
             <td th:text="${order.dateFrom}"></td>
             <td th:text="${order.dateTo}"></td>
             <td id="td-hidden-border"><button

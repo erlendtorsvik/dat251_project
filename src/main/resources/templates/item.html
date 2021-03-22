@@ -31,11 +31,13 @@
 			<b>Is available:</b> <span th:text="${item.available}"></span><br><br>
 			<b>Seller Name:</b> <span th:text="${item.owner.getFname} +' '+ ${item.owner.getLname} "></span><br><br>
 			<span th:if="${item.owner.contactByEmail}"><b>Seller email:</b> <span th:text="${item.owner.getEmail}"></span><br><br></span><br>
+            <button th:onClick="'window.location.href= \''+
+						@{/orderItem/{itemID}(itemID=${item.iID})}+'\''">Order item</button>
+           <br>
+           <p><span class=message th:text="${message}"></span></p>
+
         </div>
-        
-    <div class=message>
-        <p><span class=message th:text="${message}"></span></p>
-    </div>
+
 </div>
 </body>
 </html>
