@@ -2,6 +2,7 @@ package hvl.no.dat251.group3project.controller;
 
 import java.util.List;
 
+import hvl.no.dat251.group3project.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,9 @@ public class UserController {
 	@Autowired
 	private OAuth2AuthorizedClientService authorizedClientService;
 
+	@Autowired
+	private ItemService itemService;
+
 	OAuth2AuthorizedClient client;
 
 	mainRestController main = new mainRestController();
@@ -44,6 +48,7 @@ public class UserController {
 	@GetMapping("/userAdd")
 	public String userAdd(Model model, OAuth2AuthenticationToken authentication) {
 		userService.gettAllFromFb();
+		itemService.gettAllFromFb();
 		if (authentication != null)
 			client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
 					authentication.getName());
