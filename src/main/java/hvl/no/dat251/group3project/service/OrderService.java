@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.google.cloud.firestore.CollectionReference;
 import hvl.no.dat251.group3project.entity.Item;
+import hvl.no.dat251.group3project.repository.IItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,10 @@ import hvl.no.dat251.group3project.repository.IOrderRepository;
 public class OrderService {
 
 	private IOrderRepository orderRepository;
+
+	private ItemService itemService;
+
+	private IItemRepository itemRepository;
 
 	@Autowired
 	private FBInitialize fb;

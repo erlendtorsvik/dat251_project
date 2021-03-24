@@ -1,5 +1,6 @@
 package hvl.no.dat251.group3project.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,10 @@ public class ItemController {
 
 	@PostMapping("/addItem")
 	public String addItem(Model model, OAuth2AuthenticationToken authentication, @RequestParam String name,
-			@RequestParam String description, @RequestParam Double price) {
-		Item newItem = new Item(name, description, price, true);
+			@RequestParam String description, @RequestParam Double price,
+						  @RequestParam String fromDate,
+						  @RequestParam String toDate) {
+		Item newItem = new Item(name, description, price, fromDate, toDate, true);
 		User user = userService.getUser(authentication);
 		itemService.setOwner(newItem, user);
 		itemService.save(newItem);
@@ -85,8 +88,9 @@ public class ItemController {
 
 	@PostMapping("/items/update/{id}")
 	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
-			@RequestParam String isAvailable, @PathVariable Long id, Model model,
-			OAuth2AuthenticationToken authentication) {
+							 @RequestParam String fromDate, @RequestParam String toDate,
+							 @RequestParam String isAvailable,  @PathVariable Long id, Model model,
+							 OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 
@@ -98,6 +102,10 @@ public class ItemController {
 			itemService.setPrice(item, price);
 		if (!isAvailable.isBlank())
 			itemService.setAvailable(item, Boolean.parseBoolean(isAvailable));
+		if (!fromDate.isBlank())
+			itemService.setFromDate(item, fromDate);
+		if (!toDate.isBlank())
+			itemService.setToDate(item, toDate);
 		itemService.save(item);
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item " + id);

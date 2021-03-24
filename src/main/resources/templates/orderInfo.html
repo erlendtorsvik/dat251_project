@@ -30,12 +30,16 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>From</th>
+                <th>To</th>
             </tr>
             <tr th:each="item : ${order.items}">
                 <td th:text="${item.iID}"></td>
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.description}"></td>
                 <td th:text="${item.price}"></td>
+                <td th:text="${item.fromDate.substring(0, 10)}"></td>
+                <td th:text="${item.toDate.substring(0, 10)}"></td>
             </tr>
         </table><br>
         </div>

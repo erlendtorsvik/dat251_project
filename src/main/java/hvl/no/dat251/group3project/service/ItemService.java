@@ -1,5 +1,6 @@
 package hvl.no.dat251.group3project.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +41,8 @@ public class ItemService {
 					setName(tempItem, ds.getString("name"));
 					setDescription(tempItem, ds.getString("description"));
 					setPrice(tempItem, ds.getDouble("price"));
+					setFromDate(tempItem, ds.getString("fromDate"));
+					setToDate(tempItem, ds.getString("toDate"));
 					setAvailable(tempItem, ds.getBoolean("available"));
 
 					HashMap owner = (HashMap) ds.get("owner");
@@ -71,6 +74,10 @@ public class ItemService {
 	public void setAvailable(Item item, Boolean available) {
 		item.setAvailable(available);
 	}
+
+	public void setFromDate (Item item, String fromDate) { item.setFromDate(fromDate); }
+
+	public void setToDate (Item item, String toDate) { item.setToDate(toDate); }
 
 	public ItemService(IItemRepository itemRepository) {
 		this.itemRepository = itemRepository;
