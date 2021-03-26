@@ -44,7 +44,7 @@ public class ItemService {
 					setFromDate(tempItem, ds.getString("fromDate"));
 					setToDate(tempItem, ds.getString("toDate"));
 					setAvailable(tempItem, ds.getBoolean("available"));
-
+					// Get owner from Firebase and save him
 					HashMap owner = (HashMap) ds.get("owner");
 					User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),
 							(String) owner.get("lname"), (String) owner.get("email"));
@@ -75,9 +75,13 @@ public class ItemService {
 		item.setAvailable(available);
 	}
 
-	public void setFromDate (Item item, String fromDate) { item.setFromDate(fromDate); }
+	public void setFromDate(Item item, String fromDate) {
+		item.setFromDate(fromDate);
+	}
 
-	public void setToDate (Item item, String toDate) { item.setToDate(toDate); }
+	public void setToDate(Item item, String toDate) {
+		item.setToDate(toDate);
+	}
 
 	public ItemService(IItemRepository itemRepository) {
 		this.itemRepository = itemRepository;

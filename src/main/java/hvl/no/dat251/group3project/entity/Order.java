@@ -1,6 +1,5 @@
 package hvl.no.dat251.group3project.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +16,11 @@ public class Order {
 	private Long oID;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items = new ArrayList<>();
-		//private LocalDateTime date;
+	// private LocalDateTime date;
 	private Double insurance;
-	private LocalDateTime dateFrom;
-	private LocalDateTime dateTo;
+	private String dateFrom;
+	private String dateTo;
+	private Double totalPrice;
 	@ManyToOne
 	private User seller;
 	@ManyToOne
@@ -29,25 +29,25 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(Long oID, List<Item> items, Double insurance, LocalDateTime dateFrom,
-			LocalDateTime dateTo) {
+	public Order(Long oID, List<Item> items, Double insurance, String dateFrom, String dateTo) {
 		this.oID = oID;
 		this.items = items;
-		//this.date = date;
+		// this.date = date;
 		this.insurance = insurance;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 	}
 
-	public Order(List<Item> items, double insurance, LocalDateTime dateFrom, LocalDateTime dateTo) {
+	public Order(List<Item> items, double insurance, String dateFrom, String dateTo) {
 		this.items = items;
-		//this.date = date;
+		// this.date = date;
 		this.insurance = insurance;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 	}
 
-	public Order(Long oID, List<Item> items, Double insurance, LocalDateTime dateFrom, LocalDateTime dateTo, User seller, User loaner) {
+	public Order(Long oID, List<Item> items, Double insurance, String dateFrom, String dateTo, User seller,
+			User loaner) {
 		this.oID = oID;
 		this.items = items;
 		this.insurance = insurance;
@@ -56,8 +56,8 @@ public class Order {
 		this.seller = seller;
 		this.loaner = loaner;
 	}
-	public Order(List<Item> items, Double insurance, LocalDateTime dateFrom, LocalDateTime dateTo, User seller,
-				 User loaner) {
+
+	public Order(List<Item> items, Double insurance, String dateFrom, String dateTo, User seller, User loaner) {
 
 		this.items = items;
 		this.insurance = insurance;
@@ -67,8 +67,7 @@ public class Order {
 		this.loaner = loaner;
 	}
 
-	public Order(List<Item> items, User seller,
-				 User loaner) {
+	public Order(List<Item> items, User seller, User loaner) {
 
 		this.items = items;
 		this.seller = seller;

@@ -5,48 +5,49 @@
 <title>Order info</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/styles.css}">
+
 <body class="map-body">
-<div class="index-header-image">
-    <div class="index-header-text">
-      Group3 DAT251 | Utleie av Friluftsutstyr
-      <hr>
+    <div class="index-header-image">
+        <div class="index-header-text">
+            Group3 DAT251 | Utleie av Friluftsutstyr
+            <hr>
+        </div>
+        <div class="index-header-buttons">
+            <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+            <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+            <input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+            <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+            <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
+            <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+        </div>
     </div>
-    <div class="index-header-buttons">
-        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
-        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
-     	<input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
-        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-        <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
-        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
-    </div>
-</div>
-<div id="myItems" class="block">
-       <br>
-       <div class="block">
-        <h3>Order items:</h3>
-        <table>
-            <tr>
-            	<th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>From</th>
-                <th>To</th>
-            </tr>
-            <tr th:each="item : ${order.items}">
-                <td th:text="${item.iID}"></td>
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.description}"></td>
-                <td th:text="${item.price}"></td>
-                <td th:text="${item.fromDate.substring(0, 10)}"></td>
-                <td th:text="${item.toDate.substring(0, 10)}"></td>
-            </tr>
-        </table><br>
+    <div id="myItems" class="block">
+        <br>
+        <div class="block">
+            <h3>Order items:</h3>
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+                <tr th:each="item : ${order.items}">
+                    <td th:text="${item.iID}"></td>
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.description}"></td>
+                    <td th:text="${item.price}"></td>
+                </tr>
+            </table><br>
+            <b>From date: </b><span th:text="${order.dateFrom}"></span><br><br>
+            <b>To date: </b><span th:text="${order.dateTo}"></span><br><br>
+            <b>Total Price: </b><span th:text="${order.totalPrice}"></span>
         </div>
 
-    <div class=message>
-        <p><span class=message th:text="${message}"></span></p>
+        <div class=message>
+            <p><span class=message th:text="${message}"></span></p>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

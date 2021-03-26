@@ -1,6 +1,5 @@
 package hvl.no.dat251.group3project.serviceTest;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.repository.IItemRepository;
@@ -17,15 +16,12 @@ import hvl.no.dat251.group3project.entity.Order;
 import hvl.no.dat251.group3project.repository.IOrderRepository;
 import hvl.no.dat251.group3project.service.OrderService;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class OrderServiceTest {
@@ -53,14 +49,12 @@ public class OrderServiceTest {
 	@MockBean
 	private ItemService itemService;
 
-
 	private Item itemSample1;
 	private Item itemSample2;
 	private List<Item> itemSampleList = new ArrayList();
 
 	@BeforeEach
-	void setup()
-	{
+	void setup() {
 		userService = new UserService(userRepository);
 		itemService = new ItemService(itemRepository);
 		orderService = new OrderService(orderRepository);
@@ -77,25 +71,26 @@ public class OrderServiceTest {
 		itemService.save(itemSample2);
 		itemSampleList.add(itemSample1);
 		itemSampleList.add(itemSample2);
-		LocalDateTime fromTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-		LocalDateTime toTime = LocalDateTime.now().plusDays(10).truncatedTo(ChronoUnit.MINUTES);
+		String fromTime = new Date().toString();
+		String toTime = new Date(2021, 4, 20).toString();
 
-		orderSample = new Order(1L, itemSampleList, 100.0, fromTime,
-				toTime,tempSeller, tempLoaner);
+		orderSample = new Order(1L, itemSampleList, 100.0, fromTime, toTime, tempSeller, tempLoaner);
 		orderService.save(orderSample);
 	}
 
 	@AfterEach
-	void deleteAllAfter(){orderRepository.deleteAll();}
+	void deleteAllAfter() {
+		orderRepository.deleteAll();
+	}
 
 	@Test
-	void findOrderByIdShouldReturnOrderID(){
+	void findOrderByIdShouldReturnOrderID() {
 		assertEquals(null, orderService.findById(-1L));
 		assertEquals(orderSample, orderService.findById(orderSample.getOID()));
 	}
 
 	@Test
-	void getOrderByLoanerAndSeller(){
+	void getOrderByLoanerAndSeller() {
 		List<Order> orders = new ArrayList<>();
 		orders.add(orderSample);
 		assertEquals(orders, orderService.getOrdersByLoaner(tempLoaner));

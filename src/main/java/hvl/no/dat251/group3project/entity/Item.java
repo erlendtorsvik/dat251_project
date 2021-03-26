@@ -24,11 +24,13 @@ public class Item {
 	@ManyToOne
 	private User owner;
 
+	private Double deliveryFee = 49.99;
+
 	public Item() {
 	}
 
 	public Item(Long iID, String name, String description, Double price, String fromDate, String toDate,
-				boolean available) {
+			boolean available) {
 		this.iID = iID;
 		this.name = name;
 		this.description = description;

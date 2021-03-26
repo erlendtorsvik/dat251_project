@@ -1,6 +1,9 @@
 package hvl.no.dat251.group3project.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import hvl.no.dat251.group3project.entity.Item;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import hvl.no.dat251.group3project.entity.Order;
 import hvl.no.dat251.group3project.service.ItemService;
@@ -37,6 +41,7 @@ public class OrderController {
 
 	@GetMapping("/myOrders")
 	public String myOrders(Model model, OAuth2AuthenticationToken authentication) {
+		orderService.gettAllFromFb();
 
 		List<Order> myOrdersLoan = orderService.getOrdersByLoaner(userService.getUser(authentication));
 		List<Order> myOrdersSell = orderService.getOrdersBySeller(userService.getUser(authentication));
@@ -54,17 +59,40 @@ public class OrderController {
 	}
 
 	@GetMapping("/orderItem/{id}")
-	public String orderItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+	public String orderItem(@PathVariable Long id, @RequestParam(defaultValue = "false") Boolean deliverHome,
+			@RequestParam String toDate, Model model, OAuth2AuthenticationToken authentication) {
 		List<Item> items = new ArrayList<>();
-		items.add(itemService.findById(id));
-		Order order = new Order(items, itemService.findById(id).getOwner(), userService.getUser(authentication));
-		Item item;
-		item = itemService.findById(id);
-		itemService.save(item);
-		orderService.save(order);
+		Item item = itemService.findById(id);
+		try {
+			Date currentDate = new Date();
+			String currentDateString = new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
+			Date itemToDate = new SimpleDateFormat("yyyy-MM-dd").parse(item.getToDate());
+			Date itemFromDate = new SimpleDateFormat("yyyy-MM-dd").parse(item.getFromDate());
+			if (item.isAvailable() && currentDate.before(itemToDate) && currentDate.after(itemFromDate)
+					&& item.getOwner() != userService.getUser(authentication)) {
+				items.add(item);
+				Order order = new Order(items, itemService.findById(id).getOwner(),
+						userService.getUser(authentication));
+				Double totalPrice = item.getPrice();
+				if (deliverHome)
+					totalPrice += item.getDeliveryFee();
+				if (!toDate.isBlank())
+					orderService.setToDate(order, toDate);
+				orderService.setFromDate(order, currentDateString);
+				orderService.setTotalPrice(order, totalPrice);
+				itemService.save(item);
+				orderService.save(order);
+			} else {
+				model.addAttribute(item);
+				model.addAttribute("message", "Can not order item that is not available!");
+				return "item";
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 		model.addAttribute(item);
-		model.addAttribute("message", "Successfully ordered item " +id);
+		model.addAttribute("message", "Successfully ordered item " + id);
 		return "item";
 	}
 }
