@@ -120,7 +120,7 @@ public class ItemController {
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Successfully deleted item " + id);
-		return "myitems";
+		return "myItems";
 	}
 
 	@GetMapping("/items/{id}")
