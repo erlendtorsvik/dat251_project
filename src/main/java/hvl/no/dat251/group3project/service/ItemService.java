@@ -1,6 +1,7 @@
 package hvl.no.dat251.group3project.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -157,6 +158,14 @@ public class ItemService {
 	public String uploadDir;
 
 	public void uploadFile(MultipartFile file) {
+		Path uploadPath = Paths.get(uploadDir);
+		if (!Files.exists(uploadPath)) {
+			try {
+				Files.createDirectories(uploadPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		try {
 			Path copyLocation = Paths
 					.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
