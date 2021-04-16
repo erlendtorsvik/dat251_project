@@ -50,6 +50,8 @@
                     </td>
                 </tr>
             </table><br>
+            <img th:each="image : ${item.images}" th:src="@{/images/items-images/{imagePath}(imagePath=${image})}"
+                width="100em">
         </div>
         <div class="block">
             <form th:action="@{/items/update/{itemID}(itemID=${item.iID})}" method="post">

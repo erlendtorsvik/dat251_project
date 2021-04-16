@@ -1,13 +1,20 @@
 package hvl.no.dat251.group3project.service;
 
-import java.util.Date;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -44,6 +51,7 @@ public class ItemService {
 					setFromDate(tempItem, ds.getString("fromDate"));
 					setToDate(tempItem, ds.getString("toDate"));
 					setAvailable(tempItem, ds.getBoolean("available"));
+					setImages(tempItem, (List<String>) ds.get("images"));
 					// Get owner from Firebase and save him
 					HashMap owner = (HashMap) ds.get("owner");
 					User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),
@@ -143,5 +151,22 @@ public class ItemService {
 
 	public void setIID(Item item, Long iID) {
 		item.setIID(iID);
+	}
+
+	@Value("${app.upload.dir}")
+	public String uploadDir;
+
+	public void uploadFile(MultipartFile file) {
+		try {
+			Path copyLocation = Paths
+					.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+			Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setImages(Item item, List<String> images) {
+		item.setImages(images);
 	}
 }

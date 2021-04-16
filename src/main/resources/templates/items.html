@@ -2,32 +2,33 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <html>
-	<title>Items</title>
-	<meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/styles.css}">
+<title>Items</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/styles.css}">
+
 <body class="map-body">
-<div class="index-header-image">
-    <div class="index-header-text">
-        Group3 DAT251 | Utleie av Friluftsutstyr
-        <hr>
-    </div>
-    <div class="index-header-buttons">
-        <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
-        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
-      	<input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
-        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-        <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
-        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
-    </div>
-</div>
-<div id="myItems" class="block">
+	<div class="index-header-image">
+		<div class="index-header-text">
+			Group3 DAT251 | Utleie av Friluftsutstyr
+			<hr>
+		</div>
+		<div class="index-header-buttons">
+			<input type="button" name="Home" value="Home" onclick="window.location.href='/'">
+			<input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+			<input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+			<input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+			<input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
+			<input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+		</div>
+	</div>
+	<div id="myItems" class="block">
 		<div id="search" class="block">
 			<form th:action="@{/items}">
 				<h3>Search Items:</h3>
 				Search:<input type="text" name="name"><br><br>
 				<input type="submit" name="submit" value="Search">
 			</form><br>
-			
+
 			<h3>All items:</h3>
 			<table>
 				<tr>
@@ -51,9 +52,10 @@
 				</tr>
 			</table><br>
 		</div>
-	<div class=message>
-		<p><span class=message th:text="${message}"></span></p>
+		<div class=message>
+			<p><span class=message th:text="${message}"></span></p>
+		</div>
 	</div>
-</div>
 </body>
+
 </html>

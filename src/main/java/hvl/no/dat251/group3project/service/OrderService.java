@@ -1,23 +1,19 @@
 package hvl.no.dat251.group3project.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentChange;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.protobuf.Internal.DoubleList;
-
-import hvl.no.dat251.group3project.entity.Item;
-import hvl.no.dat251.group3project.repository.IItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+
+import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.Order;
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
@@ -70,7 +66,7 @@ public class OrderService {
 					for (HashMap i : itemsHash) {
 						tempItem = new Item((Long) i.get("iid"), (String) i.get("name"), (String) i.get("description"),
 								(Double) i.get("price"), (String) i.get("fromDate"), (String) i.get("toDate"),
-								(Boolean) i.get("available"));
+								(Boolean) i.get("available"), (List<String>) i.get("images"));
 						// Get item onwer and save
 						HashMap owner = (HashMap) i.get("owner");
 						User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),

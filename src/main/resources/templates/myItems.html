@@ -5,63 +5,66 @@
 <title>My Items</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/styles.css}">
+
 <body class="map-body">
-<div class="index-header-image">
-    <div class="index-header-text">
-      Group3 DAT251 | Utleie av Friluftsutstyr
-      <hr>
+    <div class="index-header-image">
+        <div class="index-header-text">
+            Group3 DAT251 | Utleie av Friluftsutstyr
+            <hr>
+        </div>
+        <div class="index-header-buttons">
+            <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+            <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+            <input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+            <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+            <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
+            <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+        </div>
     </div>
-    <div class="index-header-buttons">
-        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
-        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
-      	<input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
-        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-        <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
-        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
-    </div>
-</div>
-<div id="myItems" class="block">
-       <br>
-       <div class="block">
-        <h3>My Items:</h3>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Is available</th>
-				<th class=th-hidden></th>
-            </tr>
-            <tr th:each="item : ${items}">
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.description}"></td>
-                <td th:text="${item.price}"></td>
-                <td th:text="${item.fromDate.substring(0, 10)}"></td>
-                <td th:text="${item.toDate.substring(0, 10)}"></td>
-                <td th:text="${item.available}"></td>
-				<td id="td-hidden-border"><button th:onClick="'window.location.href= \''+
+    <div id="myItems" class="block">
+        <br>
+        <div class="block">
+            <h3>My Items:</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Is available</th>
+                    <th class=th-hidden></th>
+                </tr>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.description}"></td>
+                    <td th:text="${item.price}"></td>
+                    <td th:text="${item.fromDate.substring(0, 10)}"></td>
+                    <td th:text="${item.toDate.substring(0, 10)}"></td>
+                    <td th:text="${item.available}"></td>
+                    <td id="td-hidden-border"><button th:onClick="'window.location.href= \''+
 						@{/items/update/{itemID}(itemID=${item.iID})}+'\''">Edit</button>
-				</td>
-            </tr>
-        </table><br>
+                    </td>
+                </tr>
+            </table><br>
         </div>
         <div class="block">
-	        <form th:action="@{/addItem}" method="post">
-				<h3>Create Item:</h3>
-				Name:<br><input type="text" name="name" maxlength="32"><br><br>
-				Description:<br><textarea name="description" rows="4"></textarea><br><br>
-				Price:<br><input type="number" step="0.01" name="price"><br><br>
+            <form th:action="@{/addItem}" method="post" enctype="multipart/form-data">
+                <h3>Create Item:</h3>
+                Name:<br><input type="text" name="name" maxlength="32"><br><br>
+                Description:<br><textarea name="description" rows="4"></textarea><br><br>
+                Price:<br><input type="number" step="0.01" name="price"><br><br>
                 From:<br><input type="date" name="fromDate"><br><br>
                 To:<br><input type="date" name="toDate"><br><br>
-				<input type="submit" name="submit" value="Create Item">
-			</form><br>
+                Images:<br><input type="file" name="images" multiple accept="image/png, image/jpeg"><br><br>
+                <input type="submit" name="submit" value="Create Item">
+            </form><br>
         </div>
-        
-    <div class=message>
-        <p><span class=message th:text="${message}"></span></p>
+
+        <div class=message>
+            <p><span class=message th:text="${message}"></span></p>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

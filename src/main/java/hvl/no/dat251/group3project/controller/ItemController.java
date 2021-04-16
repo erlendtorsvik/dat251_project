@@ -1,6 +1,7 @@
 package hvl.no.dat251.group3project.controller;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.User;
@@ -59,12 +62,17 @@ public class ItemController {
 
 	@PostMapping("/addItem")
 	public String addItem(Model model, OAuth2AuthenticationToken authentication, @RequestParam String name,
-			@RequestParam String description, @RequestParam Double price,
-						  @RequestParam String fromDate,
-						  @RequestParam String toDate) {
+			@RequestParam String description, @RequestParam Double price, @RequestParam String fromDate,
+			@RequestParam String toDate, @RequestParam("images") MultipartFile[] multipartFiles) {
+		List<String> images = new ArrayList<>();
+		Arrays.asList(multipartFiles).stream().forEach(file -> {
+			itemService.uploadFile(file);
+			images.add(StringUtils.cleanPath(file.getOriginalFilename()));
+		});
 		Item newItem = new Item(name, description, price, fromDate, toDate, true);
 		User user = userService.getUser(authentication);
 		itemService.setOwner(newItem, user);
+		itemService.setImages(newItem, images);
 		itemService.save(newItem);
 
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
@@ -88,9 +96,8 @@ public class ItemController {
 
 	@PostMapping("/items/update/{id}")
 	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
-							 @RequestParam String fromDate, @RequestParam String toDate,
-							 @RequestParam String isAvailable,  @PathVariable Long id, Model model,
-							 OAuth2AuthenticationToken authentication) {
+			@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String isAvailable,
+			@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 

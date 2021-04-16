@@ -1,12 +1,14 @@
 package hvl.no.dat251.group3project.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @Entity
@@ -21,6 +23,9 @@ public class Item {
 	private String toDate;
 	private boolean available;
 
+	@ElementCollection
+	private List<String> images = new ArrayList<>();
+
 	@ManyToOne
 	private User owner;
 
@@ -30,7 +35,7 @@ public class Item {
 	}
 
 	public Item(Long iID, String name, String description, Double price, String fromDate, String toDate,
-			boolean available) {
+			boolean available, List<String> images) {
 		this.iID = iID;
 		this.name = name;
 		this.description = description;
@@ -38,6 +43,7 @@ public class Item {
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.available = available;
+		this.images = images;
 	}
 
 	public Item(String name, String description, Double price, String fromDate, String toDate, boolean available) {
