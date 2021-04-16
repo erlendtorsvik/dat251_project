@@ -2,9 +2,13 @@ package hvl.no.dat251.group3project.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -30,6 +34,9 @@ public class ItemController {
 
 	@Autowired
 	private UserService userService;
+
+	@Value("${app.upload.dir}")
+	public String imagesDir;
 
 	@GetMapping("/allItems")
 	ResponseEntity<List<Item>> getAllItems() {
@@ -97,9 +104,19 @@ public class ItemController {
 	@PostMapping("/items/update/{id}")
 	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
 			@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String isAvailable,
-			@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+			@PathVariable Long id, @RequestParam("images") MultipartFile[] multipartFiles, Model model,
+			OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
+		List<String> images = item.getImages();
+		int imgInitSize = images.size();
+		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() == 0;
+		if (!empty) {
+			Arrays.asList(multipartFiles).stream().forEach(file -> {
+				itemService.uploadFile(file);
+				images.add(StringUtils.cleanPath(file.getOriginalFilename()));
+			});
+		}
 
 		if (!name.isBlank())
 			itemService.setName(item, name);
@@ -113,17 +130,29 @@ public class ItemController {
 			itemService.setFromDate(item, fromDate);
 		if (!toDate.isBlank())
 			itemService.setToDate(item, toDate);
+		itemService.setImages(item, images);
 		itemService.save(item);
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item " + id);
+
+		if (images.size() != imgInitSize)
+			try {
+				TimeUnit.SECONDS.sleep(3);
+			} catch (InterruptedException e) {
+			}
 
 		return "itemUpdate";
 	}
 
 	@GetMapping("/items/delete/{id}")
 	public String deleteItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
+		List<String> images = itemService.findById(id).getImages();
+		for (int i = 0; i < images.size(); i++) {
+			String img = images.get(0);
+			i--;
+			deleteImage(id, img, model);
+		}
 		itemService.deleteById(id);
-
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Successfully deleted item " + id);
@@ -135,6 +164,22 @@ public class ItemController {
 		model.addAttribute("item", itemService.findById(id));
 
 		return "item";
+	}
+
+	@GetMapping("/items/{id}/deleteImage/{image}")
+	public String deleteImage(@PathVariable Long id, @PathVariable String image, Model model) {
+
+		Item item = itemService.findById(id);
+
+		List<String> itemImages = item.getImages();
+		itemImages.remove(image);
+		itemService.save(item);
+		File f = new File(imagesDir + image);
+		f.delete();
+
+		model.addAttribute("item", item);
+		model.addAttribute("message", "Successfully deleted image " + image);
+		return "itemUpdate";
 	}
 
 }
