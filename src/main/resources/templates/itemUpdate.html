@@ -50,10 +50,10 @@
                     </td>
                 </tr>
             </table><br>
-            <span th:each="image : ${item.images}">
-                <img th:src="@{/images/items-images/{imagePath}(imagePath=${image})}" width="100em">
+            <span th:each="imgUrl, iStat : ${imgUrls}">
+                <img th:src="@{${imgUrl}}" width="100em">
                 <input style="color: red;" type="button" name="delete" value="Delete Image"
-                    th:onclick="'window.location.href=\''+ @{/items/{itemID}/deleteImage/{path}(path=${image},itemID=${item.iID})}+'\''"><br>
+                    th:onclick="'window.location.href=\''+ @{/items/{itemID}/deleteImage/{path}(path=${imgs[iStat.index]},itemID=${item.iID})}+'\''"><br>
             </span>
         </div>
         <div class="block">

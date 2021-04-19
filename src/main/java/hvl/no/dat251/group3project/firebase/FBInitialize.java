@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -96,29 +98,27 @@ public class FBInitialize {
 	@Value("${app.upload.dir}")
 	public String uploadDir;
 
-	public void downloadFile(String fileName) throws IOException {
-		String destFilePath = uploadDir + fileName;
-
-		Storage storage = storageOptions.getService();
-		Page<Blob> blobs = storage.list(bucketName);
-
-		boolean exists = false;
-		for (Blob blob : blobs.iterateAll()) {
-			if (blob.getName() == fileName) {
-				exists = true;
-				break;
-			}
-		}
-		if (exists) {
-			Blob blob = storage.get(BlobId.of(bucketName, fileName));
-			blob.downloadTo(Paths.get(destFilePath));
-		}
-	}
+	/*
+	 * public void downloadFile(String fileName) throws IOException { String
+	 * destFilePath = uploadDir + fileName;
+	 * 
+	 * Storage storage = storageOptions.getService(); Page<Blob> blobs =
+	 * storage.list(bucketName); boolean exists = false; for (Blob blob :
+	 * blobs.iterateAll()) { if (blob.getName().equals(fileName)) { exists = true;
+	 * break; } } if (exists) { Blob blob = storage.get(BlobId.of(bucketName,
+	 * fileName)); blob.downloadTo(Paths.get(destFilePath)); } }
+	 */
 
 	public void deleteFile(String fileName) {
 		Storage storage = storageOptions.getService();
 
 		BlobId blobId = BlobId.of(bucketName, fileName);
 		storage.delete(blobId);
+	}
+
+	public URL getUrl(String fileName) {
+		Storage storage = storageOptions.getService();
+		Blob blob = storage.get(BlobId.of(bucketName, fileName));
+		return blob.signUrl(12, TimeUnit.MINUTES);
 	}
 }

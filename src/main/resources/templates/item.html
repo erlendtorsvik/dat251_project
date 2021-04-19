@@ -36,8 +36,7 @@
       <span th:if="${item.owner.contactByEmail}"><b>Seller email:</b> <span
           th:text="${item.owner.getEmail}"></span><br><br></span><br>
       <b>Image(s):</b><br>
-      <img th:each="image : ${item.images}" th:src="@{/images/items-images/{imagePath}(imagePath=${image})}"
-        width="100em"><br><br>
+      <img th:each="imgUrl: ${imgUrls}" th:src="@{${imgUrl}}" width="100em"><br><br>
       <form th:action="@{/orderItem/{itemID}(itemID=${item.iID})}">
         Home delivery (<span th:text="${item.deliveryFee}"></span>kr): <input type="checkbox"
           name="deliverHome" /><br><br>

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
+import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,7 +73,6 @@ public class ItemController {
 		Arrays.asList(multipartFiles).stream().forEach(file -> {
 			String fileName = itemService.uploadFb(file);
 			images.add(fileName);
-			itemService.downloadFb(fileName);
 		});
 		Item newItem = new Item(name, description, price, fromDate, toDate, true);
 		User user = userService.getUser(authentication);
@@ -90,7 +90,15 @@ public class ItemController {
 	public String getUpdateItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
-		// checking if owner tried to edit poll
+		List<URL> urls = new ArrayList<>();
+		List<String> imgs = new ArrayList<>();
+		for (String img : item.getImages()) {
+			urls.add(itemService.getImgUrl(img));
+			imgs.add(img);
+		}
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
+		// checking if owner tried to edit item
 		if (!userService.getUser(authentication).getUID().equals(item.getOwner().getUID())) {
 			model.addAttribute("message", "You can't edit someone elses item");
 			return "index";
@@ -113,7 +121,6 @@ public class ItemController {
 			Arrays.asList(multipartFiles).stream().forEach(file -> {
 				String fileName = itemService.uploadFb(file);
 				images.add(fileName);
-				itemService.downloadFb(fileName);
 			});
 		}
 
@@ -136,7 +143,7 @@ public class ItemController {
 
 		if (images.size() != imgInitSize)
 			try {
-				TimeUnit.SECONDS.sleep(3);
+				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
 			}
 
@@ -160,8 +167,16 @@ public class ItemController {
 
 	@GetMapping("/items/{id}")
 	public String getItem(@PathVariable Long id, Model model) {
-		model.addAttribute("item", itemService.findById(id));
-
+		Item item = itemService.findById(id);
+		model.addAttribute("item", item);
+		List<URL> urls = new ArrayList<>();
+		List<String> imgs = new ArrayList<>();
+		for (String img : item.getImages()) {
+			urls.add(itemService.getImgUrl(img));
+			imgs.add(img);
+		}
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
 		return "item";
 	}
 
@@ -173,6 +188,14 @@ public class ItemController {
 		List<String> itemImages = item.getImages();
 		itemImages.remove(image);
 		itemService.save(item);
+		List<URL> urls = new ArrayList<>();
+		List<String> imgs = new ArrayList<>();
+		for (String img : item.getImages()) {
+			urls.add(itemService.getImgUrl(img));
+			imgs.add(img);
+		}
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
 		File f = new File(imagesDir + image);
 		f.delete();
 		itemService.deleteFbFile(image);

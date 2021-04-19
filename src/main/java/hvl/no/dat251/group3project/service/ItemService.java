@@ -1,6 +1,8 @@
 package hvl.no.dat251.group3project.service;
 
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -55,11 +57,6 @@ public class ItemService {
 						userService.save(savedOwner);
 					setOwner(tempItem, savedOwner);
 					save(tempItem);
-
-					for (String img : tempItem.getImages()) {
-						System.out.println(img);
-						downloadFb(img);
-					}
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
@@ -159,15 +156,11 @@ public class ItemService {
 	public String uploadFb(MultipartFile file) {
 		return fb.uploadFile(file);
 	}
-
-	public void downloadFb(String fileName) {
-		try {
-			fb.downloadFile(fileName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * public void downloadFb(String fileName) { try { fb.downloadFile(fileName); }
+	 * catch (IOException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } }
+	 */
 
 	public void deleteFbFile(String fileName) {
 		fb.deleteFile(fileName);
@@ -175,5 +168,9 @@ public class ItemService {
 
 	public void setImages(Item item, List<String> images) {
 		item.setImages(images);
+	}
+
+	public URL getImgUrl(String fileName) {
+		return fb.getUrl(fileName);
 	}
 }
