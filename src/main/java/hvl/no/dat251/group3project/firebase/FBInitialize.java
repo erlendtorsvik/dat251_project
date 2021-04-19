@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.storage.Blob;
@@ -95,13 +96,23 @@ public class FBInitialize {
 	@Value("${app.upload.dir}")
 	public String uploadDir;
 
-	public boolean downloadFile(String fileName) throws IOException {
+	public void downloadFile(String fileName) throws IOException {
 		String destFilePath = uploadDir + fileName;
 
 		Storage storage = storageOptions.getService();
-		Blob blob = storage.get(BlobId.of(bucketName, fileName));
-		blob.downloadTo(Paths.get(destFilePath));
-		return true;
+		Page<Blob> blobs = storage.list(bucketName);
+
+		boolean exists = false;
+		for (Blob blob : blobs.iterateAll()) {
+			if (blob.getName() == fileName) {
+				exists = true;
+				break;
+			}
+		}
+		if (exists) {
+			Blob blob = storage.get(BlobId.of(bucketName, fileName));
+			blob.downloadTo(Paths.get(destFilePath));
+		}
 	}
 
 	public void deleteFile(String fileName) {

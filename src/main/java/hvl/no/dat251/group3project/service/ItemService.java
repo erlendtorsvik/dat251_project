@@ -1,11 +1,6 @@
 package hvl.no.dat251.group3project.service;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +9,6 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.cloud.firestore.CollectionReference;
@@ -61,6 +55,11 @@ public class ItemService {
 						userService.save(savedOwner);
 					setOwner(tempItem, savedOwner);
 					save(tempItem);
+
+					for (String img : tempItem.getImages()) {
+						System.out.println(img);
+						downloadFb(img);
+					}
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
