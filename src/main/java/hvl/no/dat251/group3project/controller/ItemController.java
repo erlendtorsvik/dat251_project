@@ -73,8 +73,9 @@ public class ItemController {
 			@RequestParam String toDate, @RequestParam("images") MultipartFile[] multipartFiles) {
 		List<String> images = new ArrayList<>();
 		Arrays.asList(multipartFiles).stream().forEach(file -> {
-			itemService.uploadFile(file);
-			images.add(StringUtils.cleanPath(file.getOriginalFilename()));
+			String fileName = itemService.uploadFb(file);
+			images.add(fileName);
+			itemService.downloadFb(fileName);
 		});
 		Item newItem = new Item(name, description, price, fromDate, toDate, true);
 		User user = userService.getUser(authentication);
@@ -113,8 +114,9 @@ public class ItemController {
 		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() == 0;
 		if (!empty) {
 			Arrays.asList(multipartFiles).stream().forEach(file -> {
-				itemService.uploadFile(file);
-				images.add(StringUtils.cleanPath(file.getOriginalFilename()));
+				String fileName = itemService.uploadFb(file);
+				images.add(fileName);
+				itemService.downloadFb(fileName);
 			});
 		}
 
@@ -176,6 +178,7 @@ public class ItemController {
 		itemService.save(item);
 		File f = new File(imagesDir + image);
 		f.delete();
+		itemService.deleteFbFile(image);
 
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully deleted image " + image);

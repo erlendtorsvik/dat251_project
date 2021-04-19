@@ -157,22 +157,21 @@ public class ItemService {
 	@Value("${app.upload.dir}")
 	public String uploadDir;
 
-	public void uploadFile(MultipartFile file) {
-		Path uploadPath = Paths.get(uploadDir);
-		if (!Files.exists(uploadPath)) {
-			try {
-				Files.createDirectories(uploadPath);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public String uploadFb(MultipartFile file) {
+		return fb.uploadFile(file);
+	}
+
+	public void downloadFb(String fileName) {
 		try {
-			Path copyLocation = Paths
-					.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-			Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-		} catch (Exception e) {
+			fb.downloadFile(fileName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteFbFile(String fileName) {
+		fb.deleteFile(fileName);
 	}
 
 	public void setImages(Item item, List<String> images) {
