@@ -141,6 +141,15 @@ public class ItemController {
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item " + id);
 
+		List<URL> urls = new ArrayList<>();
+		List<String> imgs = new ArrayList<>();
+		for (String img : item.getImages()) {
+			urls.add(itemService.getImgUrl(img));
+			imgs.add(img);
+		}
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
+
 		if (images.size() != imgInitSize)
 			try {
 				TimeUnit.SECONDS.sleep(2);
