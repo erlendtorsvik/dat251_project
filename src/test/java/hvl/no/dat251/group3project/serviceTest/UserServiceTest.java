@@ -81,6 +81,7 @@ public class UserServiceTest {
 		userService.setAddress(userSample, addr);
 		userService.setEmail(userSample, "dat@251.no");
 		userService.setContactByEmail(userSample, false);
+		userService.setPhoneNumber(userSample, 12345678L);
 		userService.save(userSample);
 
 		User lastUser = userService.findById(userSample.getUID());
@@ -93,6 +94,7 @@ public class UserServiceTest {
 		assertEquals(userSample.getAddress().getAid(), lastUser.getAddress().getAid());
 		assertEquals(userSample.getEmail(), lastUser.getEmail());
 		assertEquals(userSample.getContactByEmail(), lastUser.getContactByEmail());
+		assertEquals(userSample.getPhoneNumber(), lastUser.getPhoneNumber());
 	}
 
 	@Test

@@ -33,6 +33,7 @@
       <b>To:</b> <span th:text="${item.toDate.substring(0, 10)}"></span><br><br>
       <b>Is available:</b> <span th:text="${item.available}"></span><br><br>
       <b>Seller Name:</b> <span th:text="${item.owner.getFname} +' '+ ${item.owner.getLname} "></span><br><br>
+      <b>Phone Number</b> <span th:text="${item.owner.phoneNumber}"></span><br><br>
       <span th:if="${item.owner.contactByEmail}"><b>Seller email:</b> <span
           th:text="${item.owner.getEmail}"></span><br><br></span><br>
       <b>Image(s):</b><br>

@@ -1,8 +1,8 @@
 package hvl.no.dat251.group3project.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -46,36 +46,33 @@ public class OrderService {
 					setToDate(tempOrder, ds.getString("dateTo"));
 					setTotalPrice(tempOrder, ds.getDouble("totalPrice"));
 					// Get seller from Firebase and save him
-					HashMap seller = (HashMap) ds.get("seller");
-					User savedSeller = new User((String) seller.get("uid"), (String) seller.get("fname"),
-							(String) seller.get("lname"), (String) seller.get("email"));
-					if (!userService.findByIdIsPresent(savedSeller.getUID()))
-						userService.save(savedSeller);
+					Map<String, Object> seller = (Map<String, Object>) ds.get("seller");
+					String sellerID = (String) seller.get("uid");
+					User savedSeller;
+					if (!userService.findByIdIsPresent(sellerID))
+						savedSeller = userService.saveUser(seller);
+					else
+						savedSeller = userService.findById(sellerID);
 					setSeller(tempOrder, savedSeller);
 					// Get loaner from Firebase and save him
-					HashMap loaner = (HashMap) ds.get("loaner");
-					User savedLoaner = new User((String) loaner.get("uid"), (String) loaner.get("fname"),
-							(String) loaner.get("lname"), (String) loaner.get("email"));
-					if (!userService.findByIdIsPresent(savedLoaner.getUID()))
-						userService.save(savedLoaner);
+					Map<String, Object> loaner = (Map<String, Object>) ds.get("loaner");
+					String loanerID = (String) loaner.get("uid");
+					User savedLoaner;
+					if (!userService.findByIdIsPresent(loanerID))
+						savedLoaner = userService.saveUser(loaner);
+					else
+						savedLoaner = userService.findById(loanerID);
 					setLoaner(tempOrder, savedLoaner);
 
-					List<HashMap> itemsHash = (List<HashMap>) ds.get("items");
+					List<Map<String, Object>> itemsMap = (List<Map<String, Object>>) ds.get("items");
 					List<Item> items = new ArrayList<>();
-					Item tempItem = new Item();
-					for (HashMap i : itemsHash) {
-						tempItem = new Item((Long) i.get("iid"), (String) i.get("name"), (String) i.get("description"),
-								(Double) i.get("price"), (String) i.get("fromDate"), (String) i.get("toDate"),
-								(Boolean) i.get("available"), (List<String>) i.get("images"));
-						// Get item onwer and save
-						HashMap owner = (HashMap) i.get("owner");
-						User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),
-								(String) owner.get("lname"), (String) owner.get("email"));
-						if (!userService.findByIdIsPresent(savedOwner.getUID()))
-							userService.save(savedOwner);
-						itemService.setOwner(tempItem, savedOwner);
-						if (!itemService.findByIdIsPresent(tempItem.getIID()))
-							itemService.save(tempItem);
+					Item tempItem;
+					for (Map<String, Object> i : itemsMap) {
+						Long itemID = (Long) i.get("iid");
+						if (!itemService.findByIdIsPresent(itemID))
+							tempItem = itemService.saveItem(i);
+						else
+							tempItem = itemService.findById(itemID);
 						items.add(tempItem);
 					}
 					setItems(tempOrder, items);

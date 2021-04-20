@@ -116,8 +116,8 @@ public class ItemController {
 		Item item = itemService.findById(id);
 		List<String> images = item.getImages();
 		int imgInitSize = images.size();
-		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() == 0;
-		if (!empty) {
+		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() > 0;
+		if (empty) {
 			Arrays.asList(multipartFiles).stream().forEach(file -> {
 				String fileName = itemService.uploadFb(file);
 				images.add(fileName);

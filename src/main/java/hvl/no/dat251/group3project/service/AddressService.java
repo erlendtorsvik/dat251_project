@@ -1,6 +1,7 @@
 package hvl.no.dat251.group3project.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,8 @@ public class AddressService {
 		return null;
 	}
 
-	public void save(Address addressSample) {
-		addressRepository.save(addressSample);
+	public Address save(Address addressSample) {
+		return addressRepository.save(addressSample);
 	}
 
 	public void setStreetName(Address addressSample, String streetName) {
@@ -59,5 +60,13 @@ public class AddressService {
 
 	public void setMunicipality(Address addressSample, String municipality) {
 		addressSample.setMunicipality(municipality);
+	}
+
+	public Address saveAddress(Map<String, Object> addr) {
+		Address savedAddress = new Address((String) addr.get("streetName"), (String) addr.get("country"),
+				((Long) addr.get("postalCode")).intValue(), (String) addr.get("houseNumber"),
+				(String) addr.get("county"), (String) addr.get("municipality"));
+
+		return save(savedAddress);
 	}
 }

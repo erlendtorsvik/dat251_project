@@ -51,7 +51,7 @@
                 </tr>
             </table><br>
             <span th:each="imgUrl, iStat : ${imgUrls}">
-                <img th:src="@{${imgUrl}}" width="100em">
+                <img class="updateImg" th:src="@{${imgUrl}}" width="100em">
                 <input style="color: red;" type="button" name="delete" value="Delete Image"
                     th:onclick="'window.location.href=\''+ @{/items/{itemID}/deleteImage/{path}(path=${imgs[iStat.index]},itemID=${item.iID})}+'\''"><br>
             </span>

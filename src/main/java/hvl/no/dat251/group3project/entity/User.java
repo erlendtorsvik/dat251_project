@@ -18,12 +18,14 @@ public class User {
 
 	@Id
 	private String uID;
+
 	private String fname;
 	private String lname;
 	private String email;
 	private int age;
 	private Boolean contactByEmail;
 	private Gender gender;
+	private Long phoneNumber;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<Preferences> preferences = new ArrayList<>();
@@ -66,6 +68,20 @@ public class User {
 		this.lname = lname;
 		this.email = email;
 		this.gender = Gender.UNSPECIFIED;
+	}
+
+	public User(String uID, String fname, String lname, String email, int age, Boolean contactByEmail, Gender gender,
+			Long phoneNumber, List<Preferences> preferences, Address address) {
+		this.uID = uID;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.age = age;
+		this.contactByEmail = contactByEmail;
+		this.gender = gender;
+		this.phoneNumber = phoneNumber;
+		this.preferences = preferences;
+		this.address = address;
 	}
 
 	public User() {

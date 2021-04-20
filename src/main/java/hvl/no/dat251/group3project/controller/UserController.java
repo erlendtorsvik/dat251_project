@@ -79,8 +79,8 @@ public class UserController {
 			@RequestParam String email, @RequestParam int age, @RequestParam String gender,
 			@RequestParam List<String> preferences, @RequestParam String streetName, @RequestParam String municipality,
 			@RequestParam String county, @RequestParam String houseNumber, @RequestParam int postalCode,
-			@RequestParam String country, @RequestParam(defaultValue = "false") Boolean contactByEmail, Model model,
-			OAuth2AuthenticationToken authentication) {
+			@RequestParam String country, @RequestParam(defaultValue = "false") Boolean contactByEmail,
+			@RequestParam Long phoneNumber, Model model, OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUser(authentication).getFname());
 		User user = userService.findById(uID);
 
@@ -112,6 +112,8 @@ public class UserController {
 			userService.setContactByEmail(user, true);
 		else
 			userService.setContactByEmail(user, false);
+		if (phoneNumber != user.getPhoneNumber())
+			userService.setPhoneNumber(user, phoneNumber);
 
 		addresService.setPostalCode(addr, postalCode);
 		userService.setAddress(user, addr);

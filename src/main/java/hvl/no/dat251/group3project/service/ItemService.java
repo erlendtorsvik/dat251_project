@@ -1,15 +1,12 @@
 package hvl.no.dat251.group3project.service;
 
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,61 +29,6 @@ public class ItemService {
 
 	@Autowired
 	private UserService userService;
-
-	public void gettAllFromFb() {
-		CollectionReference itemCR = fb.getFirebase().collection("Items");
-		Item tempItem = new Item();
-		for (DocumentReference doc : itemCR.listDocuments()) {
-			Long iID = Long.parseLong(doc.getId());
-			if (!findByIdIsPresent(iID)) {
-				try {
-					DocumentSnapshot ds = itemCR.document(String.valueOf(iID)).get().get();
-					setIID(tempItem, iID);
-					setName(tempItem, ds.getString("name"));
-					setDescription(tempItem, ds.getString("description"));
-					setPrice(tempItem, ds.getDouble("price"));
-					setFromDate(tempItem, ds.getString("fromDate"));
-					setToDate(tempItem, ds.getString("toDate"));
-					setAvailable(tempItem, ds.getBoolean("available"));
-					setImages(tempItem, (List<String>) ds.get("images"));
-					// Get owner from Firebase and save him
-					HashMap owner = (HashMap) ds.get("owner");
-					User savedOwner = new User((String) owner.get("uid"), (String) owner.get("fname"),
-							(String) owner.get("lname"), (String) owner.get("email"));
-					if (!userService.findByIdIsPresent(savedOwner.getUID()))
-						userService.save(savedOwner);
-					setOwner(tempItem, savedOwner);
-					save(tempItem);
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	public void setName(Item item, String name) {
-		item.setName(name);
-	}
-
-	public void setDescription(Item item, String description) {
-		item.setDescription(description);
-	}
-
-	public void setPrice(Item item, Double price) {
-		item.setPrice(price);
-	}
-
-	public void setAvailable(Item item, Boolean available) {
-		item.setAvailable(available);
-	}
-
-	public void setFromDate(Item item, String fromDate) {
-		item.setFromDate(fromDate);
-	}
-
-	public void setToDate(Item item, String toDate) {
-		item.setToDate(toDate);
-	}
 
 	public ItemService(IItemRepository itemRepository) {
 		this.itemRepository = itemRepository;
@@ -150,17 +92,66 @@ public class ItemService {
 		item.setIID(iID);
 	}
 
-	@Value("${app.upload.dir}")
-	public String uploadDir;
+	public void gettAllFromFb() {
+		CollectionReference itemCR = fb.getFirebase().collection("Items");
+		Item tempItem = new Item();
+		for (DocumentReference doc : itemCR.listDocuments()) {
+			Long iID = Long.parseLong(doc.getId());
+			if (!findByIdIsPresent(iID)) {
+				try {
+					DocumentSnapshot ds = itemCR.document(String.valueOf(iID)).get().get();
+					setIID(tempItem, iID);
+					setName(tempItem, ds.getString("name"));
+					setDescription(tempItem, ds.getString("description"));
+					setPrice(tempItem, ds.getDouble("price"));
+					setFromDate(tempItem, ds.getString("fromDate"));
+					setToDate(tempItem, ds.getString("toDate"));
+					setAvailable(tempItem, ds.getBoolean("available"));
+					setImages(tempItem, (List<String>) ds.get("images"));
+					// Get owner from Firebase and save him
+					Map<String, Object> owner = (Map<String, Object>) ds.get("owner");
+					String uid = (String) owner.get("uid");
+					User savedOwner;
+					if (!userService.findByIdIsPresent(uid))
+						savedOwner = userService.saveUser(owner);
+					else
+						savedOwner = userService.findById(uid);
+					setOwner(tempItem, savedOwner);
+					save(tempItem);
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void setName(Item item, String name) {
+		item.setName(name);
+	}
+
+	public void setDescription(Item item, String description) {
+		item.setDescription(description);
+	}
+
+	public void setPrice(Item item, Double price) {
+		item.setPrice(price);
+	}
+
+	public void setAvailable(Item item, Boolean available) {
+		item.setAvailable(available);
+	}
+
+	public void setFromDate(Item item, String fromDate) {
+		item.setFromDate(fromDate);
+	}
+
+	public void setToDate(Item item, String toDate) {
+		item.setToDate(toDate);
+	}
 
 	public String uploadFb(MultipartFile file) {
 		return fb.uploadFile(file);
 	}
-	/*
-	 * public void downloadFb(String fileName) { try { fb.downloadFile(fileName); }
-	 * catch (IOException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } }
-	 */
 
 	public void deleteFbFile(String fileName) {
 		fb.deleteFile(fileName);
@@ -172,5 +163,21 @@ public class ItemService {
 
 	public URL getImgUrl(String fileName) {
 		return fb.getUrl(fileName);
+	}
+
+	public Item saveItem(Map<String, Object> item) {
+		Map<String, Object> ownerMap = (Map<String, Object>) item.get("owner");
+		String ownerID = (String) ownerMap.get("uid");
+		User owner;
+		if (!userService.findByIdIsPresent(ownerID))
+			owner = userService.saveUser(ownerMap);
+		else
+			owner = userService.findById(ownerID);
+
+		Item savedItem = new Item((Long) item.get("iid"), (String) item.get("name"), (String) item.get("description"),
+				(Double) item.get("price"), (String) item.get("fromDate"), (String) item.get("toDate"),
+				(Boolean) item.get("available"), (List<String>) item.get("images"), (Double) item.get("deliveryFee"));
+		savedItem.setOwner(owner);
+		return save(savedItem);
 	}
 }

@@ -1,7 +1,8 @@
 package hvl.no.dat251.group3project.service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -19,6 +20,7 @@ import hvl.no.dat251.group3project.controller.mainRestController;
 import hvl.no.dat251.group3project.entity.Address;
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.entity.User.Gender;
+import hvl.no.dat251.group3project.entity.User.Preferences;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repository.IUserRepository;
 
@@ -65,12 +67,9 @@ public class UserService {
 			try {
 				DocumentSnapshot ds = userCR.document(String.valueOf(uID)).get().get();
 				tempUser.setUID(uID);
-				HashMap addr = (HashMap) ds.get("address");
-				Address savedAddress = new Address((String) addr.get("streetName"), (String) addr.get("country"),
-						((Long) addr.get("postalCode")).intValue(), (String) addr.get("houseNumber"),
-						(String) addr.get("county"), (String) addr.get("municipality"));
+				Map<String, Object> addr = (Map<String, Object>) ds.get("address");
+				Address savedAddress = addressService.saveAddress(addr);
 				setAddress(tempUser, savedAddress);
-				addressService.save(savedAddress);
 				setAge(tempUser, (ds.getLong("age")).intValue());
 				setFname(tempUser, ds.getString("fname"));
 				setLname(tempUser, ds.getString("lname"));
@@ -79,6 +78,7 @@ public class UserService {
 					setGender(tempUser, User.Gender.valueOf((ds.getString("gender")).toUpperCase()));
 				List<String> pref = (List<String>) ds.get("preferences");
 				setPreferences(tempUser, pref);
+				setPhoneNumber(tempUser, ds.getLong("phoneNumber"));
 				save(tempUser);
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -139,5 +139,28 @@ public class UserService {
 
 	public void setUID(User user, String uID) {
 		user.setUID(uID);
+	}
+
+	public void setPhoneNumber(User user, Long phoneNumber) {
+		user.setPhoneNumber(phoneNumber);
+	}
+
+	public User saveUser(Map<String, Object> owner) {
+		List<String> prefStrings = (List<String>) owner.get("preferences");
+		List<Preferences> prefs = new ArrayList<>();
+
+		for (String pref : prefStrings) {
+			prefs.add(User.Preferences.valueOf(pref));
+		}
+
+		Gender gender = null;
+		if ((String) owner.get("gender") != null)
+			gender = User.Gender.valueOf((String) owner.get("gender"));
+
+		User user = new User((String) owner.get("uid"), (String) owner.get("fname"), (String) owner.get("lname"),
+				(String) owner.get("email"), (Integer) owner.get("age"), (Boolean) owner.get("contactByEmail"), gender,
+				(Long) owner.get("phoneNumber"), prefs, (Address) owner.get("address"));
+
+		return save(user);
 	}
 }

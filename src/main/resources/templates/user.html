@@ -8,20 +8,20 @@
 </head>
 
 <body class="map-body">
-<div class="index-header-image">
-    <div class="index-header-text">
-        Group3 DAT251 | Utleie av Friluftsutstyr
-        <hr>
+    <div class="index-header-image">
+        <div class="index-header-text">
+            Group3 DAT251 | Utleie av Friluftsutstyr
+            <hr>
+        </div>
+        <div class="index-header-buttons">
+            <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+            <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+            <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
+            <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+            <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
+            <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+        </div>
     </div>
-    <div class="index-header-buttons">
-        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
-        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
-        <input type="button" name="Home" value="Home" onclick="window.location.href='/'">
-        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-        <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
-        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
-    </div>
-</div>
     <div class="block">
         <p>Hello <span th:text="${name}"></span>!!</p>
         <table>
@@ -37,43 +37,55 @@
                 <td th:text="${user.fname}"></td>
                 <td th:text="${user.lname}"></td>
                 <td th:text="${user.age}"></td>
-                <td th:text="${user.address.streetName}+', '+${user.address.houseNumber}+', '+${user.address.county}+', '+${user.address.postalCode}+', '+${user.address.municipality}+', '+${user.address.country}"></td>
+                <td
+                    th:text="${user.address.streetName}+', '+${user.address.houseNumber}+', '+${user.address.county}+', '+${user.address.postalCode}+', '+${user.address.municipality}+', '+${user.address.country}">
+                </td>
                 <td th:text="${user.gender}"></td>
                 <td th:text="${user.preferences}"></td>
             </tr>
         </table>
-        
+
         <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post">
             <h3>Update User:</h3>
             First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
             Last Name:<br><input type="text" th:value="${user.lname}" name="lname" maxlength="32"><br><br>
-			Email:<br><input type="text" th:value="${user.email}" name="email"><br><br>
+            Email:<br><input type="text" th:value="${user.email}" name="email"><br><br>
+            Phone number:<br><input type="number" th:value="${user.phoneNumber}" name="phoneNumber" min="0"
+                max="99999999" required><br><br>
             Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
             Gender:<br>
             <select name="gender">
-                <option value="female" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female</option>
-                <option value="male" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).MALE}">Male</option>
-                <option value="unspecified" th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}">Don't want to say</option>
+                <option value="female"
+                    th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female
+                </option>
+                <option value="male"
+                    th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).MALE}">Male</option>
+                <option value="unspecified"
+                    th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}">Don't
+                    want to say</option>
             </select><br><br>
             <label for="preferences">
-            Preferences:<br>
-            <input type="checkbox" name="preferences" th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}" 
-        	th:value="${prefOpt}" th:text="${prefOpt.getPreference()}" th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
-        	th:style="${iStat.last}? 'visibility:hidden;'">
-			</label><br>
-			Street name:<br><input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
-			Municipality:<br><input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
-			County:<br><input type="text" th:value="${user.address.county}" name="county"><br><br>
-			House number:<br><input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
-			Postal code:<br><input type="number" th:value="${user.address.postalCode}" name="postalCode" min="0"><br><br>
-			Country:<br><input type="text" th:value="${user.address.country}" name="country"><br><br>
-			Contact by email:<input type="checkbox" th:checked="${user.contactByEmail}" name="contactByEmail"><br><br>
+                Preferences:<br>
+                <input type="checkbox" name="preferences"
+                    th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}"
+                    th:value="${prefOpt}" th:text="${prefOpt.getPreference()}"
+                    th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
+                    th:style="${iStat.last}? 'visibility:hidden;'">
+            </label><br>
+            Street name:<br><input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
+            Municipality:<br><input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
+            County:<br><input type="text" th:value="${user.address.county}" name="county"><br><br>
+            House number:<br><input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
+            Postal code:<br><input type="number" th:value="${user.address.postalCode}" name="postalCode"
+                min="0"><br><br>
+            Country:<br><input type="text" th:value="${user.address.country}" name="country"><br><br>
+            Contact by email:<input type="checkbox" th:checked="${user.contactByEmail}" name="contactByEmail"><br><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>
-	<div class=message>
-		<p><span class=message th:text="${message}"></span></p>
-	</div>
+    <div class=message>
+        <p><span class=message th:text="${message}"></span></p>
+    </div>
 </body>
 
 </html>

@@ -35,7 +35,7 @@ public class Item {
 	}
 
 	public Item(Long iID, String name, String description, Double price, String fromDate, String toDate,
-			boolean available, List<String> images) {
+			boolean available, List<String> images, Double deliveryFee) {
 		this.iID = iID;
 		this.name = name;
 		this.description = description;
@@ -44,6 +44,7 @@ public class Item {
 		this.toDate = toDate;
 		this.available = available;
 		this.images = images;
+		this.deliveryFee = deliveryFee;
 	}
 
 	public Item(String name, String description, Double price, String fromDate, String toDate, boolean available) {
