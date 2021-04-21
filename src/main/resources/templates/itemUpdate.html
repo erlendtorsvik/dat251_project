@@ -57,14 +57,16 @@
             </span>
         </div>
         <div class="block">
-            <form th:action="@{/items/update/{itemID}(itemID=${item.iID})}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/items/update/{itemID}(itemID=${item.iID})}" th:object="${item}" method="post"
+                enctype="multipart/form-data">
                 <h3>Update Item:</h3>
-                Name:<br><input type="text" name="name" maxlength="32" th:value="${item.name}"><br><br>
-                Description:<br><textarea name="description" rows="4" th:text="${item.description}"></textarea><br><br>
-                Price:<br><input type="number" step="0.01" name="price" th:value="${item.price}"><br><br>
-                From:<br><input type="date" name="fromDate"><br><br>
-                To:<br><input type="date" name="toDate"><br><br>
-                Available: <select name="isAvailable">
+                Name:<br><input type="text" th:field="*{name}" maxlength="32" th:value="${item.name}"><br><br>
+                Description:<br><textarea th:field="*{description}" rows="4"
+                    th:text="${item.description}"></textarea><br><br>
+                Price:<br><input type="number" step="0.01" th:field="*{price}" th:value="${item.price}"><br><br>
+                From:<br><input type="date" th:field="*{fromDate}"><br><br>
+                To:<br><input type="date" th:field="*{toDate}"><br><br>
+                Available: <select th:field="*{available}">
                     <option value="true" th:selected="${item.available}">Available</option>
                     <option value="false" th:selected="${!item.available}">Reserved</option>
                 </select><br><br>
@@ -72,12 +74,13 @@
                     Tags:<br>
                     <label
                         th:each="tagsOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}">
-                        <input type="checkbox" name="tags" th:value="${tagsOpt}" th:text="${tagsOpt.getPreference()}"
+                        <input type="checkbox" th:field="*{tags}" th:value="${tagsOpt}"
+                            th:text="${tagsOpt.getPreference()}"
                             th:checked="${#lists.contains(item.tags, tagsOpt)|| tagsOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
                             th:style="${iStat.last}? 'visibility:hidden;'">
                     </label>
                 </label><br>
-                Images:<br><input type="file" name="images" multiple accept="image/png, image/jpeg"><br><br>
+                Images:<br><input type="file" name="imagesMulti" multiple accept="image/png, image/jpeg"><br><br>
                 <input type="submit" name="submit" value="Update Item">
             </form><br>
         </div>

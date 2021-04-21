@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,29 +61,28 @@ public class ItemController {
 	@GetMapping("/myItems")
 	public String getMyItems(Model model, OAuth2AuthenticationToken authentication) {
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
+		model.addAttribute("item", new Item());
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Hello");
 		return "myItems";
 	}
 
 	@PostMapping("/addItem")
-	public String addItem(Model model, OAuth2AuthenticationToken authentication, @RequestParam String name,
-			@RequestParam String description, @RequestParam Double price, @RequestParam String fromDate,
-			@RequestParam String toDate, @RequestParam("images") MultipartFile[] multipartFiles,
-			@RequestParam("tags") List<String> tags) {
+	public String addItem(Model model, OAuth2AuthenticationToken authentication, @ModelAttribute Item item,
+			@RequestParam("imagesMulti") MultipartFile[] multipartFiles) {
 		List<String> images = new ArrayList<>();
 		Arrays.asList(multipartFiles).stream().forEach(file -> {
 			String fileName = itemService.uploadFb(file);
 			images.add(fileName);
 		});
-		Item newItem = new Item(name, description, price, fromDate, toDate, true, images);
+
+		item.setImages(images);
 		User user = userService.getUser(authentication);
-		itemService.setOwner(newItem, user);
-		itemService.setImages(newItem, images);
-		itemService.setTags(newItem, tags);
-		itemService.save(newItem);
+		itemService.setOwner(item, user);
+		itemService.save(item);
 
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
+		model.addAttribute("item", new Item());
 		model.addAttribute("items", myItems);
 		model.addAttribute("message", "Succesfully added Item ");
 		return "myItems";
@@ -110,12 +110,10 @@ public class ItemController {
 	}
 
 	@PostMapping("/items/update/{id}")
-	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
-			@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String isAvailable,
-			@PathVariable Long id, @RequestParam("images") MultipartFile[] multipartFiles, Model model,
-			OAuth2AuthenticationToken authentication, @RequestParam("tags") List<String> tags) {
+	public String updateItem(@PathVariable Long id, @ModelAttribute Item item,
+			@RequestParam("imagesMulti") MultipartFile[] multipartFiles, Model model,
+			OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
-		Item item = itemService.findById(id);
 		List<String> images = item.getImages();
 		int imgInitSize = images.size();
 		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() > 0;
@@ -125,23 +123,13 @@ public class ItemController {
 				images.add(fileName);
 			});
 		}
+		User user = userService.getUser(authentication);
+		itemService.setIID(item, id);
+		itemService.setOwner(item, user);
 
-		if (!name.isBlank())
-			itemService.setName(item, name);
-		if (!description.isBlank())
-			itemService.setDescription(item, description);
-		if (!price.isNaN())
-			itemService.setPrice(item, price);
-		if (!isAvailable.isBlank())
-			itemService.setAvailable(item, Boolean.parseBoolean(isAvailable));
-		if (!fromDate.isBlank())
-			itemService.setFromDate(item, fromDate);
-		if (!toDate.isBlank())
-			itemService.setToDate(item, toDate);
-		if (!tags.isEmpty())
-			itemService.setTags(item, tags);
 		itemService.setImages(item, images);
 		itemService.save(item);
+
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item " + id);
 
