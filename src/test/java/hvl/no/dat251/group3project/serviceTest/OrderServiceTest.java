@@ -1,27 +1,27 @@
 package hvl.no.dat251.group3project.serviceTest;
 
-import hvl.no.dat251.group3project.entity.Item;
-import hvl.no.dat251.group3project.entity.User;
-import hvl.no.dat251.group3project.repository.IItemRepository;
-import hvl.no.dat251.group3project.repository.IUserRepository;
-import hvl.no.dat251.group3project.service.ItemService;
-import hvl.no.dat251.group3project.service.UserService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import hvl.no.dat251.group3project.entity.Order;
-import hvl.no.dat251.group3project.repository.IOrderRepository;
-import hvl.no.dat251.group3project.service.OrderService;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import hvl.no.dat251.group3project.entity.Item;
+import hvl.no.dat251.group3project.entity.Order;
+import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.repository.IItemRepository;
+import hvl.no.dat251.group3project.repository.IOrderRepository;
+import hvl.no.dat251.group3project.repository.IUserRepository;
+import hvl.no.dat251.group3project.service.ItemService;
+import hvl.no.dat251.group3project.service.OrderService;
+import hvl.no.dat251.group3project.service.UserService;
 
 @SpringBootTest
 public class OrderServiceTest {
@@ -63,10 +63,10 @@ public class OrderServiceTest {
 		tempSeller = new User("userSeller1", "Pelle", "Seller", "Pelle.Seller@mail.com");
 		userService.save(tempSeller);
 
-		itemSample1 = new Item(1L, "Ski", "Slalomski", 1000, true);
+		itemSample1 = new Item(1L, "Ski", "Slalomski", 1000.0, true);
 		itemSample1.setOwner(tempLoaner);
 		itemService.save(itemSample1);
-		itemSample2 = new Item(2L, "Kajakk", "tomannskajakk", 1000, true);
+		itemSample2 = new Item(2L, "Kajakk", "tomannskajakk", 1000.0, true);
 		itemSample2.setOwner(tempSeller);
 		itemService.save(itemSample2);
 		itemSampleList.add(itemSample1);

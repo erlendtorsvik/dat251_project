@@ -1,11 +1,11 @@
 package hvl.no.dat251.group3project.controller;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.io.File;
-import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +53,7 @@ public class ItemController {
 
 	@GetMapping("/search")
 	public String search(Model model) {
-		model.addAttribute("message", "Hello");
+		model.addAttribute("items", itemService.findAll()); // Wojtek did this
 		return "items";
 	}
 
@@ -68,16 +68,18 @@ public class ItemController {
 	@PostMapping("/addItem")
 	public String addItem(Model model, OAuth2AuthenticationToken authentication, @RequestParam String name,
 			@RequestParam String description, @RequestParam Double price, @RequestParam String fromDate,
-			@RequestParam String toDate, @RequestParam("images") MultipartFile[] multipartFiles) {
+			@RequestParam String toDate, @RequestParam("images") MultipartFile[] multipartFiles,
+			@RequestParam("tags") List<String> tags) {
 		List<String> images = new ArrayList<>();
 		Arrays.asList(multipartFiles).stream().forEach(file -> {
 			String fileName = itemService.uploadFb(file);
 			images.add(fileName);
 		});
-		Item newItem = new Item(name, description, price, fromDate, toDate, true);
+		Item newItem = new Item(name, description, price, fromDate, toDate, true, images);
 		User user = userService.getUser(authentication);
 		itemService.setOwner(newItem, user);
 		itemService.setImages(newItem, images);
+		itemService.setTags(newItem, tags);
 		itemService.save(newItem);
 
 		List<Item> myItems = itemService.getItemsByUser(userService.getUser(authentication));
@@ -111,7 +113,7 @@ public class ItemController {
 	public String updateItem(@RequestParam String name, @RequestParam String description, @RequestParam Double price,
 			@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String isAvailable,
 			@PathVariable Long id, @RequestParam("images") MultipartFile[] multipartFiles, Model model,
-			OAuth2AuthenticationToken authentication) {
+			OAuth2AuthenticationToken authentication, @RequestParam("tags") List<String> tags) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
 		List<String> images = item.getImages();
@@ -136,6 +138,8 @@ public class ItemController {
 			itemService.setFromDate(item, fromDate);
 		if (!toDate.isBlank())
 			itemService.setToDate(item, toDate);
+		if (!tags.isEmpty())
+			itemService.setTags(item, tags);
 		itemService.setImages(item, images);
 		itemService.save(item);
 		model.addAttribute("item", item);

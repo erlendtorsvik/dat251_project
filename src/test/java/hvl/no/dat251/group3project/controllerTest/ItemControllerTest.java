@@ -48,7 +48,7 @@ class ItemControllerTest {
 		when(itemService.findAll()).thenReturn(itemsList);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/allItems").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(jsonPath("$", hasSize(2))).andDo(print());
+				.andExpect(jsonPath("$", hasSize(2))).andDo(print());
 	}
 
 	@Test
@@ -60,13 +60,13 @@ class ItemControllerTest {
 		when(itemService.findAll()).thenReturn(itemsList);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/items").param("name", "ski")).andDo(print())
-		.andExpect(status().isOk()).andExpect(model().attribute("message", "Succesfully searched items"));
+				.andExpect(status().isOk()).andExpect(model().attribute("message", "Succesfully searched items"));
 	}
 
 	@Test
 	@WithMockUser("test")
 	void searchingItemsShouldBeEnabledLOL() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/search")).andDo(print()).andExpect(status().isOk())
-		.andExpect(model().attribute("message", "Hello"));
+				.andExpect(model().attribute("items", itemService.findAll()));
 	}
 }

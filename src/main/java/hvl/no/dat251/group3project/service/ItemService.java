@@ -1,6 +1,7 @@
 package hvl.no.dat251.group3project.service;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -16,6 +17,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 
 import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.User;
+import hvl.no.dat251.group3project.entity.User.Preferences;
 import hvl.no.dat251.group3project.firebase.FBInitialize;
 import hvl.no.dat251.group3project.repository.IItemRepository;
 
@@ -108,6 +110,7 @@ public class ItemService {
 					setToDate(tempItem, ds.getString("toDate"));
 					setAvailable(tempItem, ds.getBoolean("available"));
 					setImages(tempItem, (List<String>) ds.get("images"));
+					setTags(tempItem, (List<String>) ds.get("tags"));
 					// Get owner from Firebase and save him
 					Map<String, Object> owner = (Map<String, Object>) ds.get("owner");
 					String uid = (String) owner.get("uid");
@@ -161,6 +164,10 @@ public class ItemService {
 		item.setImages(images);
 	}
 
+	public void setTags(Item item, List<String> tags) {
+		item.setTags(tags);
+	}
+
 	public URL getImgUrl(String fileName) {
 		return fb.getUrl(fileName);
 	}
@@ -173,10 +180,16 @@ public class ItemService {
 			owner = userService.saveUser(ownerMap);
 		else
 			owner = userService.findById(ownerID);
+		List<String> tagsStrings = (List<String>) item.get("preferences");
+		List<Preferences> tags = new ArrayList<>();
 
+		for (String tag : tagsStrings) {
+			tags.add(User.Preferences.valueOf(tag));
+		}
 		Item savedItem = new Item((Long) item.get("iid"), (String) item.get("name"), (String) item.get("description"),
 				(Double) item.get("price"), (String) item.get("fromDate"), (String) item.get("toDate"),
-				(Boolean) item.get("available"), (List<String>) item.get("images"), (Double) item.get("deliveryFee"));
+				(Boolean) item.get("available"), (List<String>) item.get("images"), (Double) item.get("deliveryFee"),
+				tags);
 		savedItem.setOwner(owner);
 		return save(savedItem);
 	}

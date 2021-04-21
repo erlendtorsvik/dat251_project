@@ -68,6 +68,15 @@
                     <option value="true" th:selected="${item.available}">Available</option>
                     <option value="false" th:selected="${!item.available}">Reserved</option>
                 </select><br><br>
+                <label for="tags">
+                    Tags:<br>
+                    <label
+                        th:each="tagsOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}">
+                        <input type="checkbox" name="tags" th:value="${tagsOpt}" th:text="${tagsOpt.getPreference()}"
+                            th:checked="${#lists.contains(item.tags, tagsOpt)|| tagsOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
+                            th:style="${iStat.last}? 'visibility:hidden;'">
+                    </label>
+                </label><br>
                 Images:<br><input type="file" name="images" multiple accept="image/png, image/jpeg"><br><br>
                 <input type="submit" name="submit" value="Update Item">
             </form><br>

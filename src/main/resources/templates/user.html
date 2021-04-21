@@ -66,11 +66,11 @@
             </select><br><br>
             <label for="preferences">
                 Preferences:<br>
-                <input type="checkbox" name="preferences"
-                    th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}"
-                    th:value="${prefOpt}" th:text="${prefOpt.getPreference()}"
-                    th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
-                    th:style="${iStat.last}? 'visibility:hidden;'">
+                <label th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}">
+                    <input type="checkbox" name="preferences" th:value="${prefOpt}" th:text="${prefOpt.getPreference()}"
+                        th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
+                        th:style="${iStat.last}? 'visibility:hidden;'">
+                </label>
             </label><br>
             Street name:<br><input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
             Municipality:<br><input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>

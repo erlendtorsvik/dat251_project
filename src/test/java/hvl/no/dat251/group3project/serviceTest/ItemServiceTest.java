@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,13 +43,13 @@ class ItemServiceTest {
 		itemService = new ItemService(itemRepository);
 		userService = new UserService(userRepository);
 
-		itemSample1 = new Item(1L, "Ski", "Slalomski", 1000, true);
+		itemSample1 = new Item(1L, "Ski", "Slalomski", 1000.0, true);
 		itemService.save(itemSample1);
-		itemSample2 = new Item(2L, "Kajakk", "tomannskajakk", 1000, true);
+		itemSample2 = new Item(2L, "Kajakk", "tomannskajakk", 1000.0, true);
 		itemService.save(itemSample2);
-		itemSample3 = new Item(3L, "Sykkel", "Terrengsykkel", 500, true);
+		itemSample3 = new Item(3L, "Sykkel", "Terrengsykkel", 500.0, true);
 		itemService.save(itemSample3);
-		itemSample4 = new Item("Ski", "Langrenn", 100, false);
+		itemSample4 = new Item(4L, "Ski", "Langrenn", 100.0, false);
 		itemService.save(itemSample4);
 	}
 
