@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import hvl.no.dat251.group3project.entity.Address;
+import hvl.no.dat251.group3project.entity.Item;
 import hvl.no.dat251.group3project.entity.User;
 import hvl.no.dat251.group3project.service.AddressService;
 import hvl.no.dat251.group3project.service.UserService;
@@ -60,6 +61,9 @@ public class UserController {
 			addresService.save(addr);
 			userService.save(newUser);
 		}
+		List<Item> items = itemService.findByTagsUserPref(userService.findById(newUser.getUID()));
+		model.addAttribute("items", items);
+		model = itemService.oneImgAndUrl(model, items);
 		model.addAttribute("name", newUser.getFname() + " " + newUser.getLname());
 		return "index";
 	}

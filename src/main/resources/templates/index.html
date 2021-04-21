@@ -12,19 +12,31 @@
       <hr>
     </div>
     <div class="index-header-buttons">
-        <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
-        <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
-      	<input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
-        <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
-        <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
-        <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
+      <input type="button" name="Search" value="Search" onclick="window.location.href='/search'">
+      <input type="button" name="Map" value="Map" onclick="window.location.href='/map'">
+      <input type="button" name="User" value="My Page" onclick="window.location.href='/user'">
+      <input type="button" name="My orders" value="My orders" onClick="window.location.href='/myOrders'">
+      <input type="button" name="My Items" value="My Items" onClick="window.location.href='/myItems'">
+      <input type="button" name="logout" value="Log Out" onClick="window.location.href='/logout'">
     </div>
   </div>
+
   <div class="index-box">
-    <h1>COMING SOON</h1>
-    <br>
+    <div class="itemsMain" th:if="${not #lists.isEmpty(items)}">
+      <h3>Preffered items:</h3>
+      <div th:each="item, iStat: ${items}" class="prefItem">
+        <a th:href="@{/items/{itemID}(itemID=${item.iID})}">
+          <div>
+            <span th:text="${item.name}"></span><br>
+            <img class="mainImg" th:src="@{${imgUrls[iStat.index]}}"><br>
+            <span th:text="${item.price}"></span><br>
+          </div>
+        </a>
+      </div>
+    </div>
+    <h1>ARRIVED</h1>
     <hr>
-    <h1>We'll do it</h1>
+    <h1>We did it</h1>
   </div>
 </body>
 

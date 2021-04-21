@@ -1,14 +1,15 @@
 package hvl.no.dat251.group3project.controller;
 
-import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -34,9 +35,6 @@ public class ItemController {
 
 	@Autowired
 	private UserService userService;
-
-	@Value("${app.upload.dir}")
-	public String imagesDir;
 
 	@GetMapping("/allItems")
 	ResponseEntity<List<Item>> getAllItems() {
@@ -92,14 +90,7 @@ public class ItemController {
 	public String getUpdateItem(@PathVariable Long id, Model model, OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
 		Item item = itemService.findById(id);
-		List<URL> urls = new ArrayList<>();
-		List<String> imgs = new ArrayList<>();
-		for (String img : item.getImages()) {
-			urls.add(itemService.getImgUrl(img));
-			imgs.add(img);
-		}
-		model.addAttribute("imgs", imgs);
-		model.addAttribute("imgUrls", urls);
+		model = itemService.imgsAndUrls(model, item);
 		// checking if owner tried to edit item
 		if (!userService.getUser(authentication).getUID().equals(item.getOwner().getUID())) {
 			model.addAttribute("message", "You can't edit someone elses item");
@@ -114,7 +105,7 @@ public class ItemController {
 			@RequestParam("imagesMulti") MultipartFile[] multipartFiles, Model model,
 			OAuth2AuthenticationToken authentication) {
 		// model.addAttribute("name", getUser(authentication));
-		List<String> images = item.getImages();
+		List<String> images = itemService.findById(id).getImages();
 		int imgInitSize = images.size();
 		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() > 0;
 		if (empty) {
@@ -133,14 +124,7 @@ public class ItemController {
 		model.addAttribute("item", item);
 		model.addAttribute("message", "Successfully updated item " + id);
 
-		List<URL> urls = new ArrayList<>();
-		List<String> imgs = new ArrayList<>();
-		for (String img : item.getImages()) {
-			urls.add(itemService.getImgUrl(img));
-			imgs.add(img);
-		}
-		model.addAttribute("imgs", imgs);
-		model.addAttribute("imgUrls", urls);
+		model = itemService.imgsAndUrls(model, item);
 
 		if (images.size() != imgInitSize)
 			try {
@@ -170,14 +154,7 @@ public class ItemController {
 	public String getItem(@PathVariable Long id, Model model) {
 		Item item = itemService.findById(id);
 		model.addAttribute("item", item);
-		List<URL> urls = new ArrayList<>();
-		List<String> imgs = new ArrayList<>();
-		for (String img : item.getImages()) {
-			urls.add(itemService.getImgUrl(img));
-			imgs.add(img);
-		}
-		model.addAttribute("imgs", imgs);
-		model.addAttribute("imgUrls", urls);
+		model = itemService.imgsAndUrls(model, item);
 		return "item";
 	}
 
@@ -189,16 +166,7 @@ public class ItemController {
 		List<String> itemImages = item.getImages();
 		itemImages.remove(image);
 		itemService.save(item);
-		List<URL> urls = new ArrayList<>();
-		List<String> imgs = new ArrayList<>();
-		for (String img : item.getImages()) {
-			urls.add(itemService.getImgUrl(img));
-			imgs.add(img);
-		}
-		model.addAttribute("imgs", imgs);
-		model.addAttribute("imgUrls", urls);
-		File f = new File(imagesDir + image);
-		f.delete();
+		model = itemService.imgsAndUrls(model, item);
 		itemService.deleteFbFile(image);
 
 		model.addAttribute("item", item);
@@ -206,4 +174,11 @@ public class ItemController {
 		return "itemUpdate";
 	}
 
+	@GetMapping("/")
+	public String mainSide(Model model, OAuth2AuthenticationToken authentication) {
+		List<Item> items = itemService.findByTagsUserPref(userService.getUser(authentication));
+		model.addAttribute("items", items);
+		model = itemService.oneImgAndUrl(model, items);
+		return "index";
+	}
 }

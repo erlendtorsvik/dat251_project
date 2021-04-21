@@ -37,7 +37,7 @@
 					<th>Price</th>
 					<th>From</th>
 					<th>To</th>
-					<th>Available</th>
+					<th>Availability</th>
 					<th class=th-hidden></th>
 				</tr>
 				<tr th:each="item : ${items}">
@@ -46,7 +46,12 @@
 					<td th:text="${item.price}"></td>
 					<td th:text="${item.fromDate.substring(0, 10)}"></td>
 					<td th:text="${item.toDate.substring(0, 10)}"></td>
-					<td th:text="${item.available}"></td>
+					<span th:if="${item.available}">
+						<td>Available</td>
+					</span>
+					<span th:if="${not item.available}">
+						<td>Reserved</td>
+					</span>
 					<td id="td-hidden-border"><button th:onClick="'window.location.href= \''+
 						@{/items/{itemID}(itemID=${item.iID})}+'\''">Info</button></td>
 				</tr>

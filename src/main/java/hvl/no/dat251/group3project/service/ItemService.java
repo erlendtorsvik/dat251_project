@@ -1,14 +1,18 @@
 package hvl.no.dat251.group3project.service;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.cloud.firestore.CollectionReference;
@@ -192,5 +196,53 @@ public class ItemService {
 				tags);
 		savedItem.setOwner(owner);
 		return save(savedItem);
+	}
+
+	public List<Item> findByTagsUserPref(User user) {
+		List<Item> items = itemRepository.findByTagsIn(user.getPreferences());
+		Set<Item> s = new HashSet<>(items);
+		items.clear();
+		items.addAll(s);
+		return items;
+	}
+
+	public Model imgsAndUrls(Model model, Item item) {
+		List<URL> urls = new ArrayList<>();
+		List<String> imgs = new ArrayList<>();
+		for (String img : item.getImages()) {
+			urls.add(getImgUrl(img));
+			imgs.add(img);
+		}
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
+		return model;
+	}
+
+	public Model oneImgAndUrl(Model model, List<Item> items) {
+		List<String> imgs = new ArrayList<>();
+		List<URL> urls = new ArrayList<>();
+		try {
+			for (Item item : items) {
+				String img;
+				URL url;
+				if (!item.getImages().isEmpty()) {
+					img = item.getImages().get(0);
+					url = getImgUrl(img);
+				} else {
+					img = "placeholder";
+					url = new URL(
+							"https://firebasestorage.googleapis.com/v0/b/dat251-project.appspot.com/o/placeholderIMG.jpg?alt=media&token=9bd865dd-b77f-43f1-99e7-d57fa404f85b");
+				}
+				urls.add(url);
+				imgs.add(img);
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		model.addAttribute("imgs", imgs);
+		model.addAttribute("imgUrls", urls);
+		return model;
 	}
 }
