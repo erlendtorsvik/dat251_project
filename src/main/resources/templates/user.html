@@ -45,41 +45,46 @@
             </tr>
         </table>
 
-        <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post">
+        <form th:action="@{/user/{UID}(UID=${user.uID})}" method="post" th:object="${user}">
             <h3>Update User:</h3>
-            First Name:<br><input type="text" th:value="${user.fname}" name="fname" maxlength="32"><br><br>
-            Last Name:<br><input type="text" th:value="${user.lname}" name="lname" maxlength="32"><br><br>
-            Email:<br><input type="text" th:value="${user.email}" name="email"><br><br>
-            Phone number:<br><input type="number" th:value="${user.phoneNumber}" name="phoneNumber" min="0"
-                max="99999999" required><br><br>
-            Age:<br><input type="number" th:value="${user.age}" name="age" min="0" max="99"><br><br>
+            First Name:<br><input type="text" th:value="${user.fname}" th:field="*{fname}" maxlength="32"><br><br>
+            Last Name:<br><input type="text" th:value="${user.lname}" th:field="*{lname}" maxlength="32"><br><br>
+            Email:<br><input type="text" th:value="${user.email}" th:field="*{email}"><br><br>
+            Phone number:<br><input type="number" th:value="${user.phoneNumber}" th:field="*{phoneNumber}" min="0"
+                max="99999999"><br><br>
+            Age:<br><input type="number" th:value="${user.age}" th:field="*{age}" min="0" max="99"><br><br>
             Gender:<br>
-            <select name="gender">
-                <option value="female"
+            <select th:field="*{gender}">
+                <option th:value="${T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}"
                     th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).FEMALE}">Female
                 </option>
-                <option value="male"
+                <option th:value="${T(hvl.no.dat251.group3project.entity.User.Gender).MALE}"
                     th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).MALE}">Male</option>
-                <option value="unspecified"
+                <option th:value="${T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}"
                     th:selected="${user.gender eq T(hvl.no.dat251.group3project.entity.User.Gender).UNSPECIFIED}">Don't
                     want to say</option>
             </select><br><br>
             <label for="preferences">
                 Preferences:<br>
                 <label th:each="prefOpt, iStat : ${T(hvl.no.dat251.group3project.entity.User.Preferences).values()}">
-                    <input type="checkbox" name="preferences" th:value="${prefOpt}" th:text="${prefOpt.getPreference()}"
+                    <input type="checkbox" th:field="*{preferences}" th:value="${prefOpt}"
+                        th:text="${prefOpt.getPreference()}"
                         th:checked="${#lists.contains(user.preferences, prefOpt)|| prefOpt eq T(hvl.no.dat251.group3project.entity.User.Preferences).NAN}"
                         th:style="${iStat.last}? 'visibility:hidden;'">
                 </label>
             </label><br>
-            Street name:<br><input type="text" th:value="${user.address.streetName}" name="streetName"><br><br>
-            Municipality:<br><input type="text" th:value="${user.address.municipality}" name="municipality"><br><br>
-            County:<br><input type="text" th:value="${user.address.county}" name="county"><br><br>
-            House number:<br><input type="text" th:value="${user.address.houseNumber}" name="houseNumber"><br><br>
-            Postal code:<br><input type="number" th:value="${user.address.postalCode}" name="postalCode"
+            Street name:<br><input type="text" th:value="${user.address.streetName}"
+                th:field="*{address.streetName}"><br><br>
+            Municipality:<br><input type="text" th:value="${user.address.municipality}"
+                th:field="*{address.municipality}"><br><br>
+            County:<br><input type="text" th:value="${user.address.county}" th:field="*{address.county}"><br><br>
+            House number:<br><input type="text" th:value="${user.address.houseNumber}"
+                th:field="*{address.houseNumber}"><br><br>
+            Postal code:<br><input type="number" th:value="${user.address.postalCode}" th:field="*{address.postalCode}"
                 min="0"><br><br>
-            Country:<br><input type="text" th:value="${user.address.country}" name="country"><br><br>
-            Contact by email:<input type="checkbox" th:checked="${user.contactByEmail}" name="contactByEmail"><br><br>
+            Country:<br><input type="text" th:value="${user.address.country}" th:field="*{address.country}"><br><br>
+            Contact by email:<input type="checkbox" th:checked="${user.contactByEmail}"
+                th:field="*{contactByEmail}"><br><br>
             <input type="submit" name="submit" value="Update">
         </form><br>
     </div>

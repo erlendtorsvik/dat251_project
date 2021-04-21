@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,48 +76,9 @@ public class UserController {
 	}
 
 	@PostMapping("/user/{uID}")
-	public String updateUser(@PathVariable String uID, @RequestParam String fname, @RequestParam String lname,
-			@RequestParam String email, @RequestParam int age, @RequestParam String gender,
-			@RequestParam List<String> preferences, @RequestParam String streetName, @RequestParam String municipality,
-			@RequestParam String county, @RequestParam String houseNumber, @RequestParam int postalCode,
-			@RequestParam String country, @RequestParam(defaultValue = "false") Boolean contactByEmail,
-			@RequestParam Long phoneNumber, Model model, OAuth2AuthenticationToken authentication) {
+	public String updateUser(@PathVariable String uID, Model model, @ModelAttribute User user,
+			OAuth2AuthenticationToken authentication) {
 		model.addAttribute("name", userService.getUser(authentication).getFname());
-		User user = userService.findById(uID);
-
-		if (!fname.isBlank())
-			userService.setFname(user, fname);
-		if (!lname.isBlank())
-			userService.setLname(user, lname);
-		if (!email.isBlank())
-			userService.setEmail(user, email);
-		if (age != user.getAge())
-			userService.setAge(user, age);
-		if (!gender.isBlank()) {
-			userService.setGender(user, User.Gender.valueOf(gender.toUpperCase()));
-		}
-		if (!preferences.isEmpty())
-			userService.setPreferences(user, preferences);
-		Address addr = new Address();
-		if (!streetName.isBlank())
-			addresService.setStreetName(addr, streetName);
-		if (!municipality.isBlank())
-			addresService.setMunicipality(addr, municipality);
-		if (!county.isBlank())
-			addresService.setCounty(addr, county);
-		if (!houseNumber.isBlank())
-			addresService.setHouseNumber(addr, houseNumber);
-		if (!country.isBlank())
-			addresService.setCountry(addr, country);
-		if (contactByEmail)
-			userService.setContactByEmail(user, true);
-		else
-			userService.setContactByEmail(user, false);
-		if (phoneNumber != user.getPhoneNumber())
-			userService.setPhoneNumber(user, phoneNumber);
-
-		addresService.setPostalCode(addr, postalCode);
-		userService.setAddress(user, addr);
 
 		userService.save(user);
 		model.addAttribute("user", user);
@@ -124,4 +86,5 @@ public class UserController {
 
 		return "user";
 	}
+
 }

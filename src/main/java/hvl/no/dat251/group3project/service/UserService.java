@@ -79,6 +79,7 @@ public class UserService {
 				List<String> pref = (List<String>) ds.get("preferences");
 				setPreferences(tempUser, pref);
 				setPhoneNumber(tempUser, ds.getLong("phoneNumber"));
+				setContactByEmail(tempUser, ds.getBoolean("contactByEmail"));
 				save(tempUser);
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
