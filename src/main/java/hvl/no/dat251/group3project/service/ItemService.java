@@ -48,8 +48,8 @@ public class ItemService {
 		return itemRepository.findByNameContainingIgnoreCase(itemWord);
 	}
 
-	public List<Item> getItemsByUser(User user) {
-		return itemRepository.findByOwner(user);
+	public List<Item> getItemsByUser(User u) {
+		return itemRepository.findByOwner(u);
 	}
 
 	public void setOwner(Item newItem, User user) {
