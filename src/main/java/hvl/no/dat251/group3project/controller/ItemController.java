@@ -69,10 +69,13 @@ public class ItemController {
 	public String addItem(Model model, OAuth2AuthenticationToken authentication, @ModelAttribute Item item,
 			@RequestParam("imagesMulti") MultipartFile[] multipartFiles) {
 		List<String> images = new ArrayList<>();
-		Arrays.asList(multipartFiles).stream().forEach(file -> {
-			String fileName = itemService.uploadFb(file);
-			images.add(fileName);
-		});
+		boolean empty = Arrays.asList(multipartFiles).stream().filter(f -> !f.isEmpty()).count() > 0;
+		if (empty) {
+			Arrays.asList(multipartFiles).stream().forEach(file -> {
+				String fileName = itemService.uploadFb(file);
+				images.add(fileName);
+			});
+		}
 
 		item.setImages(images);
 		User user = userService.getUser(authentication);
